@@ -1,14 +1,27 @@
 [
   {
 	"kanji": "日",
+  "look_like": "月",
+  "level": 5
   },
   {
-	"kanji": "月",
+	"kanji": "人",
+  "look_like": "入",
+  "level": 5
   },
   {
-	"kanji": "火",
+	"kanji": "本",
+  "look_like": "木",
+  "level": 5
   },
   {
-	"kanji": "水",
+	"kanji": "白",
+  "look_like": "百",
+  "level": 5
+  },
+  {
+	"kanji": "千",
+  "look_like": "午",
+  "level": 5
   }
 ]
