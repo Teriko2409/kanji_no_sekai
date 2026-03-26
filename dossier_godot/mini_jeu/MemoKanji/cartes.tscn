@@ -8,19 +8,16 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="kanji_wrote" type="Label" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-text = "Salut"
-
 [node name="Button" type="Button" parent="."]
 layout_mode = 0
 offset_right = 8.0
 offset_bottom = 8.0
 
-[node name="carte_structure" type="ColorRect" parent="."]
+[node name="kanji_wrote" type="Label" parent="."]
 layout_mode = 0
 offset_right = 40.0
-offset_bottom = 40.0
-color = Color(1, 0.2, 1, 1)
+offset_bottom = 23.0
+
+[node name="carte_structure" type="ColorRect" parent="."]
+layout_mode = 0
+color = Color(0.78730935, 0.5856883, 0.52867055, 1)

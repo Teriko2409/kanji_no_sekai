@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://cjiukew273ee4"]
+
+[ext_resource type="PackedScene" uid="uid://bqdan3aosvute" path="res://mini_jeu/MemoKanji/gameboard.tscn" id="1_qhhm3"]
+
+[node name="memokanji" type="Node2D"]
+
+[node name="gameboard" parent="." instance=ExtResource("1_qhhm3")]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 1149.0
+offset_bottom = 644.0
