@@ -4,17 +4,16 @@
 [ext_resource type="PackedScene" uid="uid://d3uukf6aoe3ho" path="res://mini_jeu/MemoKanji/cartes.tscn" id="2_4ohfa"]
 
 [node name="memokanji" type="Node2D"]
-position = Vector2(-5, 7)
 
 [node name="gameboard" parent="." instance=ExtResource("1_qhhm3")]
 clip_contents = true
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 4.0
-offset_top = -6.0
-offset_right = 1149.0
-offset_bottom = 634.0
+offset_left = -2.0
+offset_top = 1.0
+offset_right = 1150.0
+offset_bottom = 643.0
 grow_horizontal = 1
 grow_vertical = 1
 
@@ -22,13 +21,13 @@ grow_vertical = 1
 clip_contents = true
 custom_minimum_size = Vector2(600, 600)
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 26.0
-offset_top = 18.0
-offset_right = -277.0
-offset_bottom = -22.0
+offset_top = 16.5
+offset_right = -518.85
+offset_bottom = -20.659973
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/h_separation = 10
@@ -37,5 +36,6 @@ columns = 4
 
 [node name="Cartes" parent="gameboard/GridContainer" instance=ExtResource("2_4ohfa")]
 visible = false
+clip_contents = false
 layout_mode = 2
 size_flags_stretch_ratio = 0.0
