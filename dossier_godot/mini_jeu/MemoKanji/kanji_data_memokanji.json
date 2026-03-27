@@ -23,5 +23,17 @@
 	"kanji": "千",
   "look_like": "午",
   "level": 5
-  }
+  },
+{ 
+	"kanji": "上",
+  "look_like": "下",
+  "level": 5
+	
+},
+{ 
+	"kanji": "上",
+  "look_like": "下",
+  "level": 5
+	
+}
 ]

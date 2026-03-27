@@ -6,7 +6,7 @@ const MODEL_CARTE = preload("res://mini_jeu/MemoKanji/cartes.tscn")
 
 
 func _ready() -> void:
-	var mes_kanjis = ["Salut ", "Laura"]
+	var mes_kanjis = ["人", "間", "日", "月", "火", "水", "木", "金", "土", "本", "犬", "猫"]
 	
 	for kanji in mes_kanjis:
 		creer_une_carte(kanji)
