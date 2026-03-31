@@ -2,20 +2,28 @@ extends Control
 
 const MODEL_CARTE = preload("res://mini_jeu/MemoKanji/cartes.tscn")
 
-@onready var grille = $GridContainer
+const json_url = preload("res://mini_jeu/MemoKanji/kanji_data_memokanji.json")
+
+@onready var structure = $structure_gameboard
 
 
 func _ready() -> void:
-	var mes_kanjis = ["人", "間", "日", "月", "火", "水", "木", "金", "土", "本", "犬", "猫"]
+	var kanji_list = downloaod_json_data()
 	
-	for kanji in mes_kanjis:
-		creer_une_carte(kanji)
+	for i in kanji_list:
+		create_cartes(i)
 
-func creer_une_carte(texte_du_kanji: String) -> void:
-	var nouvelle_carte = MODEL_CARTE.instantiate()
+func create_cartes(text_parameter: String) -> void:
 	
-	grille.add_child(nouvelle_carte)
-	var mon_label = nouvelle_carte.get_node("kanji_wrote")
+	var new_carte = MODEL_CARTE.instantiate()
 	
-	if mon_label:
-		mon_label.text = texte_du_kanji
+	structure.add_child(new_carte)
+	var label = new_carte.get_node("kanji_wrote")
+	
+	if label:
+		label.text = text_parameter
+		
+func downloaod_json_data () -> Array:
+	
+	var kanji_list = ["人", "間", "日", "月", "火", "水", "木", "金", "土", "本", "犬", "猫"]
+	return kanji_list
