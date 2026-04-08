@@ -22,23 +22,15 @@ func create_cartes(text_parameter: String) -> void:
 	
 		
 func downloaod_json_data() -> Array:
-	var kanji_list = [
+	
+	const json_data = json_url.data
+	const level_jlpt = 5
+
+	
+	var json_data_sort_by_jlpt = []
+	
+	"""var kanji_list = []"""
+	var kanji_list = ["一", "二", "三", "四","日", "月", "火", "水", "木", "金", "土", "山", "上", "下", "左", "右"  ]
+	
 		
-	"日", "月", "火", "水", "木", "金", "土",
-	"一", "二", "三", "四", "五", "六", "七", "八", "九", "十", 
-	"人", "子", "女", "男", 
-	"山", "川", "田", 
-	"大", "小", 
-	"上", "下", "左", "右", 
-	"口" 
-]
-
-	kanji_list.shuffle()
-	
-	kanji_list = kanji_list.slice(0, 6)
-	
-	kanji_list += kanji_list
-
-	kanji_list.shuffle()
-	
 	return kanji_list
