@@ -1,34 +1,36 @@
 [
   {
-	"kanji": "日",
-  "look_like": "月",
+	"kanji": ["日","白","百"],
   "level": 5
   },
-  {
-	"kanji": "人",
-  "look_like": "入",
+{
+	"kanji": ["人","入","八"],
   "level": 5
   },
-  {
-	"kanji": "本",
-  "look_like": "木",
+{
+	"kanji": ["体","本","木"],
   "level": 5
   },
-  {
-	"kanji": "白",
-  "look_like": "百",
+{
+	"kanji": ["千","午"],
   "level": 5
   },
-  {
-	"kanji": "千",
-  "look_like": "午",
-  "level": 5
+{
+  "kanji": ["持","待"],
+  "level": 4
   },
-{ 
-	"kanji": "上",
-  "look_like": "下",
-  "level": 5
-	
-}
+{
+  "kanji": ["間","問"],
+  "level": 4
+  },
+{
+	"kanji": ["買","員"],
+  "level": 4
+  },
+{
+	"kanji": ["貸","質"],
+  "level": 4
+  }
+
 
 ]
