@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://d3uukf6aoe3ho"]
+[gd_scene load_steps=2 format=3 uid="uid://d3uukf6aoe3ho"]
+
+[ext_resource type="Script" uid="uid://cvwlgay4uui7v" path="res://mini_jeu/MemoKanji/button.gd" id="1_k1mi8"]
 
 [node name="Cartes" type="Control"]
 clip_contents = true
@@ -11,15 +13,6 @@ grow_vertical = 2
 pivot_offset = Vector2(1237, 286079)
 metadata/_edit_use_anchors_ = true
 
-[node name="Button" type="Button" parent="."]
-custom_minimum_size = Vector2(120, 150)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
 [node name="carte_structure" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(120, 150)
 layout_mode = 1
@@ -30,6 +23,17 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(874, 323)
 color = Color(0.761999, 0.5157151, 0.9318439, 1)
+
+[node name="Button" type="Button" parent="."]
+custom_minimum_size = Vector2(120, 150)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+script = ExtResource("1_k1mi8")
 
 [node name="kanji_wrote" type="Label" parent="."]
 clip_contents = true
