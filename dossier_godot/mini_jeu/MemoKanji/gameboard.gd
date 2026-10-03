@@ -24,7 +24,7 @@ func create_cartes(text_parameter: String) -> void:
 func downloaod_json_data() -> Array:
 	var kanji_list = []
 	const json_data = json_url.data
-	const level_jlpt = 5
+	const level_jlpt = 1
 	var json_data_sort_by_jlpt = []
 	
 	for i in json_data: 
