@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kanji no Sekai – Choix du jeu</title>
+    <style>
+        body {
+            font-family: system-ui, "Noto Sans CJK JP", "Yu Gothic", sans-serif;
+            margin: 0;
+            padding: 24px;
+            background: #faf6ee;
+            color: #2b2b2b;
+            max-width: 520px;
+            margin-inline: auto;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .player-info {
+            font-size: 0.9em;
+            color: #714B67;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        a.Category {
+            display: block;
+            padding: 16px;
+            margin: 12px 0;
+            background: #fff;
+            border: 2px solid #2b2b2b;
+            border-radius: 12px;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.1s ease;
+        }
+
+        a.Category:hover {
+            transform: translateY(-2px);
+        }
+
+        a.off {
+            opacity: .45;
+            pointer-events: none;
+        }
+
+        .button_retour {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: mediumvioletred;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+<body>
+
+<button class="button_retour" onclick="location.href='/'">LOG OUT</button>
+<br><br>
+
+<p class="player-info">Player : ID {{ session.get('player_id') }}</p>
+<p class="player-info">JLPT : {{ session.get('level') }}</p>
+
+<a class="Category off "> Kanji Reading</a>
+<a class="Category off">Kanji Writing</a>
+<a class="Category off">Kanji Meaning</a>
+<a class="Category" href="{{ url_for('choice_game_distinction') }}">Kanji Distinction</a>
+<a class="Category off">Kanji Usage</a>
+
+</body>
+</html>
