@@ -1,21 +1,40 @@
 # kanji_no_sekai
 
+Prototype for January
 
-Le projet sera une compilation de mini-jeu : 
-- Kanji Counter
-- MemoKanji
-- Kanji Passport, please
-- Infinite Kanji
-- Kanji Craft
+Kanji Reading : 
+
+Kanji Writing : 
+
+- Kanji-bakku ❌
+
+- Kanji Craft ❌
+
+Kanji Meaning : 
+
+- Infinite Kanji ❌
+
+- Kanji Passport, please 🔧
+
+Kanji Distinction :
+
+- MemoKanji ✅
+
+Kanji Usage : 
+
+- Kanji Counter ❌
+
+
+
 
 Un système de recompense : 
-- Kanjidex
-- ie    
 
-Teste du jeu sera sur itch.io en privé
+- Kanjidex ❌
+- ie    ❌
 
 
 MemoKanji
+
 Nous avons utilisez le api kanjiapi pour récupèrer
 https://kanjiapi.dev/v1/kanji/jlpt-1
 JLPT : 
@@ -24,3 +43,4 @@ JLPT :
 - N3 : Intermédiaire
 - N2 : Avancé 
 - N1 : Expert
+
