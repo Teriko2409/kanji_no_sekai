@@ -4,9 +4,13 @@ Prototype for January
 
 Kanji Reading : 
 
+- Reading the text Please 🤔
+
+- Take a guess, my little kanji 🤔
+
 Kanji Writing : 
 
-- Kanji-bakku ❌
+- Kanji-sabakku 🤔
 
 - Kanji Craft ❌
 
@@ -19,6 +23,8 @@ Kanji Meaning :
 Kanji Distinction :
 
 - MemoKanji ✅
+
+- KanKey 🤔
 
 Kanji Usage : 
 
