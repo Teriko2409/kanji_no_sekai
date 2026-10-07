@@ -1,0 +1,302 @@
+[
+  {
+    "kanji": "月",
+    "level": 5,
+    "onyomi": "ゲツ, ガツ",
+    "kunyomi": "つき",
+    "radical": "月 (Moon)",
+    "vocabulary": [
+      { "word": "月曜日", "reading": "げつようび", "english": "Monday" },
+      { "word": "一月", "reading": "いちがつ", "english": "January" },
+      { "word": "今月", "reading": "こんげつ", "english": "This month" }
+    ]
+  },
+  {
+    "kanji": "火",
+    "level": 5,
+    "onyomi": "カ",
+    "kunyomi": "ひ, -び",
+    "radical": "火 (Fire)",
+    "vocabulary": [
+      { "word": "火曜日", "reading": "かようび", "english": "Tuesday" },
+      { "word": "花火", "reading": "はなび", "english": "Fireworks" },
+      { "word": "火山", "reading": "かざん", "english": "Volcano" }
+    ]
+  },
+  {
+    "kanji": "金",
+    "level": 5,
+    "onyomi": "キン, コン",
+    "kunyomi": "かね, かね-",
+    "radical": "金 (Gold / Metal)",
+    "vocabulary": [
+      { "word": "金曜日", "reading": "きんようび", "english": "Friday" },
+      { "word": "お金", "reading": "おかね", "english": "Money" },
+      { "word": "料金", "reading": "りょうきん", "english": "Fee / Charge" }
+    ]
+  },
+  {
+    "kanji": "土",
+    "level": 5,
+    "onyomi": "ド, ト",
+    "kunyomi": "つち",
+    "radical": "土 (Soil)",
+    "vocabulary": [
+      { "word": "土曜日", "reading": "どようび", "english": "Saturday" },
+      { "word": "土", "reading": "つち", "english": "Soil / Earth" },
+      { "word": "土地", "reading": "とち", "english": "Land / Plot" }
+    ]
+  },
+  {
+    "kanji": "山",
+    "level": 5,
+    "onyomi": "サン",
+    "kunyomi": "やま",
+    "radical": "山 (Mountain)",
+    "vocabulary": [
+      { "word": "富士山", "reading": "ふじさん", "english": "Mt. Fuji" },
+      { "word": "火山", "reading": "かざん", "english": "Volcano" },
+      { "word": "登山", "reading": "とざん", "english": "Mountain climbing" }
+    ]
+  },
+  {
+    "kanji": "走",
+    "level": 4,
+    "onyomi": "ソウ",
+    "kunyomi": "はし.る",
+    "radical": "走 (Run)",
+    "vocabulary": [
+      { "word": "走る", "reading": "はしる", "english": "To run" },
+      { "word": "走者", "reading": "そうしゃ", "english": "Runner" },
+      { "word": "脱走", "reading": "だっそう", "english": "Escape / Breakout" }
+    ]
+  },
+  {
+    "kanji": "建",
+    "level": 4,
+    "onyomi": "ケン, コン",
+    "kunyomi": "た.てる, た.つ",
+    "radical": "廴 (Long stride)",
+    "vocabulary": [
+      { "word": "建物", "reading": "たてもの", "english": "Building" },
+      { "word": "建設", "reading": "けんせつ", "english": "Construction" },
+      { "word": "建てる", "reading": "たてる", "english": "To build" }
+    ]
+  },
+  {
+    "kanji": "急",
+    "level": 4,
+    "onyomi": "キュウ",
+    "kunyomi": "いそ.ぐ",
+    "radical": "心 (Heart)",
+    "vocabulary": [
+      { "word": "急ぐ", "reading": "いそぐ", "english": "To hurry" },
+      { "word": "急行", "reading": "きゅうこう", "english": "Express train" },
+      { "word": "急に", "reading": "きゅうに", "english": "Suddenly" }
+    ]
+  },
+  {
+    "kanji": "特",
+    "level": 4,
+    "onyomi": "トク",
+    "kunyomi": "-",
+    "radical": "牛 (Cow)",
+    "vocabulary": [
+      { "word": "特別", "reading": "とくべつ", "english": "Special" },
+      { "word": "特に", "reading": "とくに", "english": "Especially" },
+      { "word": "特徴", "reading": "とくちょう", "english": "Feature / Characteristic" }
+    ]
+  },
+  {
+    "kanji": "問",
+    "level": 4,
+    "onyomi": "モン",
+    "kunyomi": "問.う, とん",
+    "radical": "口 (Mouth)",
+    "vocabulary": [
+      { "word": "問題", "reading": "もんだい", "english": "Problem / Question" },
+      { "word": "質問", "reading": "しつもん", "english": "Question" },
+      { "word": "訪問", "reading": "ほうもん", "english": "Visit" }
+    ]
+  },
+  {
+    "kanji": "政",
+    "level": 3,
+    "onyomi": "セイ, ショウ",
+    "kunyomi": "まつりごと",
+    "radical": "攴 (Whip)",
+    "vocabulary": [
+      { "word": "政治", "reading": "せいじ", "english": "Politics" },
+      { "word": "政府", "reading": "せいふ", "english": "Government" },
+      { "word": "政策", "reading": "せいさく", "english": "Policy" }
+    ]
+  },
+  {
+    "kanji": "経",
+    "level": 3,
+    "onyomi": "ケイ, キョウ",
+    "kunyomi": "へ.る, た.つ",
+    "radical": "糸 (Thread)",
+    "vocabulary": [
+      { "word": "経済", "reading": "けいざい", "english": "Economy" },
+      { "word": "経験", "reading": "けいけん", "english": "Experience" },
+      { "word": "経営", "reading": "けいえい", "english": "Management / Business" }
+    ]
+  },
+  {
+    "kanji": "際",
+    "level": 3,
+    "onyomi": "サイ",
+    "kunyomi": "きわ",
+    "radical": "阜 (Mound / Wall)",
+    "vocabulary": [
+      { "word": "国際", "reading": "こくさい", "english": "International" },
+      { "word": "交際", "reading": "こうさい", "english": "Association / Dating" },
+      { "word": "実際", "reading": "じっさい", "english": "Reality / Practical" }
+    ]
+  },
+  {
+    "kanji": "複",
+    "level": 3,
+    "onyomi": "フク",
+    "kunyomi": "-",
+    "radical": "衣 (Clothes)",
+    "vocabulary": [
+      { "word": "複雑", "reading": "ふくざつ", "english": "Complex / Complicated" },
+      { "word": "復習", "reading": "ふくしゅう", "english": "Review / Revision" },
+      { "word": "複数", "reading": "ふくすう", "english": "Plural / Multiple" }
+    ]
+  },
+  {
+    "kanji": "関",
+    "level": 3,
+    "onyomi": "カン",
+    "kunyomi": "せき, かか.わる",
+    "radical": "門 (Gate)",
+    "vocabulary": [
+      { "word": "関係", "reading": "かんけい", "english": "Relationship / Connection" },
+      { "word": "関心", "reading": "かんしん", "english": "Interest" },
+      { "word": "玄関", "reading": "げんかん", "english": "Entrance hall" }
+    ]
+  },
+  {
+    "kanji": "創",
+    "level": 2,
+    "onyomi": "ソウ, ショウ",
+    "kunyomi": "つく.る, はじ.める",
+    "radical": "刀 (Sword)",
+    "vocabulary": [
+      { "word": "創造", "reading": "そうぞう", "english": "Creation" },
+      { "word": "創刊", "reading": "そうかん", "english": "First issue (publication)" },
+      { "word": "創作", "reading": "そうさく", "english": "Creation / Production" }
+    ]
+  },
+  {
+    "kanji": "察",
+    "level": 2,
+    "onyomi": "サツ",
+    "kunyomi": "-",
+    "radical": "宀 (Roof)",
+    "vocabulary": [
+      { "word": "警察", "reading": "けいさつ", "english": "Police" },
+      { "word": "観察", "reading": "かんさつ", "english": "Observation" },
+      { "word": "考察", "reading": "こうさつ", "english": "Consideration / Study" }
+    ]
+  },
+  {
+    "kanji": "障",
+    "level": 2,
+    "onyomi": "ショウ",
+    "kunyomi": "さわ.る",
+    "radical": "阜 (Mound / Wall)",
+    "vocabulary": [
+      { "word": "障害", "reading": "しょうがい", "english": "Obstacle / Disability" },
+      { "word": "故障", "reading": "こしょう", "english": "Breakdown / Failure" },
+      { "word": "保障", "reading": "ほしょう", "english": "Guarantee / Security" }
+    ]
+  },
+  {
+    "kanji": "設",
+    "level": 2,
+    "onyomi": "セツ",
+    "kunyomi": "もう.ける",
+    "radical": "言 (Speech)",
+    "vocabulary": [
+      { "word": "設定", "reading": "せってい", "english": "Settings / Establishment" },
+      { "word": "設備", "reading": "せつび", "english": "Equipment / Facilities" },
+      { "word": "設計", "reading": "せっけい", "english": "Design / Plan" }
+    ]
+  },
+  {
+    "kanji": "富",
+    "level": 2,
+    "onyomi": "フ, フウ",
+    "kunyomi": "と.む, とみ",
+    "radical": "宀 (Roof)",
+    "vocabulary": [
+      { "word": "豊富", "reading": "ほうふ", "english": "Abundant / Wealthy" },
+      { "word": "富士山", "reading": "ふじさん", "english": "Mt. Fuji" },
+      { "word": "富有", "reading": "ふゆう", "english": "Wealthy / Affluent" }
+    ]
+  },
+  {
+    "kanji": "覇",
+    "level": 1,
+    "onyomi": "ハ, ハク",
+    "kunyomi": "はたがしら",
+    "radical": "襾 (Cover)",
+    "vocabulary": [
+      { "word": "制覇", "reading": "せいは", "english": "Conquest / Mastery" },
+      { "word": "覇権", "reading": "はけん", "english": "Hegemony / Supremacy" },
+      { "word": "連覇", "reading": "れんぱ", "english": "Successive championships" }
+    ]
+  },
+  {
+    "kanji": "匿",
+    "level": 1,
+    "onyomi": "トク",
+    "kunyomi": "かく.す",
+    "radical": "匚 (Box)",
+    "vocabulary": [
+      { "word": "匿名", "reading": "とくめい", "english": "Anonymity" },
+      { "word": "秘匿", "reading": "ひとく", "english": "Concealment / Hiding" },
+      { "word": "隠匿", "reading": "いんとく", "english": "Concealment / Sheltering" }
+    ]
+  },
+  {
+    "kanji": "歪",
+    "level": 1,
+    "onyomi": "ワイ",
+    "kunyomi": "いが.む, ゆが.む, ひず.む",
+    "radical": "不正 (Not straight)",
+    "vocabulary": [
+      { "word": "歪曲", "reading": "わいきょく", "english": "Distortion / Falsification" },
+      { "word": "歪み", "reading": "ひずみ", "english": "Strain / Warp" },
+      { "word": "歪む", "reading": "ゆがむ", "english": "To warp / To bend" }
+    ]
+  },
+  {
+    "kanji": "憂",
+    "level": 1,
+    "onyomi": "ユウ",
+    "kunyomi": "うれ.える, うれ.い, う.い",
+    "radical": "心 (Heart)",
+    "vocabulary": [
+      { "word": "憂慮", "reading": "ゆうりょ", "english": "Anxiety / Concern" },
+      { "word": "憂鬱", "reading": "ゆううつ", "english": "Melancholy / Depression" },
+      { "word": "杞憂", "reading": "きゆう", "english": "Absurd / Unwarranted anxiety" }
+    ]
+  },
+  {
+    "kanji": "擬",
+    "level": 1,
+    "onyomi": "ギ",
+    "kunyomi": "まが.とき",
+    "radical": "手 (Hand)",
+    "vocabulary": [
+      { "word": "模擬", "reading": "もぎ", "english": "Mock / Simulation" },
+      { "word": "擬音語", "reading": "ぎおんご", "english": "Onomatopoeia" },
+      { "word": "擬人化", "reading": "ぎじんか", "english": "Personification / Anthropomorphism" }
+    ]
+  }
+]

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kanji Passport, please</title>
+<style>
+  :root { --ink:#2b2b2b; --paper:#faf6ee; --ok:#3a8a4f; --ko:#b3261e; }
+  * { box-sizing: border-box; }
+  body { font-family: system-ui, "Noto Sans CJK JP", "Yu Gothic", sans-serif; margin:0; padding:16px;
+         background:var(--paper); color:var(--ink); max-width:560px; margin-inline:auto; }
+  .button_retour { padding:10px 20px; font-size:16px; background-color:mediumvioletred; color:white;
+                   border:none; border-radius:5px; cursor:pointer; }
+  header { display:flex; justify-content:space-between; align-items:center; margin:12px 0; }
+  .boite { background:#fff; border:2px solid var(--ink); border-radius:12px; padding:14px; margin:12px 0; }
+  .id { display:flex; gap:14px; align-items:center; }
+  .photo { font-size:5rem; border:2px solid var(--ink); border-radius:8px; padding:6px 14px; background:#eef3fb; }
+  .champs div { margin:4px 0; }
+  .champs small { color:#666; display:inline-block; min-width:60px; }
+  button.action { font-size:1rem; padding:10px 16px; border:2px solid var(--ink); background:var(--ink);
+                  color:#fff; border-radius:10px; cursor:pointer; margin:4px 4px 4px 0; }
+  button.action:disabled { opacity:.4; cursor:default; }
+  .valider { background:var(--ok)!important; border-color:var(--ok)!important; }
+  .refuser { background:var(--ko)!important; border-color:var(--ko)!important; }
+  .btns { display:flex; gap:10px; }
+  .btns button { flex:1; }
+  .msg { min-height:1.6em; margin:10px 0; font-weight:600; }
+  .ok { color:var(--ok); } .ko { color:var(--ko); }
+  #recueilPanel { display:none; max-height:240px; overflow:auto; font-size:.9rem; }
+  #recueilPanel div { border-bottom:1px solid #ddd; padding:3px 0; }
+</style>
+</head>
+<body>
+<button class="button_retour" onclick="location.href='/'">BACK</button>
+<header><strong>Kanji Passport, please</strong><span id="participant"></span></header>
+
+<div>Carte <span id="i">0</span>/<span id="tot"></span> · Score : <span id="score">0</span></div>
+<button class="action" id="btnRecueil">📖 Recueil (<span id="restantes">0</span> restantes)</button>
+<div class="boite" id="recueilPanel"></div>
+
+<div class="boite" id="carte"></div>
+<div class="btns">
+  <button class="action valider" id="oui">✔ Valider</button>
+  <button class="action refuser" id="non">✘ Refuser</button>
+</div>
+<div class="msg" id="msg"></div>
+<button class="action" id="suivant" style="display:none">Carte suivante →</button>
+
+<div class="boite" id="end" style="display:none"></div>
+
+<script>
+const JEU = "passport";
+const $ = id => document.getElementById(id);
+const participant = new URLSearchParams(location.search).get("p") || "1";
+$("participant").textContent = participant;
+
+function log(evenement, kanji = null, valeur = null, details = null) {
+  fetch("/api/log", {
+    method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({participant, jeu: JEU, evenement, kanji, valeur, details})
+  }).catch(() => {});
+}
+
+let cartes = [], recueil = [], idx = 0, score = 0, consultationsRestantes = 0, repondu = false, t0 = 0;
+
+async function charger() {
+  try {
+    const r = await fetch("/passport_data");
+    if (!r.ok) throw new Error("reponse serveur non OK");
+    const d = await r.json();
+    cartes = d.cartes; recueil = d.recueil; consultationsRestantes = d.nb_consultations;
+  } catch (e) {
+    console.warn("Passage en mode secours :", e);
+    // Secours minimal si le serveur n'est pas joignable
+    cartes = [
+      {kanji:"日", champs:{sens:"jour, soleil", lecture:"ひ", mot:"日本（にほん）"}, correct:true, champ_faux:null, valeur_correcte:null},
+      {kanji:"火", champs:{sens:"feu, flamme", lecture:"やま", mot:"火山（かざん）"}, correct:false, champ_faux:"lecture", valeur_correcte:"ひ"}
+    ];
+    recueil = []; consultationsRestantes = 1;
+  }
+  $("tot").textContent = cartes.length;
+  $("restantes").textContent = consultationsRestantes;
+  majBoutonRecueil();
+  afficher();
+  log("start");
+}
+
+function majBoutonRecueil() {
+  $("btnRecueil").disabled = consultationsRestantes <= 0;
+  $("restantes").textContent = consultationsRestantes;
+}
+
+function afficher() {
+  const c = cartes[idx];
+  repondu = false; t0 = Date.now();
+  $("i").textContent = idx + 1;
+  $("carte").innerHTML = `<div class="id"><div class="photo"></div><div class="champs">
+    <div><small>Sens</small> <span id="f-sens"></span></div>
+    <div><small>Lecture</small> <span id="f-lecture"></span></div>
+    <div><small>Mot</small> <span id="f-mot"></span></div></div></div>`;
+  $("carte").querySelector(".photo").textContent = c.kanji;
+  ["sens","lecture","mot"].forEach(ch => $("f-"+ch).textContent = c.champs[ch]);
+  $("msg").textContent = ""; $("suivant").style.display = "none";
+  $("oui").disabled = false; $("non").disabled = false;
+  $("recueilPanel").style.display = "none";
+}
+
+function afficherRecueil() {
+  if (consultationsRestantes <= 0) return;
+  consultationsRestantes--; majBoutonRecueil();
+  log("recueil", cartes[idx].kanji, null, {restantes_apres: consultationsRestantes});
+  const p = $("recueilPanel");
+  p.innerHTML = recueil.map(k =>
+    `<div>${k.char} — ${k.sens} — ${k.kun.join("・")} / ${k.on.join("・")} — ${k.vocab.map(v => v.mot+"("+v.lecture+")").join(", ")}</div>`
+  ).join("");
+  p.style.display = "block";
+}
+
+function repondre(valider) {
+  if (repondu) return;
+  repondu = true;
+  const c = cartes[idx];
+  const bon = valider === c.correct;
+  if (bon) score++;
+  $("score").textContent = score;
+  const nomChamp = {sens:"le sens", lecture:"la lecture", mot:"le mot"};
+  $("msg").className = "msg " + (bon ? "ok" : "ko");
+  $("msg").textContent = bon
+    ? (c.champ_faux ? `Bien vu ! Erreur sur ${nomChamp[c.champ_faux]} (correct : ${c.valeur_correcte}).` : "Correct, la carte était en règle.")
+    : (c.champ_faux ? `Raté : ${nomChamp[c.champ_faux]} était faux (correct : ${c.valeur_correcte}).` : "Raté : la carte était en règle.");
+  log("reponse", c.kanji, bon ? 1 : 0, {
+    champ_faux: c.champ_faux, reponse: valider ? "valider" : "refuser",
+    secondes: Math.round((Date.now() - t0) / 100) / 10
+  });
+  $("oui").disabled = true; $("non").disabled = true;
+  $("suivant").style.display = "inline-block";
+  $("suivant").textContent = idx + 1 >= cartes.length ? "Voir le résultat" : "Carte suivante →";
+}
+
+function suivant() {
+  idx++;
+  if (idx >= cartes.length) return terminer();
+  afficher();
+}
+
+function terminer() {
+  log("fin", null, score, {sur: cartes.length});
+  ["carte","oui","non","suivant","btnRecueil","recueilPanel"].forEach(id => $(id).style.display = "none");
+  $("end").style.display = "block";
+  $("end").innerHTML = `<h2>Contrôle terminé !</h2><p>Score : <b>${score}/${cartes.length}</b></p>
+    <button class="action" onclick="location.reload()">Rejouer</button>`;
+}
+
+$("oui").onclick = () => repondre(true);
+$("non").onclick = () => repondre(false);
+$("suivant").onclick = suivant;
+$("btnRecueil").onclick = afficherRecueil;
+
+charger();
+</script>
+</body>
+</html>

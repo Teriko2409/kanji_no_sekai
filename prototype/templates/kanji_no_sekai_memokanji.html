@@ -1,153 +1,299 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MemoKanji</title>
-<style>
-  .button_retour { padding:10px 20px; font-size:16px; background-color:mediumvioletred; color:white;
-                   border:none; border-radius:5px; cursor:pointer; }
-  :root { --ink:#2b2b2b; --paper:#faf6ee; --accent:#c8402f; --ok:#3a8a4f; }
-  * { box-sizing: border-box; }
-  body { font-family: system-ui, "Noto Sans CJK JP", "Yu Gothic", sans-serif; margin:0; padding:16px;
-         background:var(--paper); color:var(--ink); max-width:560px; margin-inline:auto; }
-  header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-  #stats { font-variant-numeric: tabular-nums; margin-bottom:12px; }
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MemoKanji</title>
+    <style>
+        .button_retour {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: mediumvioletred;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-  #grille { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; perspective:800px; }
-  .carte { aspect-ratio: 4/3; position:relative; cursor:pointer; border:0; background:none; padding:0;
-           transform-style:preserve-3d; transition:transform .35s; }
-  .carte.retournee, .carte.trouvee { transform:rotateY(180deg); }
-  .face { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-          border:2px solid var(--ink); border-radius:12px; backface-visibility:hidden;
-          text-align:center; padding:6px; }
-  .dos { background:var(--accent); color:#fff; font-size:2rem; }
-  .avant { transform:rotateY(180deg); background:#fff; font-size:2.4rem; }
-  .carte.trouvee .avant { background:#e6f4ea; border-color:var(--ok); }
+        :root {
+            --ink: #2b2b2b;
+            --paper: #faf6ee;
+            --accent: #c8402f;
+            --ok: #3a8a4f;
+        }
 
-  #fin { display:none; background:#fff; border:2px solid var(--ink); border-radius:12px; padding:16px; margin-top:16px; }
-  #fin .gagnes { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
-  #fin .gagnes span { font-size:1.8rem; border:2px solid var(--ok); border-radius:8px; padding:2px 10px; background:#e6f4ea; }
-  button.action { font-size:1rem; padding:10px 16px; border:2px solid var(--ink); background:var(--ink);
-                  color:#fff; border-radius:10px; cursor:pointer; }
-</style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, "Noto Sans CJK JP", "Yu Gothic", sans-serif;
+            margin: 0;
+            padding: 16px;
+            background: var(--paper);
+            color: var(--ink);
+            max-width: 560px;
+            margin-inline: auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        #stats {
+            font-variant-numeric: tabular-nums;
+            margin-bottom: 12px;
+        }
+
+        #table {
+            display: grid;
+            grid-template-columns:repeat(4, 1fr);
+            gap: 10px;
+            perspective: 800px;
+        }
+
+        .carte {
+            aspect-ratio: 4/3;
+            position: relative;
+            cursor: pointer;
+            border: 0;
+            background: none;
+            padding: 0;
+            transform-style: preserve-3d;
+            transition: transform .35s;
+        }
+
+        .carte.retournee, .carte.trouvee {
+            transform: rotateY(180deg);
+        }
+
+        .face {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--ink);
+            border-radius: 12px;
+            backface-visibility: hidden;
+            text-align: center;
+            padding: 6px;
+        }
+
+        .dos {
+            background: var(--accent);
+            color: #fff;
+            font-size: 2rem;
+        }
+
+        .avant {
+            transform: rotateY(180deg);
+            background: #fff;
+            font-size: 2.4rem;
+        }
+
+        .carte.trouvee .avant {
+            background: #e6f4ea;
+            border-color: var(--ok);
+        }
+
+        #end {
+            display: none;
+            background: #fff;
+            border: 2px solid var(--ink);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        #end .win {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        #end .win span {
+            font-size: 1.8rem;
+            border: 2px solid var(--ok);
+            border-radius: 8px;
+            padding: 2px 10px;
+            background: #e6f4ea;
+        }
+
+        button.action {
+            font-size: 1rem;
+            padding: 10px 16px;
+            border: 2px solid var(--ink);
+            background: var(--ink);
+            color: #fff;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 <button class="button_retour" onclick="location.href='/choice_game_distinction'">Back</button>
 <header>
-  <strong>MemoKanji</strong>
-  <span>ID : <span id="participant">{{ player_id }}</span></span>
+    <strong>MemoKanji</strong>
+    <div>
+        <span>ID : <span id="player_id">{{ player_id }}</span></span> |
+        <span>Level : <span id="level">{{ level }}</span></span>
+    </div>
 </header>
 
 <div id="stats">
-  組 : <span id="nbPaires">0</span>/<span id="nbPairesTotal">8</span><br>
-  間違い : <span id="nbErreurs">0</span><br>
-  時間 : <span id="temps">0</span> 秒
+    組 : <span id="nbPaires">0</span>/<span id="nbPairesTotal">8</span><br>
+    間違い : <span id="nbErreurs">0</span><br>
+    時間 : <span id="temps">0</span> 秒
 </div>
-<div id="grille"></div>
+<div id="table"></div>
 
-<div id="fin">
-  <h2>成功 !🎉</h2>
-  <div id="resume"></div>
-  <p>新</p>
-  <div class="gagnes" id="gagnes"></div>
-  <button class="action" onclick="charger()">Rejouer</button>
+<div id="end">
+    <h2>成功 !🎉</h2>
+    <div id="resume"></div>
+    <p>新</p>
+    <div class="win" id="win_id"></div>
+    <button class="action" onclick="charger()">やり直す</button>
 </div>
 
 <script>
-// ============ ÉTAT ============
-let tousLesKanjis = [];
-let premiere = null, verrou = false;
-let paires = 0, erreurs = 0, debut = 0, chrono = null, kanjisPartie = [];
+    // ============VARIABLES============
+    let kanji_on_carte = [];
+    let premiere = null, verrou = false;
+    let paires = 0, erreurs = 0, debut = 0, chrono = null;
 
-// ============ CHARGEMENT DES DONNÉES ============
-async function charger() {
-    try {
+    // ============ CARTES SETTING============
+    async function charger() {
         const reponse = await fetch("/memokanji_data");
-        if (!reponse.ok) throw new Error("Erreur serveur lors du chargement des kanjis");
-        tousLesKanjis = await reponse.json();
-        if (!Array.isArray(tousLesKanjis) || tousLesKanjis.length === 0) throw new Error("Liste vide");
-
+        if (!reponse.ok);
+        kanji_on_carte = await reponse.json();
         nouvellePartie();
-    } catch (e) {
-        console.error(e);
+
     }
+
+    // ============ PARTIE ============
+    function nouvellePartie() {
+
+        clearInterval(chrono);
+        paires = 0;
+        erreurs = 0;
+        premiere = null;
+        verrou = false;
+
+        document.getElementById("end").style.display = "none";
+
+
+        const nbPairesTotal = Math.floor(kanji_on_carte.length / 2);
+        document.getElementById("nbPairesTotal").textContent = nbPairesTotal;
+        majStats(0);
+
+
+        const cartesMelangees = [...kanji_on_carte];
+        for (let i = cartesMelangees.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [cartesMelangees[i], cartesMelangees[j]] = [cartesMelangees[j], cartesMelangees[i]];
+        }
+
+        const grille = document.getElementById("table");
+        grille.innerHTML = "";
+
+        const fragment = document.createDocumentFragment();
+
+        cartesMelangees.forEach((ch) => {
+            const carte = document.createElement("button");
+            carte.className = "carte";
+            carte.dataset.id = ch;
+            carte.innerHTML = `<div class="face dos">後</div><div class="face avant"></div>`;
+            carte.querySelector(".avant").textContent = ch;
+            carte.addEventListener("click", () => cliquer(carte));
+            fragment.appendChild(carte);
+        });
+
+        grille.appendChild(fragment);
+
+
+        debut = Date.now();
+        chrono = setInterval(() => {
+            majStats(Math.round((Date.now() - debut) / 1000));
+        }, 500);
+    }
+
+    function cliquer(carte) {
+        if (verrou || carte === premiere || carte.classList.contains("trouvee")) return;
+        carte.classList.add("retournee");
+
+        if (!premiere) {
+            premiere = carte;
+            return;
+        }
+
+        if (premiere.dataset.id === carte.dataset.id) {
+            premiere.classList.add("trouvee");
+            carte.classList.add("trouvee");
+
+            premiere = null;
+            paires++;
+            majStats();
+            if (paires === kanji_on_carte.length / 2) finir();
+        } else {
+            erreurs++;
+            majStats();
+
+            verrou = true;
+            const a = premiere, b = carte;
+            setTimeout(() => {
+                a.classList.remove("retournee");
+                b.classList.remove("retournee");
+                verrou = false;
+            }, 900);
+            premiere = null;
+        }
+    }
+
+    function majStats(secondes) {
+        document.getElementById("nbPaires").textContent = paires;
+        document.getElementById("nbErreurs").textContent = erreurs;
+        if (secondes !== undefined) document.getElementById("temps").textContent = secondes;
+    }
+
+    async function finir() {
+    clearInterval(chrono);
+    const s = Math.round((Date.now() - debut) / 1000);
+    majStats(s);
+    document.getElementById("resume").textContent = `時間 : ${s}秒 · 間違い : ${erreurs}`;
+
+    const box = document.getElementById("win_id");
+    box.innerHTML = "";
+
+    const kanjisUniques = [...new Set(kanji_on_carte)];
+
+    kanjisUniques.forEach(ch => {
+        const sp = document.createElement("span");
+        sp.textContent = ch;
+        box.appendChild(sp);
+    });
+
+    document.getElementById("end").style.display = "block";
+
+    try {
+        await fetch('/update_kanjis', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ kanjis: kanjisUniques })
+        });
+    } catch (err) {
+        console.error("Erreur d'envoi des kanjis :", err);
+    }
+
 }
 
-// ============ PARTIE ============
-function nouvellePartie() {
-  clearInterval(chrono);
-  paires = 0; erreurs = 0; premiere = null; verrou = false;
-  document.getElementById("fin").style.display = "none";
-
-  const nbPairesTotal = tousLesKanjis.length / 2;
-  document.getElementById("nbPairesTotal").textContent = nbPairesTotal;
-  majStats(0);
-
-  kanjisPartie = [...new Set(tousLesKanjis)];
-
-
-  const cartesMelangees = [...tousLesKanjis];
-  for (let i = cartesMelangees.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [cartesMelangees[i], cartesMelangees[j]] = [cartesMelangees[j], cartesMelangees[i]];
-  }
-
-  const grille = document.getElementById("grille");
-  grille.innerHTML = "";
-  cartesMelangees.forEach(ch => {
-    const el = document.createElement("button");
-    el.className = "carte";
-    el.dataset.id = ch;
-    el.innerHTML = `<div class="face dos">後</div><div class="face avant"></div>`;
-    el.querySelector(".avant").textContent = ch;
-    el.addEventListener("click", () => cliquer(el));
-    grille.appendChild(el);
-  });
-
-  debut = Date.now();
-  chrono = setInterval(() => majStats(Math.round((Date.now() - debut) / 1000)), 500);
-}
-
-function cliquer(el) {
-  if (verrou || el === premiere || el.classList.contains("trouvee")) return;
-  el.classList.add("retournee");
-
-  if (!premiere) { premiere = el; return; }
-
-  if (premiere.dataset.id === el.dataset.id) {
-    premiere.classList.add("trouvee"); el.classList.add("trouvee");
-
-    premiere = null; paires++; majStats();
-    if (paires === tousLesKanjis.length / 2) finir();
-  } else {
-    erreurs++; majStats();
-
-    verrou = true;
-    const a = premiere, b = el;
-    setTimeout(() => { a.classList.remove("retournee"); b.classList.remove("retournee"); verrou = false; }, 900);
-    premiere = null;
-  }
-}
-
-function majStats(secondes) {
-  document.getElementById("nbPaires").textContent = paires;
-  document.getElementById("nbErreurs").textContent = erreurs;
-  if (secondes !== undefined) document.getElementById("temps").textContent = secondes;
-}
-
-function finir() {
-  clearInterval(chrono);
-  const s = Math.round((Date.now() - debut) / 1000);
-  majStats(s);
-  document.getElementById("resume").textContent = `時間 : ${s}秒 · 間違い : ${erreurs}`;
-  const box = document.getElementById("gagnes");
-  box.innerHTML = "";
-  kanjisPartie.forEach(ch => { const sp = document.createElement("span"); sp.textContent = ch; box.appendChild(sp); });
-  document.getElementById("fin").style.display = "block";
-}
-
-charger();
+    charger();
 </script>
 </body>
 </html>

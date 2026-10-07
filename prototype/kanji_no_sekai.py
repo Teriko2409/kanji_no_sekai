@@ -3,8 +3,8 @@ import time
 import random
 import threading
 from flask import Flask, jsonify, render_template, request, redirect, url_for, session
-from kanji_no_sekai_memokanji import memokanji, memokanji_data
-import mysql.connector
+from kanji_no_sekai_memokanji import *
+from kanji_no_sekai_paper import *
 from datetime import date, timedelta, datetime
 
 app = Flask(__name__)
@@ -18,11 +18,12 @@ def menu():
         level = request.form.get('level')
 
         if id_player:
-            print(f'Menu')
-            print(f"Player ID : {id_player}")
-            print(f"Level: {level}")
             session['player_id'] = id_player
             session['level'] = level
+
+            print('Menu : Kanji no Sekai')
+            print(f"Player ID : {id_player}")
+            print(f"Level: {level}")
 
             return redirect(url_for('category_menu'))
 
@@ -51,6 +52,21 @@ def memokanji_data_launcher():
     return memokanji_data()
 
 
+@app.route("/update_kanjis", methods=["POST"])
+def update_kanjis_launcher():
+    data = request.get_json()
+    kanji_list = data.get("kanjis")
+    player_id = session.get("player_id")
+
+    update_memokanji(player_id, kanji_list)
+
+    return jsonify({"status": "success"})
+
+
+@app.route('/choice_game_meaning')
+def choice_game_meaning():
+    return render_template("kanji_no_sekai_game_choice_meaning.html", player_id=session.get('player_id'),
+                           level=session.get('level'))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
