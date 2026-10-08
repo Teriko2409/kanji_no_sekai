@@ -4,7 +4,7 @@ Prototype for January
 
 Kanji Reading : 
 
-- Reading the text Please 🤔
+- Kanji call 🤔
 
 - Take a guess, my little kanji 🤔
 
@@ -13,6 +13,8 @@ Kanji Writing :
 - Kanji-sabakku 🤔
 
 - Kanji Craft ❌
+
+- Kanji BOMBU 🤔
 
 Kanji Meaning : 
 
