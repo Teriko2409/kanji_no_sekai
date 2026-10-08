@@ -6,15 +6,13 @@ Kanji Reading :
 
 - Kanji call 🤔
 
-- Take a guess, my little kanji 🤔
+- Kanji BOMBU 🤔
 
 Kanji Writing : 
 
-- Kanji-sabakku 🤔
+- Kanji Sabakku 🤔
 
 - Kanji Craft ❌
-
-- Kanji BOMBU 🤔
 
 Kanji Meaning : 
 
