@@ -2,8 +2,8 @@ import json
 import random
 from flask import Blueprint, render_template, redirect, url_for, session, jsonify, request
 
+memokanji = Blueprint('memokanji', __name__)
 
-memokanji= Blueprint('memokanji', __name__)
 
 def download_json_data(level_jlpt, json_file_path="memokanji.json"):
     nombre = 4
@@ -51,7 +51,6 @@ def update_memokanji(player_id, kanji_list):
         json.dump(players, f, ensure_ascii=False, indent=2)
 
 
-
 @memokanji.route('/memokanji')
 def launcher():
     if 'player_id' not in session:
@@ -73,8 +72,23 @@ def data_launcher():
         return jsonify([])
 
 
+@memokanji.route('/memokanji_player_data')
+def player_data_launcher():
+
+    current_player_id = session['player_id']
+
+    with open('players_data.json', 'r', encoding='utf-8') as file:
+        players = json.load(file)
+
+    for player in players:
+        if player.get('player_id') == current_player_id:
+            kanjis = player.get('kanjis', [])
+
+            return jsonify(kanjis)
+
+
 @memokanji.route("/update_kanjis", methods=["POST"])
-def update_kanjis_launcher():
+def update_kanjis():
     data = request.get_json()
     kanji_list = data.get("kanjis", [])
     player_id = session.get("player_id")

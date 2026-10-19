@@ -13,7 +13,6 @@ from kanji_no_sekai_memokanji import memokanji
 from kanji_no_sekai_kankey import kankey
 from kanji_no_sekai_kanter import kanter
 
-
 def read_session(chemin_fichier) -> str:
 
     try:
@@ -21,7 +20,7 @@ def read_session(chemin_fichier) -> str:
             first_line = f.readline().strip()
             return first_line
     except FileNotFoundError:
-        print(f"Error : '{chemin_fichier}'")
+        print(f"Error File Not Found: '{chemin_fichier}'")
         return ""
     except Exception as error_message:
         print(f"Error: {error_message}")
