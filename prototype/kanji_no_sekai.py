@@ -1,15 +1,31 @@
 import json
-import time
 import random
 import threading
-from flask import Flask, jsonify, render_template, request, redirect, url_for, session
-from kanji_no_sekai_memokanji import *
+from flask import Flask, render_template, request, redirect, url_for, session
 from kanji_no_sekai_paper import *
+from kanji_no_sekai_memokanji import memokanji
 from datetime import date, timedelta, datetime
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'ndio3290fn0r043ç%)=BNde'
+def read_session(chemin_fichier) -> str:
 
+    try:
+        with open(chemin_fichier, "r", encoding="utf-8") as f:
+            premiere_ligne = f.readline().strip()
+            return premiere_ligne
+    except FileNotFoundError:
+        print(f"Erreur : Le fichier '{chemin_fichier}' est introuvable.")
+        return ""
+    except Exception as e:
+        print(f"Erreur lors de la lecture du fichier : {e}")
+        return ""
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = read_session("sessionKey")
+
+
+#Routes for minigames + KanjiDex
+
+app.register_blueprint(memokanji)
 
 @app.route('/', methods=['GET', 'POST'])
 def menu():
@@ -32,41 +48,39 @@ def menu():
 
 @app.route('/category')
 def category_menu():
-    return render_template("kanji_no_sekai_menu_category.html", player_id=session.get('player_id'),
+    return render_template("kanji_no_sekai_menu_category.html",
+                           player_id=session.get('player_id'),
                            level=session.get('level'))
 
-
-@app.route('/choice_game_distinction')
-def choice_game_distinction():
-    return render_template("kanji_no_sekai_game_choice_distinction.html", player_id=session.get('player_id'),
+@app.route('/choice_game_reading')
+def choice_game_reading():
+    return render_template("kanji_no_sekai_game_choice_reading.html",
+                           player_id=session.get('player_id'),
                            level=session.get('level'))
-
-
-@app.route('/memokanji')
-def memokanji_launcher():
-    return memokanji()
-
-
-@app.route('/memokanji_data')
-def memokanji_data_launcher():
-    return memokanji_data()
-
-
-@app.route("/update_kanjis", methods=["POST"])
-def update_kanjis_launcher():
-    data = request.get_json()
-    kanji_list = data.get("kanjis")
-    player_id = session.get("player_id")
-
-    update_memokanji(player_id, kanji_list)
-
-    return jsonify({"status": "success"})
-
+@app.route('/choice_game_writing')
+def choice_game_writing():
+    return render_template("kanji_no_sekai_game_choice_writing.html",
+                           player_id=session.get('player_id'),
+                           level=session.get('level'))
 
 @app.route('/choice_game_meaning')
 def choice_game_meaning():
-    return render_template("kanji_no_sekai_game_choice_meaning.html", player_id=session.get('player_id'),
+    return render_template("kanji_no_sekai_game_choice_meaning.html",
+                           player_id=session.get('player_id'),
                            level=session.get('level'))
+
+@app.route('/choice_game_distinction')
+def choice_game_distinction():
+    return render_template("kanji_no_sekai_game_choice_distinction.html",
+                           player_id=session.get('player_id'),
+                           level=session.get('level'))
+
+@app.route('/choice_game_usage')
+def choice_game_usage():
+    return render_template("kanji_no_sekai_game_choice_usage.html",
+                           player_id=session.get('player_id'),
+                           level=session.get('level'))
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

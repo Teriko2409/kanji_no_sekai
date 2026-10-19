@@ -73,8 +73,9 @@
 <p class="player-info">Player : ID {{ session.get('player_id') }}</p>
 <p class="player-info">JLPT : {{ session.get('level') }}</p>
 
-<a class="Category" href="{{ url_for('memokanji_launcher') }}">MemoKanji<small>Find matching pairs of kanji, but watch
+<a class="Category" href="{{ url_for('memokanji.launcher') }}">MemoKanji<small>Find matching pairs of kanji, but watch
     out for similar ones!</small></a>
+<a class="Category off">KanKey<small>Soon</small></a>
 
 
 </body>

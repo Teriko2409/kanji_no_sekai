@@ -163,6 +163,8 @@
 <script>
     // ============VARIABLES============
     let kanji_on_carte = [];
+    let kanji_already_player = [];
+    let time_error_to_watch = 1200;
     let premiere = null, verrou = false;
     let paires = 0, erreurs = 0, debut = 0, chrono = null;
 
@@ -172,7 +174,6 @@
         if (!reponse.ok);
         kanji_on_carte = await reponse.json();
         nouvellePartie();
-
     }
 
     // ============ PARTIE ============
@@ -249,7 +250,7 @@
                 a.classList.remove("retournee");
                 b.classList.remove("retournee");
                 verrou = false;
-            }, 900);
+            }, time_error_to_watch );
             premiere = null;
         }
     }
@@ -270,6 +271,7 @@
     box.innerHTML = "";
 
     const kanjisUniques = [...new Set(kanji_on_carte)];
+
 
     kanjisUniques.forEach(ch => {
         const sp = document.createElement("span");
