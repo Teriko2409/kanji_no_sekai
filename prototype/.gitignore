@@ -2,4 +2,4 @@
 *.pyc
 .venv/
 .idea/
-players_data.json/
+players_data.json
