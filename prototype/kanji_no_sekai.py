@@ -1,31 +1,56 @@
 import json
 import random
 import threading
-from flask import Flask, render_template, request, redirect, url_for, session
-from kanji_no_sekai_paper import *
-from kanji_no_sekai_memokanji import memokanji
+from flask import Blueprint,Flask, render_template, request, redirect, url_for, session
 from datetime import date, timedelta, datetime
+from kanji_no_sekai_fun import fun
+from kanji_no_sekai_bombu import bombu
+from kanji_no_sekai_sabakKan import sabakkan
+from kanji_no_sekai_ji_KanRun import kanRun as kanrun
+from kanji_no_sekai_infinite import infinite
+from kanji_no_sekai_paper import paper
+from kanji_no_sekai_memokanji import memokanji
+from kanji_no_sekai_kankey import kankey
+from kanji_no_sekai_kanter import kanter
+
 
 def read_session(chemin_fichier) -> str:
 
     try:
         with open(chemin_fichier, "r", encoding="utf-8") as f:
-            premiere_ligne = f.readline().strip()
-            return premiere_ligne
+            first_line = f.readline().strip()
+            return first_line
     except FileNotFoundError:
-        print(f"Erreur : Le fichier '{chemin_fichier}' est introuvable.")
+        print(f"Error : '{chemin_fichier}'")
         return ""
-    except Exception as e:
-        print(f"Erreur lors de la lecture du fichier : {e}")
+    except Exception as error_message:
+        print(f"Error: {error_message}")
         return ""
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = read_session("sessionKey")
 
 
-#Routes for minigames + KanjiDex
+#Routes for minigames
+
+app.register_blueprint(fun)
+
+app.register_blueprint(bombu)
+
+app.register_blueprint(sabakkan)
+
+app.register_blueprint(kanrun)
+
+app.register_blueprint(infinite)
+
+app.register_blueprint(paper)
 
 app.register_blueprint(memokanji)
+
+app.register_blueprint(kankey)
+
+app.register_blueprint(kanter)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def menu():
