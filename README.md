@@ -4,15 +4,15 @@ Prototype for January
 
 Kanji Reading : 
 
-- Kanji call 🤔
+- Fun Kanji Beat🤔
 
-- Kanji BOMBU 🤔
+- Kan-BOMBU 🤔
 
 Kanji Writing : 
 
-- Kanji Sabakku 🤔
+- SabakKan ❌
 
-- Kanji Craft ❌
+- Ji-Craft ❌
 
 Kanji Meaning : 
 
@@ -28,15 +28,12 @@ Kanji Distinction :
 
 Kanji Usage : 
 
-- Kanji Counter ❌
-
-
+- Kanter ❌
 
 
 Un système de recompense : 
 
 - Kanjidex ❌
-- ie    ❌
 
 
 MemoKanji
