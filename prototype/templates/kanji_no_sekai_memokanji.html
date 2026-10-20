@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MemoKanji</title>
@@ -50,7 +53,7 @@
 
         #table {
             display: grid;
-            grid-template-columns:repeat(4, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 10px;
             perspective: 800px;
         }
@@ -93,6 +96,8 @@
             transform: rotateY(180deg);
             background: #fff;
             font-size: 2.4rem;
+            font-family: "Klee One", sans-serif;
+            font-weight: 600;
         }
 
         .carte.trouvee .avant {
@@ -122,6 +127,8 @@
             border-radius: 8px;
             padding: 2px 10px;
             background: #e6f4ea;
+            font-family: "Klee One", sans-serif;
+            font-weight: 600;
         }
 
         button.action {
@@ -147,8 +154,7 @@
 
 <div id="stats">
     組 : <span id="nbPaires">0</span>/<span id="nbPairesTotal">8</span><br>
-    間違い : <span id="nbErreurs">0</span><br>
-    時間 : <span id="temps">0</span> 秒
+    間違い : <span id="nbErreurs">0</span>
 </div>
 <div id="table"></div>
 
@@ -166,20 +172,21 @@
     let kanji_already_player = [];
     let time_error_to_watch = 1200;
     let premiere = null, verrou = false;
-    let paires = 0, erreurs = 0, debut = 0, chrono = null;
+    let paires = 0, erreurs = 0;
 
     // ============ CARTES SETTING============
     async function charger() {
-        const reponse = await fetch("/memokanji_data");
-        if (!reponse.ok);
-        kanji_on_carte = await reponse.json();
+        const reponse_on_carte = await fetch("/memokanji_data");
+        if (!reponse_on_carte.ok) return;
+        kanji_on_carte = await reponse_on_carte.json();
+        const reponse_from_player = await fetch("/memokanji_data");
+        if (!reponse_from_player.ok) return;
+        kanji_already_player = await reponse_from_player.json();
         nouvellePartie();
     }
 
     // ============ PARTIE ============
     function nouvellePartie() {
-
-        clearInterval(chrono);
         paires = 0;
         erreurs = 0;
         premiere = null;
@@ -187,11 +194,9 @@
 
         document.getElementById("end").style.display = "none";
 
-
         const nbPairesTotal = Math.floor(kanji_on_carte.length / 2);
         document.getElementById("nbPairesTotal").textContent = nbPairesTotal;
-        majStats(0);
-
+        majStats();
 
         const cartesMelangees = [...kanji_on_carte];
         for (let i = cartesMelangees.length - 1; i > 0; i--) {
@@ -215,12 +220,6 @@
         });
 
         grille.appendChild(fragment);
-
-
-        debut = Date.now();
-        chrono = setInterval(() => {
-            majStats(Math.round((Date.now() - debut) / 1000));
-        }, 500);
     }
 
     function cliquer(carte) {
@@ -250,50 +249,52 @@
                 a.classList.remove("retournee");
                 b.classList.remove("retournee");
                 verrou = false;
-            }, time_error_to_watch );
+            }, time_error_to_watch);
             premiere = null;
         }
     }
 
-    function majStats(secondes) {
+    function majStats() {
         document.getElementById("nbPaires").textContent = paires;
         document.getElementById("nbErreurs").textContent = erreurs;
-        if (secondes !== undefined) document.getElementById("temps").textContent = secondes;
     }
 
     async function finir() {
-    clearInterval(chrono);
-    const s = Math.round((Date.now() - debut) / 1000);
-    majStats(s);
-    document.getElementById("resume").textContent = `時間 : ${s}秒 · 間違い : ${erreurs}`;
+        document.getElementById("resume").textContent = `間違い : ${erreurs}`;
 
-    const box = document.getElementById("win_id");
-    box.innerHTML = "";
-
-    const kanjisUniques = [...new Set(kanji_on_carte)];
+        const box = document.getElementById("win_id");
+        box.innerHTML = "";
 
 
-    kanjisUniques.forEach(ch => {
-        const sp = document.createElement("span");
-        sp.textContent = ch;
-        box.appendChild(sp);
-    });
+        const kanjisUniques = [...new Set(kanji_on_carte)];
 
-    document.getElementById("end").style.display = "block";
 
-    try {
-        await fetch('/update_kanjis', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ kanjis: kanjisUniques })
+        const kanjisNouveaux = kanjisUniques.filter(kanji => !kanji_already_player.includes(kanji));
+
+
+        kanjisNouveaux.forEach(ch => {
+            const sp = document.createElement("span");
+            sp.textContent = ch;
+            box.appendChild(sp);
         });
-    } catch (err) {
-        console.error("Erreur d'envoi des kanjis :", err);
-    }
 
-}
+        document.getElementById("end").style.display = "block";
+
+
+        if (kanjisNouveaux.length > 0) {
+            try {
+                await fetch('/update_kanjis', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ kanjis: kanjisNouveaux })
+                });
+            } catch (err) {
+                console.error("Erreur d'envoi des kanjis :", err);
+            }
+        }
+    }
 
     charger();
 </script>
