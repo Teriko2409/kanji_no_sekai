@@ -76,12 +76,12 @@ def data_launcher():
 def player_data_launcher():
 
     current_player_id = session['player_id']
-
+    current_player_id_int = int(current_player_id)
     with open('players_data.json', 'r', encoding='utf-8') as file:
         players = json.load(file)
 
     for player in players:
-        if player.get('player_id') == current_player_id:
+        if player.get('player_id') == current_player_id_int:
             kanjis = player.get('kanjis', [])
 
             return jsonify(kanjis)
