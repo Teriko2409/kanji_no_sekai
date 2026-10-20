@@ -12,7 +12,7 @@ Kanji Writing :
 
 - SabakKan ❌
 
-- Ji-Craft ❌
+- Ji-KanRun ❌
 
 Kanji Meaning : 
 
