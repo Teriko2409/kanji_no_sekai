@@ -6,7 +6,7 @@ from datetime import date, timedelta, datetime
 from kanji_no_sekai_fun import fun
 from kanji_no_sekai_bombu import bombu
 from kanji_no_sekai_sabakKan import sabakkan
-from kanji_no_sekai_ji_KanRun import kanRun as kanrun
+from kanji_no_sekai_ji_KanRun import kanrun
 from kanji_no_sekai_infinite import infinite
 from kanji_no_sekai_paper import paper
 from kanji_no_sekai_memokanji import memokanji
@@ -57,6 +57,7 @@ def menu():
         id_player = request.form.get('id_player')
         level = request.form.get('level')
 
+
         if id_player:
             session['player_id'] = id_player
             session['level'] = level
@@ -105,6 +106,6 @@ def choice_game_usage():
                            player_id=session.get('player_id'),
                            level=session.get('level'))
 
-
 if __name__ == '__main__':
+
     app.run(host='0.0.0.0', port=5000, debug=True)
