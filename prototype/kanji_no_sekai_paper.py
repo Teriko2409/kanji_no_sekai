@@ -60,9 +60,10 @@ def player_data_launcher():
         return jsonify(kanjis)
     except (FileNotFoundError, ValueError):
         return jsonify([])
+
 def download_json_data_paper(level_jlpt, json_file_path="paperkanji.json"):
 
-    number_kanji = 1
+    number_kanji = 10
     level_jlpt_int = int(level_jlpt)
 
     false_kanji_number = random.randint(0, (number_kanji - 1))
@@ -126,15 +127,6 @@ def download_json_data_paper(level_jlpt, json_file_path="paperkanji.json"):
 
 
         random.shuffle(final_game_cards)
-        for i, card in enumerate(final_game_cards, 1):
-            print(f"--- Carte {i} ---")
-            print(f"Profile (Kanji) : {card.get('profile')}")
-            print(f"Kunyomi       : {card.get('kunyomi')}")
-            print(f"Onyomi        : {card.get('onyomi')}")
-            print(f"Radical       : {card.get('radical')}")
-            print(f"Correct       : {card.get('correct')}")
-            print(f"Vocabulary    : {card.get('vocabulary')}")
-            print("=" * 40)
 
 
         return final_game_cards

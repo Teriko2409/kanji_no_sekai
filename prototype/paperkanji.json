@@ -1,302 +1,702 @@
 [
   {
-    "kanji": "月",
+    "kanji": "水",
     "level": 5,
-    "onyomi": "ゲツ, ガツ",
-    "kunyomi": "つき",
-    "radical": "月 (Moon)",
-    "vocabulary": [
-      { "word": "月曜日", "reading": "げつようび", "english": "Monday" },
-      { "word": "一月", "reading": "いちがつ", "english": "January" },
-      { "word": "今月", "reading": "こんげつ", "english": "This month" }
-    ]
+    "profile": "水",
+    "profile_f": "木",
+    "onyomi": "スイ",
+    "onyomi_f": "カイ",
+    "kunyomi": "みず",
+    "kunyomi_f": "き",
+    "radical": "水 (Water)",
+    "radical_f": "火 (Fire)",
+    "vocabulary": [{ "reading": "みず" }, { "reading": "すいえい" }, { "reading": "はなみず" }],
+    "vocabulary_f": [{ "reading": "き" }, { "reading": "かいしゃ" }, { "reading": "やまい" }]
   },
   {
     "kanji": "火",
     "level": 5,
+    "profile": "火",
+    "profile_f": "水",
     "onyomi": "カ",
-    "kunyomi": "ひ, -び",
+    "onyomi_f": "スイ",
+    "kunyomi": "ひ, ほ",
+    "kunyomi_f": "み",
     "radical": "火 (Fire)",
-    "vocabulary": [
-      { "word": "火曜日", "reading": "かようび", "english": "Tuesday" },
-      { "word": "花火", "reading": "はなび", "english": "Fireworks" },
-      { "word": "火山", "reading": "かざん", "english": "Volcano" }
-    ]
+    "radical_f": "水 (Water)",
+    "vocabulary": [{ "reading": "ひ" }, { "reading": "かざん" }, { "reading": "はなび" }],
+    "vocabulary_f": [{ "reading": "みず" }, { "reading": "すいようび" }, { "reading": "やま" }]
+  },
+  {
+    "kanji": "車",
+    "level": 5,
+    "profile": "車",
+    "profile_f": "東",
+    "onyomi": "シャ",
+    "onyomi_f": "トウ",
+    "kunyomi": "くるま",
+    "kunyomi_f": "ひがし",
+    "radical": "車 (Car)",
+    "radical_f": "金 (Gold)",
+    "vocabulary": [{ "reading": "くるま" }, { "reading": "でんしゃ" }, { "reading": "じどうしゃ" }],
+    "vocabulary_f": [{ "reading": "ひがし" }, { "reading": "とうきょう" }, { "reading": "かね" }]
   },
   {
     "kanji": "金",
     "level": 5,
+    "profile": "金",
+    "profile_f": "全",
     "onyomi": "キン, コン",
-    "kunyomi": "かね, かね-",
-    "radical": "金 (Gold / Metal)",
-    "vocabulary": [
-      { "word": "金曜日", "reading": "きんようび", "english": "Friday" },
-      { "word": "お金", "reading": "おかね", "english": "Money" },
-      { "word": "料金", "reading": "りょうきん", "english": "Fee / Charge" }
-    ]
+    "onyomi_f": "ゼン, テン",
+    "kunyomi": "かね, かな",
+    "kunyomi_f": "すべて",
+    "radical": "金 (Gold)",
+    "radical_f": "土 (Earth)",
+    "vocabulary": [{ "reading": "かね" }, { "reading": "きんようび" }, { "reading": "おかね" }],
+    "vocabulary_f": [{ "reading": "すべて" }, { "reading": "ぜんぶ" }, { "reading": "つち" }]
+  },
+  {
+    "kanji": "本",
+    "level": 5,
+    "profile": "本",
+    "profile_f": "木",
+    "onyomi": "ホン",
+    "onyomi_f": "モク",
+    "kunyomi": "もと",
+    "kunyomi_f": "き",
+    "radical": "木 (Tree)",
+    "radical_f": "日 (Sun)",
+    "vocabulary": [{ "reading": "ほん" }, { "reading": "にほん" }, { "reading": "ほんや" }],
+    "vocabulary_f": [{ "reading": "き" }, { "reading": "はやし" }, { "reading": "もり" }]
   },
   {
     "kanji": "土",
     "level": 5,
+    "profile": "土",
+    "profile_f": "士",
     "onyomi": "ド, ト",
+    "onyomi_f": "シ",
     "kunyomi": "つち",
-    "radical": "土 (Soil)",
-    "vocabulary": [
-      { "word": "土曜日", "reading": "どようび", "english": "Saturday" },
-      { "word": "土", "reading": "つち", "english": "Soil / Earth" },
-      { "word": "土地", "reading": "とち", "english": "Land / Plot" }
-    ]
+    "kunyomi_f": "さむらい",
+    "radical": "土 (Earth)",
+    "radical_f": "士 (Samurai)",
+    "vocabulary": [{ "reading": "つち" }, { "reading": "どようび" }, { "reading": "おみやげ" }],
+    "vocabulary_f": [{ "reading": "ぶし" }, { "reading": "はかせ" }, { "reading": "し" }]
+  },
+  {
+    "kanji": "木",
+    "level": 5,
+    "profile": "木",
+    "profile_f": "本",
+    "onyomi": "モク, ボク",
+    "onyomi_f": "ホン",
+    "kunyomi": "き, こ",
+    "kunyomi_f": "もと",
+    "radical": "木 (Tree)",
+    "radical_f": "日 (Sun)",
+    "vocabulary": [{ "reading": "き" }, { "reading": "もくようび" }, { "reading": "たいぼく" }],
+    "vocabulary_f": [{ "reading": "ほん" }, { "reading": "にほん" }, { "reading": "もと" }]
+  },
+  {
+    "kanji": "大",
+    "level": 5,
+    "profile": "大",
+    "profile_f": "犬",
+    "onyomi": "ダイ, タイ",
+    "onyomi_f": "ケン",
+    "kunyomi": "おお, おおきい",
+    "kunyomi_f": "いぬ",
+    "radical": "大 (Big)",
+    "radical_f": "犬 (Dog)",
+    "vocabulary": [{ "reading": "おおきい" }, { "reading": "だいがく" }, { "reading": "たいせつ" }],
+    "vocabulary_f": [{ "reading": "いぬ" }, { "reading": "こいぬ" }, { "reading": "けん" }]
+  },
+  {
+    "kanji": "小",
+    "level": 5,
+    "profile": "小",
+    "profile_f": "少",
+    "onyomi": "ショウ",
+    "onyomi_f": "ショウ",
+    "kunyomi": "ちいさい, こ, お",
+    "kunyomi_f": "すくない, すこし",
+    "radical": "小 (Small)",
+    "radical_f": "小 (Small)",
+    "vocabulary": [{ "reading": "ちいさい" }, { "reading": "しょうがっこう" }, { "reading": "こがた" }],
+    "vocabulary_f": [{ "reading": "すくない" }, { "reading": "すこし" }, { "reading": "しょうじょ" }]
+  },
+  {
+    "kanji": "中",
+    "level": 5,
+    "profile": "中",
+    "profile_f": "申",
+    "onyomi": "チュウ",
+    "onyomi_f": "シン",
+    "kunyomi": "なか",
+    "kunyomi_f": "もうす",
+    "radical": "丨 (Line)",
+    "radical_f": "田 (Rice field)",
+    "vocabulary": [{ "reading": "なか" }, { "reading": "ちゅうごく" }, { "reading": "いちにちじゅう" }],
+    "vocabulary_f": [{ "reading": "もうす" }, { "reading": "しんせい" }, { "reading": "もうしこみ" }]
   },
   {
     "kanji": "山",
-    "level": 5,
+    "level": 4,
+    "profile": "山",
+    "profile_f": "川",
     "onyomi": "サン",
+    "onyomi_f": "セン",
     "kunyomi": "やま",
+    "kunyomi_f": "かわ",
     "radical": "山 (Mountain)",
-    "vocabulary": [
-      { "word": "富士山", "reading": "ふじさん", "english": "Mt. Fuji" },
-      { "word": "火山", "reading": "かざん", "english": "Volcano" },
-      { "word": "登山", "reading": "とざん", "english": "Mountain climbing" }
-    ]
+    "radical_f": "川 (River)",
+    "vocabulary": [{ "reading": "やま" }, { "reading": "ふじさん" }, { "reading": "やまみち" }],
+    "vocabulary_f": [{ "reading": "かわ" }, { "reading": "おおかわ" }, { "reading": "たなか" }]
   },
   {
-    "kanji": "走",
+    "kanji": "川",
     "level": 4,
-    "onyomi": "ソウ",
-    "kunyomi": "はし.る",
-    "radical": "走 (Run)",
-    "vocabulary": [
-      { "word": "走る", "reading": "はしる", "english": "To run" },
-      { "word": "走者", "reading": "そうしゃ", "english": "Runner" },
-      { "word": "脱走", "reading": "だっそう", "english": "Escape / Breakout" }
-    ]
+    "profile": "川",
+    "profile_f": "山",
+    "onyomi": "セン",
+    "onyomi_f": "サン",
+    "kunyomi": "かわ",
+    "kunyomi_f": "やま",
+    "radical": "川 (River)",
+    "radical_f": "山 (Mountain)",
+    "vocabulary": [{ "reading": "かわ" }, { "reading": "おがわ" }, { "reading": "さんかわ" }],
+    "vocabulary_f": [{ "reading": "やま" }, { "reading": "たかやま" }, { "reading": "あおやま" }]
   },
   {
-    "kanji": "建",
+    "kanji": "日",
     "level": 4,
-    "onyomi": "ケン, コン",
-    "kunyomi": "た.てる, た.つ",
-    "radical": "廴 (Long stride)",
-    "vocabulary": [
-      { "word": "建物", "reading": "たてもの", "english": "Building" },
-      { "word": "建設", "reading": "けんせつ", "english": "Construction" },
-      { "word": "建てる", "reading": "たてる", "english": "To build" }
-    ]
+    "profile": "日",
+    "profile_f": "目",
+    "onyomi": "ニチ, ジツ",
+    "onyomi_f": "モク, ボク",
+    "kunyomi": "ひ, か",
+    "kunyomi_f": "め",
+    "radical": "日 (Sun)",
+    "radical_f": "目 (Eye)",
+    "vocabulary": [{ "reading": "ひ" }, { "reading": "にちようび" }, { "reading": "きょう" }],
+    "vocabulary_f": [{ "reading": "め" }, { "reading": "もくじ" }, { "reading": "なみだ" }]
   },
   {
-    "kanji": "急",
+    "kanji": "雨",
     "level": 4,
-    "onyomi": "キュウ",
-    "kunyomi": "いそ.ぐ",
-    "radical": "心 (Heart)",
-    "vocabulary": [
-      { "word": "急ぐ", "reading": "いそぐ", "english": "To hurry" },
-      { "word": "急行", "reading": "きゅうこう", "english": "Express train" },
-      { "word": "急に", "reading": "きゅうに", "english": "Suddenly" }
-    ]
+    "profile": "雨",
+    "profile_f": "電",
+    "onyomi": "ウ",
+    "onyomi_f": "デン",
+    "kunyomi": "あめ, あま",
+    "kunyomi_f": "いなずま",
+    "radical": "雨 (Rain)",
+    "radical_f": "風 (Wind)",
+    "vocabulary": [{ "reading": "あめ" }, { "reading": "おおあめ" }, { "reading": "うてん" }],
+    "vocabulary_f": [{ "reading": "でんき" }, { "reading": "でんしゃ" }, { "reading": "かぜ" }]
   },
   {
-    "kanji": "特",
+    "kanji": "天",
     "level": 4,
-    "onyomi": "トク",
-    "kunyomi": "-",
-    "radical": "牛 (Cow)",
-    "vocabulary": [
-      { "word": "特別", "reading": "とくべつ", "english": "Special" },
-      { "word": "特に", "reading": "とくに", "english": "Especially" },
-      { "word": "特徴", "reading": "とくちょう", "english": "Feature / Characteristic" }
-    ]
+    "profile": "天",
+    "profile_f": "夫",
+    "onyomi": "テン",
+    "onyomi_f": "フ, フウ",
+    "kunyomi": "あまつ, あめ",
+    "kunyomi_f": "おっと",
+    "radical": "大 (Big)",
+    "radical_f": "大 (Big)",
+    "vocabulary": [{ "reading": "てんき" }, { "reading": "てんくう" }, { "reading": "てんし" }],
+    "vocabulary_f": [{ "reading": "おっと" }, { "reading": "ふうふ" }, { "reading": "じょうぶ" }]
   },
   {
-    "kanji": "問",
+    "kanji": "気",
     "level": 4,
-    "onyomi": "モン",
-    "kunyomi": "問.う, とん",
-    "radical": "口 (Mouth)",
-    "vocabulary": [
-      { "word": "問題", "reading": "もんだい", "english": "Problem / Question" },
-      { "word": "質問", "reading": "しつもん", "english": "Question" },
-      { "word": "訪問", "reading": "ほうもん", "english": "Visit" }
-    ]
+    "profile": "気",
+    "profile_f": "汽",
+    "onyomi": "キ, ケ",
+    "onyomi_f": "キ",
+    "kunyomi": "いき",
+    "kunyomi_f": "ゆげ",
+    "radical": "气 (Steam)",
+    "radical_f": "水 (Water)",
+    "vocabulary": [{ "reading": "げんき" }, { "reading": "てんき" }, { "reading": "きもち" }],
+    "vocabulary_f": [{ "reading": "きしゃ" }, { "reading": "きせん" }, { "reading": "ゆげ" }]
   },
   {
-    "kanji": "政",
+    "kanji": "月",
+    "level": 4,
+    "profile": "月",
+    "profile_f": "日",
+    "onyomi": "ゲツ, ガツ",
+    "onyomi_f": "ニチ, ジツ",
+    "kunyomi": "つき",
+    "kunyomi_f": "ひ",
+    "radical": "月 (Moon)",
+    "radical_f": "日 (Sun)",
+    "vocabulary": [{ "reading": "つき" }, { "reading": "げつようび" }, { "reading": "いちがつ" }],
+    "vocabulary_f": [{ "reading": "ひ" }, { "reading": "にちようび" }, { "reading": "きょう" }]
+  },
+  {
+    "kanji": "田",
+    "level": 4,
+    "profile": "田",
+    "profile_f": "由",
+    "onyomi": "デン",
+    "onyomi_f": "ユ, ユウ",
+    "kunyomi": "た",
+    "kunyomi_f": "よし",
+    "radical": "田 (Rice field)",
+    "radical_f": "田 (Rice field)",
+    "vocabulary": [{ "reading": "たんぼ" }, { "reading": "たなか" }, { "reading": "すいでん" }],
+    "vocabulary_f": [{ "reading": "じゆう" }, { "reading": "りゆう" }, { "reading": "けいゆ" }]
+  },
+  {
+    "kanji": "目",
+    "level": 4,
+    "profile": "目",
+    "profile_f": "日",
+    "onyomi": "モク, ボク",
+    "onyomi_f": "ニチ, ジツ",
+    "kunyomi": "め, ま",
+    "kunyomi_f": "ひ",
+    "radical": "目 (Eye)",
+    "radical_f": "日 (Sun)",
+    "vocabulary": [{ "reading": "め" }, { "reading": "もくじ" }, { "reading": "めぐすり" }],
+    "vocabulary_f": [{ "reading": "ひ" }, { "reading": "にちようび" }, { "reading": "きょう" }]
+  },
+  {
+    "kanji": "立",
+    "level": 4,
+    "profile": "立",
+    "profile_f": "辛",
+    "onyomi": "リツ, リュウ",
+    "onyomi_f": "シン",
+    "kunyomi": "たつ, たてる",
+    "kunyomi_f": "からい",
+    "radical": "立 (Stand)",
+    "radical_f": "辛 (Spicy)",
+    "vocabulary": [{ "reading": "たつ" }, { "reading": "こくりつ" }, { "reading": "たてる" }],
+    "vocabulary_f": [{ "reading": "からい" }, { "reading": "つらい" }, { "reading": "しんぼう" }]
+  },
+  {
+    "kanji": "人",
     "level": 3,
-    "onyomi": "セイ, ショウ",
-    "kunyomi": "まつりごと",
-    "radical": "攴 (Whip)",
-    "vocabulary": [
-      { "word": "政治", "reading": "せいじ", "english": "Politics" },
-      { "word": "政府", "reading": "せいふ", "english": "Government" },
-      { "word": "政策", "reading": "せいさく", "english": "Policy" }
-    ]
+    "profile": "人",
+    "profile_f": "入",
+    "onyomi": "ジン, ニン",
+    "onyomi_f": "ニュウ",
+    "kunyomi": "ひと",
+    "kunyomi_f": "はいる",
+    "radical": "人 (Man)",
+    "radical_f": "入 (Enter)",
+    "vocabulary": [{ "reading": "ひと" }, { "reading": "にほんじん" }, { "reading": "がくせい" }],
+    "vocabulary_f": [{ "reading": "はいる" }, { "reading": "いりぐち" }, { "reading": "でぐち" }]
   },
   {
-    "kanji": "経",
+    "kanji": "白",
     "level": 3,
-    "onyomi": "ケイ, キョウ",
-    "kunyomi": "へ.る, た.つ",
-    "radical": "糸 (Thread)",
-    "vocabulary": [
-      { "word": "経済", "reading": "けいざい", "english": "Economy" },
-      { "word": "経験", "reading": "けいけん", "english": "Experience" },
-      { "word": "経営", "reading": "けいえい", "english": "Management / Business" }
-    ]
+    "profile": "白",
+    "profile_f": "百",
+    "onyomi": "ハク, ビャク",
+    "onyomi_f": "ヒャク",
+    "kunyomi": "しろ, しろい",
+    "kunyomi_f": "もも",
+    "radical": "白 (White)",
+    "radical_f": "白 (White)",
+    "vocabulary": [{ "reading": "しろ" }, { "reading": "しろい" }, { "reading": "はくまい" }],
+    "vocabulary_f": [{ "reading": "ひゃく" }, { "reading": "くろ" }, { "reading": "くろい" }]
   },
   {
-    "kanji": "際",
+    "kanji": "空",
     "level": 3,
-    "onyomi": "サイ",
-    "kunyomi": "きわ",
-    "radical": "阜 (Mound / Wall)",
-    "vocabulary": [
-      { "word": "国際", "reading": "こくさい", "english": "International" },
-      { "word": "交際", "reading": "こうさい", "english": "Association / Dating" },
-      { "word": "実際", "reading": "じっさい", "english": "Reality / Practical" }
-    ]
+    "profile": "空",
+    "profile_f": "穴",
+    "onyomi": "クウ",
+    "onyomi_f": "ケツ",
+    "kunyomi": "そら, あく, から",
+    "kunyomi_f": "あな",
+    "radical": "穴 (Cave)",
+    "radical_f": "雨 (Rain)",
+    "vocabulary": [{ "reading": "そら" }, { "reading": "くうこう" }, { "reading": "あおぞら" }],
+    "vocabulary_f": [{ "reading": "あな" }, { "reading": "ほらあな" }, { "reading": "ちか" }]
   },
   {
-    "kanji": "複",
+    "kanji": "魚",
     "level": 3,
-    "onyomi": "フク",
-    "kunyomi": "-",
-    "radical": "衣 (Clothes)",
-    "vocabulary": [
-      { "word": "複雑", "reading": "ふくざつ", "english": "Complex / Complicated" },
-      { "word": "復習", "reading": "ふくしゅう", "english": "Review / Revision" },
-      { "word": "複数", "reading": "ふくすう", "english": "Plural / Multiple" }
-    ]
+    "profile": "魚",
+    "profile_f": "鳥",
+    "onyomi": "ギョ",
+    "onyomi_f": "チョウ",
+    "kunyomi": "さかな, うお",
+    "kunyomi_f": "とり",
+    "radical": "魚 (Fish)",
+    "radical_f": "鳥 (Bird)",
+    "vocabulary": [{ "reading": "さかな" }, { "reading": "きんぎょ" }, { "reading": "さかなや" }],
+    "vocabulary_f": [{ "reading": "とり" }, { "reading": "みずうみ" }, { "reading": "はね" }]
   },
   {
-    "kanji": "関",
+    "kanji": "鳥",
     "level": 3,
-    "onyomi": "カン",
-    "kunyomi": "せき, かか.わる",
-    "radical": "門 (Gate)",
-    "vocabulary": [
-      { "word": "関係", "reading": "かんけい", "english": "Relationship / Connection" },
-      { "word": "関心", "reading": "かんしん", "english": "Interest" },
-      { "word": "玄関", "reading": "げんかん", "english": "Entrance hall" }
-    ]
+    "profile": "鳥",
+    "profile_f": "魚",
+    "onyomi": "チョウ",
+    "onyomi_f": "ギョ",
+    "kunyomi": "とり",
+    "kunyomi_f": "さかな",
+    "radical": "鳥 (Bird)",
+    "radical_f": "魚 (Fish)",
+    "vocabulary": [{ "reading": "とり" }, { "reading": "ことり" }, { "reading": "やきとり" }],
+    "vocabulary_f": [{ "reading": "さかな" }, { "reading": "きんぎょ" }, { "reading": "うお" }]
   },
   {
-    "kanji": "創",
-    "level": 2,
-    "onyomi": "ソウ, ショウ",
-    "kunyomi": "つく.る, はじ.める",
-    "radical": "刀 (Sword)",
-    "vocabulary": [
-      { "word": "創造", "reading": "そうぞう", "english": "Creation" },
-      { "word": "創刊", "reading": "そうかん", "english": "First issue (publication)" },
-      { "word": "創作", "reading": "そうさく", "english": "Creation / Production" }
-    ]
-  },
-  {
-    "kanji": "察",
-    "level": 2,
-    "onyomi": "サツ",
-    "kunyomi": "-",
-    "radical": "宀 (Roof)",
-    "vocabulary": [
-      { "word": "警察", "reading": "けいさつ", "english": "Police" },
-      { "word": "観察", "reading": "かんさつ", "english": "Observation" },
-      { "word": "考察", "reading": "こうさつ", "english": "Consideration / Study" }
-    ]
-  },
-  {
-    "kanji": "障",
-    "level": 2,
-    "onyomi": "ショウ",
-    "kunyomi": "さわ.る",
-    "radical": "阜 (Mound / Wall)",
-    "vocabulary": [
-      { "word": "障害", "reading": "しょうがい", "english": "Obstacle / Disability" },
-      { "word": "故障", "reading": "こしょう", "english": "Breakdown / Failure" },
-      { "word": "保障", "reading": "ほしょう", "english": "Guarantee / Security" }
-    ]
-  },
-  {
-    "kanji": "設",
-    "level": 2,
-    "onyomi": "セツ",
-    "kunyomi": "もう.ける",
-    "radical": "言 (Speech)",
-    "vocabulary": [
-      { "word": "設定", "reading": "せってい", "english": "Settings / Establishment" },
-      { "word": "設備", "reading": "せつび", "english": "Equipment / Facilities" },
-      { "word": "設計", "reading": "せっけい", "english": "Design / Plan" }
-    ]
-  },
-  {
-    "kanji": "富",
-    "level": 2,
-    "onyomi": "フ, フウ",
-    "kunyomi": "と.む, とみ",
-    "radical": "宀 (Roof)",
-    "vocabulary": [
-      { "word": "豊富", "reading": "ほうふ", "english": "Abundant / Wealthy" },
-      { "word": "富士山", "reading": "ふじさん", "english": "Mt. Fuji" },
-      { "word": "富有", "reading": "ふゆう", "english": "Wealthy / Affluent" }
-    ]
-  },
-  {
-    "kanji": "覇",
-    "level": 1,
-    "onyomi": "ハ, ハク",
-    "kunyomi": "はたがしら",
-    "radical": "襾 (Cover)",
-    "vocabulary": [
-      { "word": "制覇", "reading": "せいは", "english": "Conquest / Mastery" },
-      { "word": "覇権", "reading": "はけん", "english": "Hegemony / Supremacy" },
-      { "word": "連覇", "reading": "れんぱ", "english": "Successive championships" }
-    ]
-  },
-  {
-    "kanji": "匿",
-    "level": 1,
-    "onyomi": "トク",
-    "kunyomi": "かく.す",
-    "radical": "匚 (Box)",
-    "vocabulary": [
-      { "word": "匿名", "reading": "とくめい", "english": "Anonymity" },
-      { "word": "秘匿", "reading": "ひとく", "english": "Concealment / Hiding" },
-      { "word": "隠匿", "reading": "いんとく", "english": "Concealment / Sheltering" }
-    ]
-  },
-  {
-    "kanji": "歪",
-    "level": 1,
-    "onyomi": "ワイ",
-    "kunyomi": "いが.む, ゆが.む, ひず.む",
-    "radical": "不正 (Not straight)",
-    "vocabulary": [
-      { "word": "歪曲", "reading": "わいきょく", "english": "Distortion / Falsification" },
-      { "word": "歪み", "reading": "ひずみ", "english": "Strain / Warp" },
-      { "word": "歪む", "reading": "ゆがむ", "english": "To warp / To bend" }
-    ]
-  },
-  {
-    "kanji": "憂",
-    "level": 1,
-    "onyomi": "ユウ",
-    "kunyomi": "うれ.える, うれ.い, う.い",
-    "radical": "心 (Heart)",
-    "vocabulary": [
-      { "word": "憂慮", "reading": "ゆうりょ", "english": "Anxiety / Concern" },
-      { "word": "憂鬱", "reading": "ゆううつ", "english": "Melancholy / Depression" },
-      { "word": "杞憂", "reading": "きゆう", "english": "Absurd / Unwarranted anxiety" }
-    ]
-  },
-  {
-    "kanji": "擬",
-    "level": 1,
-    "onyomi": "ギ",
-    "kunyomi": "まが.とき",
+    "kanji": "手",
+    "level": 3,
+    "profile": "手",
+    "profile_f": "毛",
+    "onyomi": "シュ",
+    "onyomi_f": "モウ",
+    "kunyomi": "て",
+    "kunyomi_f": "け",
     "radical": "手 (Hand)",
-    "vocabulary": [
-      { "word": "模擬", "reading": "もぎ", "english": "Mock / Simulation" },
-      { "word": "擬音語", "reading": "ぎおんご", "english": "Onomatopoeia" },
-      { "word": "擬人化", "reading": "ぎじんか", "english": "Personification / Anthropomorphism" }
-    ]
+    "radical_f": "毛 (Hair)",
+    "vocabulary": [{ "reading": "て" }, { "reading": "てがみ" }, { "reading": "かしゅ" }],
+    "vocabulary_f": [{ "reading": "け" }, { "reading": "けいと" }, { "reading": "ひつじ" }]
+  },
+  {
+    "kanji": "足",
+    "level": 3,
+    "profile": "足",
+    "profile_f": "疋",
+    "onyomi": "ソク",
+    "onyomi_f": "ヒキ",
+    "kunyomi": "あし, たりる",
+    "kunyomi_f": "ひき",
+    "radical": "足 (Foot)",
+    "radical_f": "疋 (Bolt of cloth)",
+    "vocabulary": [{ "reading": "あし" }, { "reading": "たりる" }, { "reading": "えんそく" }],
+    "vocabulary_f": [{ "reading": "ひき" }, { "reading": "ひきざん" }, { "reading": "たん" }]
+  },
+  {
+    "kanji": "心",
+    "level": 3,
+    "profile": "心",
+    "profile_f": "必",
+    "onyomi": "シン",
+    "onyomi_f": "ヒツ",
+    "kunyomi": "こころ",
+    "kunyomi_f": "かならず",
+    "radical": "心 (Heart)",
+    "radical_f": "心 (Heart)",
+    "vocabulary": [{ "reading": "こころ" }, { "reading": "しんぞう" }, { "reading": "あんしん" }],
+    "vocabulary_f": [{ "reading": "かならず" }, { "reading": "ひつよう" }, { "reading": "ひっし" }]
+  },
+  {
+    "kanji": "耳",
+    "level": 3,
+    "profile": "耳",
+    "profile_f": "目",
+    "onyomi": "ジ",
+    "onyomi_f": "モク",
+    "kunyomi": "みみ",
+    "kunyomi_f": "め",
+    "radical": "耳 (Ear)",
+    "radical_f": "目 (Eye)",
+    "vocabulary": [{ "reading": "みみ" }, { "reading": "じびか" }, { "reading": "みみなり" }],
+    "vocabulary_f": [{ "reading": "め" }, { "reading": "もくじ" }, { "reading": "なみだ" }]
+  },
+  {
+    "kanji": "口",
+    "level": 3,
+    "profile": "口",
+    "profile_f": "品",
+    "onyomi": "コウ, ク",
+    "onyomi_f": "ヒン",
+    "kunyomi": "くち",
+    "kunyomi_f": "しな",
+    "radical": "口 (Mouth)",
+    "radical_f": "口 (Mouth)",
+    "vocabulary": [{ "reading": "くち" }, { "reading": "いりぐち" }, { "reading": "じんこう" }],
+    "vocabulary_f": [{ "reading": "しなもの" }, { "reading": "さくひん" }, { "reading": "しょうひん" }]
+  },
+  {
+    "kanji": "犬",
+    "level": 2,
+    "profile": "犬",
+    "profile_f": "太",
+    "onyomi": "ケン",
+    "onyomi_f": "タイ, タ",
+    "kunyomi": "いぬ",
+    "kunyomi_f": "ふとい",
+    "radical": "犬 (Dog)",
+    "radical_f": "大 (Big)",
+    "vocabulary": [{ "reading": "いぬ" }, { "reading": "こいぬ" }, { "reading": "ばんけん" }],
+    "vocabulary_f": [{ "reading": "ふとい" }, { "reading": "たいよう" }, { "reading": "おおきい" }]
+  },
+  {
+    "kanji": "猫",
+    "level": 2,
+    "profile": "猫",
+    "profile_f": "苗",
+    "onyomi": "ビョウ",
+    "onyomi_f": "ビョウ",
+    "kunyomi": "ねこ",
+    "kunyomi_f": "なえ",
+    "radical": "猫 (Cat)",
+    "radical_f": "草 (Grass)",
+    "vocabulary": [{ "reading": "ねこ" }, { "reading": "こねこ" }, { "reading": "まねきねこ" }],
+    "vocabulary_f": [{ "reading": "なえ" }, { "reading": "たうえ" }, { "reading": "くさ" }]
+  },
+  {
+    "kanji": "花",
+    "level": 2,
+    "profile": "花",
+    "profile_f": "化",
+    "onyomi": "カ",
+    "onyomi_f": "カ, ケ",
+    "kunyomi": "はな",
+    "kunyomi_f": "ばける",
+    "radical": "草 (Grass)",
+    "radical_f": "人 (Man)",
+    "vocabulary": [{ "reading": "はな" }, { "reading": "はなみ" }, { "reading": "かびん" }],
+    "vocabulary_f": [{ "reading": "ばける" }, { "reading": "ぶんか" }, { "reading": "かがく" }]
+  },
+  {
+    "kanji": "草",
+    "level": 2,
+    "profile": "草",
+    "profile_f": "早",
+    "onyomi": "ソウ",
+    "onyomi_f": "ソウ, サッ",
+    "kunyomi": "くさ",
+    "kunyomi_f": "はやい",
+    "radical": "草 (Grass)",
+    "radical_f": "日 (Sun)",
+    "vocabulary": [{ "reading": "くさ" }, { "reading": "ざっそう" }, { "reading": "くさばな" }],
+    "vocabulary_f": [{ "reading": "はやい" }, { "reading": "はやおき" }, { "reading": "そうちょう" }]
+  },
+  {
+    "kanji": "林",
+    "level": 2,
+    "profile": "林",
+    "profile_f": "森",
+    "onyomi": "リン",
+    "onyomi_f": "シン",
+    "kunyomi": "はやし",
+    "kunyomi_f": "もり",
+    "radical": "木 (Tree)",
+    "radical_f": "木 (Tree)",
+    "vocabulary": [{ "reading": "はやし" }, { "reading": "こばやし" }, { "reading": "さんりん" }],
+    "vocabulary_f": [{ "reading": "もり" }, { "reading": "しんりん" }, { "reading": "ひろもり" }]
+  },
+  {
+    "kanji": "森",
+    "level": 2,
+    "profile": "森",
+    "profile_f": "林",
+    "onyomi": "シン",
+    "onyomi_f": "リン",
+    "kunyomi": "もり",
+    "kunyomi_f": "はやし",
+    "radical": "木 (Tree)",
+    "radical_f": "木 (Tree)",
+    "vocabulary": [{ "reading": "もり" }, { "reading": "しんりん" }, { "reading": "もりた" }],
+    "vocabulary_f": [{ "reading": "はやし" }, { "reading": "こばやし" }, { "reading": "さんりん" }]
+  },
+  {
+    "kanji": "竹",
+    "level": 2,
+    "profile": "竹",
+    "profile_f": "行",
+    "onyomi": "チク",
+    "onyomi_f": "コウ, ギョウ",
+    "kunyomi": "たけ",
+    "kunyomi_f": "いく, おこなう",
+    "radical": "竹 (Bamboo)",
+    "radical_f": "行 (Go)",
+    "vocabulary": [{ "reading": "たけ" }, { "reading": "たけのこ" }, { "reading": "ちくりん" }],
+    "vocabulary_f": [{ "reading": "いく" }, { "reading": "りょこう" }, { "reading": "おこなう" }]
+  },
+  {
+    "kanji": "虫",
+    "level": 2,
+    "profile": "虫",
+    "profile_f": "風",
+    "onyomi": "チュウ",
+    "onyomi_f": "フウ",
+    "kunyomi": "むし",
+    "kunyomi_f": "かぜ",
+    "radical": "虫 (Insect)",
+    "radical_f": "風 (Wind)",
+    "vocabulary": [{ "reading": "むし" }, { "reading": "こんちゅう" }, { "reading": "むしば" }],
+    "vocabulary_f": [{ "reading": "かぜ" }, { "reading": "たいふう" }, { "reading": "わふう" }]
+  },
+  {
+    "kanji": "貝",
+    "level": 2,
+    "profile": "貝",
+    "profile_f": "見",
+    "onyomi": "バイ",
+    "onyomi_f": "ケン",
+    "kunyomi": "かい",
+    "kunyomi_f": "みる",
+    "radical": "貝 (Shell)",
+    "radical_f": "見 (See)",
+    "vocabulary": [{ "reading": "かい" }, { "reading": "かいがら" }, { "reading": "あまがいの" }],
+    "vocabulary_f": [{ "reading": "みる" }, { "reading": "いけん" }, { "reading": "けんがく" }]
+  },
+  {
+    "kanji": "石",
+    "level": 2,
+    "profile": "石",
+    "profile_f": "右",
+    "onyomi": "セキ, シャク",
+    "onyomi_f": "ウ, ユウ",
+    "kunyomi": "いし",
+    "kunyomi_f": "みぎ",
+    "radical": "石 (Stone)",
+    "radical_f": "口 (Mouth)",
+    "vocabulary": [{ "reading": "いし" }, { "reading": "ほうせき" }, { "reading": "じしゃく" }],
+    "vocabulary_f": [{ "reading": "みぎ" }, { "reading": "うせつ" }, { "reading": "みぎがわ" }]
+  },
+  {
+    "kanji": "海",
+    "level": 1,
+    "profile": "海",
+    "profile_f": "毎",
+    "onyomi": "カイ",
+    "onyomi_f": "マイ",
+    "kunyomi": "うみ",
+    "kunyomi_f": "まい",
+    "radical": "水 (Water)",
+    "radical_f": "母 (Mother)",
+    "vocabulary": [{ "reading": "うみ" }, { "reading": "かいがい" }, { "reading": "にほんかい" }],
+    "vocabulary_f": [{ "reading": "まいあさ" }, { "reading": "まいにち" }, { "reading": "まいしゅう" }]
+  },
+  {
+    "kanji": "風",
+    "level": 1,
+    "profile": "風",
+    "profile_f": "岡",
+    "onyomi": "フウ, フ",
+    "onyomi_f": "コウ",
+    "kunyomi": "かぜ, かざ",
+    "kunyomi_f": "おか",
+    "radical": "風 (Wind)",
+    "radical_f": "山 (Mountain)",
+    "vocabulary": [{ "reading": "かぜ" }, { "reading": "たいふう" }, { "reading": "わふう" }],
+    "vocabulary_f": [{ "reading": "おか" }, { "reading": "おかやま" }, { "reading": "やま" }]
+  },
+  {
+    "kanji": "音",
+    "level": 1,
+    "profile": "音",
+    "profile_f": "意",
+    "onyomi": "オン, イン",
+    "onyomi_f": "イ",
+    "kunyomi": "おと, ね",
+    "kunyomi_f": "こころ",
+    "radical": "音 (Sound)",
+    "radical_f": "心 (Heart)",
+    "vocabulary": [{ "reading": "おと" }, { "reading": "おんがく" }, { "reading": "はつおん" }],
+    "vocabulary_f": [{ "reading": "いみ" }, { "reading": "いけん" }, { "reading": "いしき" }]
+  },
+  {
+    "kanji": "光",
+    "level": 1,
+    "profile": "光",
+    "profile_f": "先",
+    "onyomi": "コウ",
+    "onyomi_f": "セン",
+    "kunyomi": "ひかり, ひかる",
+    "kunyomi_f": "さき",
+    "radical": "人 (Man)",
+    "radical_f": "足 (Foot)",
+    "vocabulary": [{ "reading": "ひかり" }, { "reading": "ひかる" }, { "reading": "こうこう" }],
+    "vocabulary_f": [{ "reading": "せんせい" }, { "reading": "さき" }, { "reading": "せんげつ" }]
+  },
+  {
+    "kanji": "星",
+    "level": 1,
+    "profile": "星",
+    "profile_f": "里",
+    "onyomi": "セイ, ショウ",
+    "onyomi_f": "リ",
+    "kunyomi": "ほし",
+    "kunyomi_f": "さと",
+    "radical": "日 (Sun)",
+    "radical_f": "里 (Village)",
+    "vocabulary": [{ "reading": "ほし" }, { "reading": "かせい" }, { "reading": "りゅうせい" }],
+    "vocabulary_f": [{ "reading": "さと" }, { "reading": "りゅうち" }, { "reading": "いなか" }]
+  },
+  {
+    "kanji": "雲",
+    "level": 1,
+    "profile": "雲",
+    "profile_f": "曇",
+    "onyomi": "ウン",
+    "onyomi_f": "ドン",
+    "kunyomi": "くも",
+    "kunyomi_f": "くもる",
+    "radical": "雨 (Rain)",
+    "radical_f": "日 (Sun)",
+    "vocabulary": [{ "reading": "くも" }, { "reading": "あまぐも" }, { "reading": "せきらんうん" }],
+    "vocabulary_f": [{ "reading": "くもる" }, { "reading": "どんてん" }, { "reading": "くもり" }]
+  },
+  {
+    "kanji": "雪",
+    "level": 1,
+    "profile": "雪",
+    "profile_f": "雷",
+    "onyomi": "セツ",
+    "onyomi_f": "ライ",
+    "kunyomi": "ゆき",
+    "kunyomi_f": "かみなり",
+    "radical": "雨 (Rain)",
+    "radical_f": "雨 (Rain)",
+    "vocabulary": [{ "reading": "ゆき" }, { "reading": "おおゆき" }, { "reading": "せっけい" }],
+    "vocabulary_f": [{ "reading": "かみなり" }, { "reading": "らいう" }, { "reading": "じらい" }]
+  },
+  {
+    "kanji": "谷",
+    "level": 1,
+    "profile": "谷",
+    "profile_f": "角",
+    "onyomi": "コク",
+    "onyomi_f": "カク",
+    "kunyomi": "たに",
+    "kunyomi_f": "かど, つの",
+    "radical": "谷 (Valley)",
+    "radical_f": "角 (Horn)",
+    "vocabulary": [{ "reading": "たに" }, { "reading": "たにま" }, { "reading": "けいこく" }],
+    "vocabulary_f": [{ "reading": "かど" }, { "reading": "つの" }, { "reading": "しかく" }]
+  },
+  {
+    "kanji": "岩",
+    "level": 1,
+    "profile": "岩",
+    "profile_f": "岸",
+    "onyomi": "ガン",
+    "onyomi_f": "ガン",
+    "kunyomi": "いわ",
+    "kunyomi_f": "きし",
+    "radical": "山 (Mountain)",
+    "radical_f": "山 (Mountain)",
+    "vocabulary": [{ "reading": "いわ" }, { "reading": "いわば" }, { "reading": "がんせき" }],
+    "vocabulary_f": [{ "reading": "きし" }, { "reading": "かいがん" }, { "reading": "こうがん" }]
+  },
+  {
+    "kanji": "原",
+    "level": 1,
+    "profile": "原",
+    "profile_f": "源",
+    "onyomi": "ゲン",
+    "onyomi_f": "ゲン",
+    "kunyomi": "はら",
+    "kunyomi_f": "みなもと",
+    "radical": "厂 (Cliff)",
+    "radical_f": "水 (Water)",
+    "vocabulary": [{ "reading": "はら" }, { "reading": "げんいん" }, { "reading": "こうげん" }],
+    "vocabulary_f": [{ "reading": "みなもと" }, { "reading": "しげん" }, { "reading": "げんせん" }]
   }
 ]

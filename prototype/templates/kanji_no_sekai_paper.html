@@ -157,14 +157,24 @@
         }
 
         #profile {
+            width: 60px;
+            height: 60px;
+            box-sizing: border-box;
+
             font-size: 2.6rem;
             background: #fff;
             border: 2px solid var(--ink);
             border-radius: 6px;
-            padding: 0 10px;
+
+            padding: 0;
             line-height: 1.3;
+
             font-family: "Klee One", sans-serif;
             font-weight: 600;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .row {
@@ -176,22 +186,6 @@
             display: inline-block;
             min-width: 80px;
             font-weight: 600;
-        }
-
-
-        #nextButton {
-            display: none;
-            flex-shrink: 0;
-            padding: 15px 12px;
-            font-size: 1rem;
-            background: var(--ink);
-            color: #fff;
-            border: 0;
-            border-radius: 10px;
-            cursor: pointer;
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-            height: 50px;
         }
 
         /* Answer buttons */
@@ -259,9 +253,6 @@
                 min-width: 70px;
             }
 
-            #nextButton {
-                padding: 12px 8px;
-            }
         }
     </style>
 </head>
@@ -295,7 +286,7 @@
 <div class="card-container">
 
     <div id="card">
-        <div class="head">
+        <div class="row">
             <div id="profile"></div>
         </div>
 
@@ -314,10 +305,12 @@
             <span id="radical"></span>
         </div>
 
-        <div class="row">
-            <b>correct:</b>
-            <span id="correct"></span>
-        </div>
+        <!--
+ <div class="row">
+     <b>correct:</b>
+     <span id="correct"></span>
+ </div>
+ -->
 
         <div class="row">
             <b>語彙 :</b>
@@ -325,8 +318,6 @@
         </div>
     </div>
 
-    <button id="nextButton" type="button">
-    </button>
 
 </div>
 
@@ -350,7 +341,7 @@
 
     const data_kanji_launcher_url = "/paper_data";
     const data_player_launcher_url = "/player_data";
-    const update_playey_url = "/paper_data";
+    const update_playey_url = "/";
 
 
     let kanji = [];
@@ -380,7 +371,6 @@
 
     }
 
-
     function kanjiWalksIn() {
         if (kanji_number_order == kanji.length) {
             finishGame();
@@ -388,8 +378,6 @@
         }
 
         rac("kanji_number").textContent = kanji_number_order + 1;
-        rac("nextButton").style.display = "none";
-        rac("card").classList.remove("show");
 
         rac("sprite").textContent = kanji[kanji_number_order].kanji ?? "";
 
@@ -401,7 +389,6 @@
         rac("walker").className = "in";
     }
 
-    // ===== 3. ANIMATION EVENTS =====
     rac("walker").addEventListener("animationend", (event) => {
         if (event.target !== rac("walker")) {
             return;
@@ -415,7 +402,7 @@
         } else if (event.animationName === "walkOut") {
             kanji_number_order++;
 
-            if (kanji_number_order >= kanji.length) {
+            if (kanji_number_order == kanji.length) {
                 finishGame();
             } else {
                 kanjiWalksIn();
@@ -423,15 +410,14 @@
         }
     });
 
-    // ===== 4. SHOW THE CARD =====
     function showCard() {
         const card = kanji[kanji_number_order];
 
-        rac("profile").textContent = card.profile ?? "";
-        rac("kun").textContent = card.kunyomi ?? "";
-        rac("on").textContent = card.onyomi ?? "";
-        rac("radical").textContent = card.radical ?? "";
-        rac("correct").textContent = card.correct ?? "";
+        rac("profile").textContent = card.profile;
+        rac("kun").textContent = card.kunyomi;
+        rac("on").textContent = card.onyomi;
+        rac("radical").textContent = card.radical;
+        //rac("correct").textContent = card.correct;
 
         const vocabulary = card.vocabulary;
 
@@ -478,12 +464,8 @@
         rac("approve").disabled = true;
         rac("refuse").disabled = true;
 
-        rac("nextButton").textContent =
-            kanji_number_order + 1 >= kanji.length
-                ? "Result"
-                : "次";
+        nextCard();
 
-        rac("nextButton").style.display = "block";
     }
 
     // ===== 6. NEXT KANJI =====
@@ -494,7 +476,6 @@
         rac("approve").hidden = true;
         rac("refuse").hidden = true;
 
-        rac("nextButton").style.display = "none";
         rac("card").classList.remove("show");
 
         rac("sprite").classList.add("walking");
@@ -508,9 +489,8 @@
     // ===== 7. END OF GAME =====
     function finishGame() {
 
-        rac("stage").style.display = "none" ;
+        rac("stage").style.display = "none";
         rac("card").style.display = "none";
-        rac("nextButton").style.display = "none";
 
         document.querySelector(".btns").style.display = "none";
         rac("progress").style.display = "none";
@@ -548,8 +528,6 @@
     rac("refuse").addEventListener("click", () => {
         answer(false);
     });
-
-    rac("nextButton").addEventListener("click", nextCard);
 
     start_game();
 
