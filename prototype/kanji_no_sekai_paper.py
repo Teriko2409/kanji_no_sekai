@@ -10,26 +10,59 @@ paper = Blueprint('paper', __name__)
 
 @paper.route('/paper')
 def paper_launcher():
+
     if 'player_id' not in session:
         return redirect(url_for('menu'))
 
-    return render_template("kanji_no_sekai_paper.html",
-                           player_id=session['player_id'],
-                           level=session['level'])
+    id_player = session['player_id']
+    level = session['level']
+
+    print('Menu : KNS paper')
+    print(f"Player ID : {id_player}")
+    print(f"Level: {level}")
+
+    return render_template(
+        "kanji_no_sekai_paper.html",
+        player_id=id_player,
+        level=level,
+
+    )
+
 
 @paper.route('/paper_data')
 def data_launcher():
+
     if 'level' not in session:
+        return jsonify([])
+
+    try:
         data = download_json_data_paper(level_jlpt=session['level'])
         return jsonify(data)
-    try:
-        return jsonify([])
     except (FileNotFoundError, ValueError):
         return jsonify([])
 
+@paper.route('/player_data')
+def player_data_launcher():
 
+    if 'level' not in session:
+        return jsonify([])
+
+    try:
+        current_player_id = session['player_id']
+        current_player_id_int = int(current_player_id)
+        with open('players_data.json', 'r', encoding='utf-8') as file:
+            players = json.load(file)
+
+        for player in players:
+            if player.get('player_id') == current_player_id_int:
+                kanjis = player.get('kanjis', [])
+
+        return jsonify(kanjis)
+    except (FileNotFoundError, ValueError):
+        return jsonify([])
 def download_json_data_paper(level_jlpt, json_file_path="paperkanji.json"):
-    number_kanji = 6
+
+    number_kanji = 1
     level_jlpt_int = int(level_jlpt)
 
     false_kanji_number = random.randint(0, (number_kanji - 1))
@@ -91,8 +124,17 @@ def download_json_data_paper(level_jlpt, json_file_path="paperkanji.json"):
 
         final_game_cards = true_kanji_list_clean + false_kanji_list_clean
 
-        random.shuffle(final_game_cards)
 
-        print(json.dumps(final_game_cards, indent=4, ensure_ascii=False))
+        random.shuffle(final_game_cards)
+        for i, card in enumerate(final_game_cards, 1):
+            print(f"--- Carte {i} ---")
+            print(f"Profile (Kanji) : {card.get('profile')}")
+            print(f"Kunyomi       : {card.get('kunyomi')}")
+            print(f"Onyomi        : {card.get('onyomi')}")
+            print(f"Radical       : {card.get('radical')}")
+            print(f"Correct       : {card.get('correct')}")
+            print(f"Vocabulary    : {card.get('vocabulary')}")
+            print("=" * 40)
+
 
         return final_game_cards

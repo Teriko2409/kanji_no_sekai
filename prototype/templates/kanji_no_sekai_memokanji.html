@@ -165,7 +165,10 @@
     <div class="win" id="win_id"></div>
     <button class="action" onclick="charger()">やり直す</button>
 </div>
-
+<audio id="theme" loop>
+    <source src="{{ url_for('static', filename='audio/memokanji_theme.mp3') }}" type="audio/mpeg">
+</audio>
+<script src="{{ url_for('static', filename='kanji_no_sekai_audio_setting.js') }}"></script>
 <script>
     // ============VARIABLES============
     let kanji_on_carte = [];
@@ -176,6 +179,7 @@
 
     // ============ CARTES SETTING============
     async function charger() {
+        playMusic()
         const reponse_on_carte = await fetch("/memokanji_data");
         if (!reponse_on_carte.ok) return;
         kanji_on_carte = await reponse_on_carte.json();
@@ -187,6 +191,7 @@
 
     // ============ PARTIE ============
     function nouvellePartie() {
+
         paires = 0;
         erreurs = 0;
         premiere = null;
@@ -297,6 +302,7 @@
     }
 
     charger();
+
 </script>
 </body>
 </html>

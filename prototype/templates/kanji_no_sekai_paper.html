@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Kanji Passport, please</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Kanji Passport, please</title>
+
     <style>
         :root {
             --ink: #2b2b2b;
@@ -21,19 +24,19 @@
 
         body {
             font-family: system-ui, "Noto Sans CJK JP", "Yu Gothic", sans-serif;
-            margin: 0;
+            margin: 0 auto;
             padding: 16px;
             background: var(--paper);
             color: var(--ink);
             max-width: 560px;
-            margin-inline: auto;
         }
 
         .top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: .9rem;
+            gap: 10px;
+            font-size: 0.9rem;
         }
 
         .button_retour {
@@ -45,6 +48,12 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
+        #progress {
+            margin: 8px 0;
+            font-size: 0.9rem;
+        }
+
 
         #stage {
             position: relative;
@@ -60,21 +69,23 @@
         }
 
         #sprite {
+            display: inline-block;
+            font-family: "Klee One", sans-serif;
             font-size: 7.5rem;
             line-height: 1.1;
-            display: inline-block;
+            font-weight: 600;
         }
 
         #walker.in {
-            animation: walkIn 1.8s ease-out forwards;
+            animation: walkIn 3.0s ease-out forwards;
         }
 
         #walker.out {
-            animation: walkOut .9s ease-in forwards;
+            animation: walkOut 0.9s ease-in forwards;
         }
 
         #sprite.walking {
-            animation: bob .35s ease-in-out infinite;
+            animation: bob 0.35s ease-in-out infinite;
         }
 
         @keyframes walkIn {
@@ -104,24 +115,34 @@
             }
         }
 
+        .card-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+
         #card {
+            flex-grow: 1;
+            min-width: 0;
             display: none;
             background: #ffe94d;
             border: 2px solid var(--ink);
             border-radius: 8px;
             padding: 10px;
-            min-height: 210px;
+            min-height: 170px;
+            overflow-wrap: anywhere;
         }
 
         #card.show {
             display: block;
-            animation: pop .45s ease-out;
+            animation: pop 0.45s ease-out;
         }
 
         @keyframes pop {
             from {
                 opacity: 0;
-                transform: translateY(30px) scale(.95);
+                transform: translateY(30px) scale(0.95);
             }
             to {
                 opacity: 1;
@@ -135,26 +156,15 @@
             align-items: flex-start;
         }
 
-        .photo {
+        #profile {
             font-size: 2.6rem;
             background: #fff;
             border: 2px solid var(--ink);
             border-radius: 6px;
             padding: 0 10px;
             line-height: 1.3;
-        }
-
-        #strokes {
-            background: #222;
-            border-radius: 4px;
-            padding: 3px 6px;
-            color: #fff;
-            font-size: .6rem;
-        }
-
-        #strokes img {
-            display: block;
-            height: 44px;
+            font-family: "Klee One", sans-serif;
+            font-weight: 600;
         }
 
         .row {
@@ -164,22 +174,35 @@
 
         .row b {
             display: inline-block;
-            min-width: 70px;
+            min-width: 80px;
             font-weight: 600;
         }
 
-        .row.small {
+
+        #nextButton {
+            display: none;
+            flex-shrink: 0;
+            padding: 15px 12px;
             font-size: 1rem;
+            background: var(--ink);
+            color: #fff;
+            border: 0;
+            border-radius: 10px;
+            cursor: pointer;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            height: 50px;
         }
 
-
+        /* Answer buttons */
         .btns {
             display: flex;
             justify-content: space-around;
-            margin: 6px 0;
+            gap: 20px;
+            margin: 10px 0;
         }
 
-        .rond {
+        .round {
             width: 96px;
             height: 96px;
             border-radius: 50%;
@@ -189,10 +212,11 @@
             cursor: pointer;
         }
 
-        .rond:disabled {
+        .round:disabled {
             opacity: .35;
             cursor: default;
         }
+
 
         #refuse {
             background: var(--ko);
@@ -202,33 +226,7 @@
             background: var(--ok);
         }
 
-        #msg {
-            min-height: 2.8em;
-            font-weight: 600;
-            text-align: center;
-            margin: 6px 0;
-        }
-
-        .good {
-            color: #2e7d32;
-        }
-
-        .bad {
-            color: #b3261e;
-        }
-
-        #next, #again {
-            display: none;
-            margin: 0 auto;
-            padding: 10px 22px;
-            font-size: 1rem;
-            background: var(--ink);
-            color: #fff;
-            border: 0;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
+        /* End screen and error messages */
         #end {
             display: none;
             text-align: center;
@@ -237,176 +235,325 @@
             border-radius: 12px;
             padding: 20px;
             margin-top: 20px;
+            overflow-wrap: anywhere;
+        }
+
+        #end button {
+            cursor: pointer;
+        }
+
+        @media (max-width: 360px) {
+            body {
+                padding: 10px;
+            }
+
+            .card-container {
+                gap: 6px;
+            }
+
+            .row {
+                font-size: 1.05rem;
+            }
+
+            .row b {
+                min-width: 70px;
+            }
+
+            #nextButton {
+                padding: 12px 8px;
+            }
         }
     </style>
 </head>
+
 <body>
+
+
 <div class="top">
-    <button class="button_retour" onclick="location.href='/choice_game_meaning'">BACK</button>
-    <header>
-        <div>
-        <span>ID : <span id="player_id">{{ player_id }}</span></span> |
-        <span>Level : <span id="level">{{ level }}</span></span>
+    <button
+            class="button_retour"
+            onclick="location.href='/choice_game_meaning'">
+        BACK
+    </button>
+
+    <div>
+        ID : {{ player_id }} | Level : {{ level }}
     </div>
-</header>
+</div>
+
+
+<div id="progress">
+    <span id="kanji_number"></span>
 </div>
 
 <div id="stage">
-    <div id="walker"><span id="sprite"></span></div>
-</div>
-
-<div id="card">
-    <div class="head">
-        <div class="photo" id="photo"></div>
-        <div id="strokes">
-            <div>Stroke order</div>
-            <img id="strokeImg" alt=""></div>
+    <div id="walker">
+        <span id="sprite"></span>
     </div>
-    <div class="row"><b>Kun :</b><span id="f-kun"></span></div>
-    <div class="row"><b>On :</b><span id="f-on"></span></div>
-    <div class="row small"><b>Meaning 意味 :</b><span id="f-sens"></span></div>
-    <div class="row small"><b>Words 語彙 :</b><span id="f-vocab"></span></div>
 </div>
 
+<div class="card-container">
+
+    <div id="card">
+        <div class="head">
+            <div id="profile"></div>
+        </div>
+
+        <div class="row">
+            <b>訓読み:</b>
+            <span id="kun"></span>
+        </div>
+
+        <div class="row">
+            <b>音読み:</b>
+            <span id="on"></span>
+        </div>
+
+        <div class="row">
+            <b>部首 :</b>
+            <span id="radical"></span>
+        </div>
+
+        <div class="row">
+            <b>correct:</b>
+            <span id="correct"></span>
+        </div>
+
+        <div class="row">
+            <b>語彙 :</b>
+            <span id="words"></span>
+        </div>
+    </div>
+
+    <button id="nextButton" type="button">
+    </button>
+
+</div>
 
 <div class="btns">
-    <button class="rond" id="refuse" disabled>✘</button>
-    <button class="rond" id="approve" disabled>✔</button>
+    <button class="round" id="refuse" type="button" hidden>
+        無
+    </button>
+
+    <button class="round" id="approve" type="button" hidden>
+        有
+    </button>
 </div>
-<div id="msg"></div>
-<button id="next">Next kanji →</button>
+
 <div id="end"></div>
-
+<audio id="theme" loop>
+    <source src="{{ url_for('static', filename='audio/paper_theme.mp3') }}" type="audio/mpeg">
+</audio>
+<script src="{{ url_for('static', filename='kanji_no_sekai_audio_setting.js') }}"></script>
 <script>
-    // ===== SETTINGS =====
+    const rac = (id_element_page) => document.getElementById(id_element_page);
 
-    const DATA_URL = "/passport_data";
-
-    const $ = id => document.getElementById(id);
-    const participant = new URLSearchParams(location.search).get("p") || "1";
-    $("participant").textContent = participant;
+    const data_kanji_launcher_url = "/paper_data";
+    const data_player_launcher_url = "/player_data";
+    const update_playey_url = "/paper_data";
 
 
-    let cartes = [], recueil = [], idx = 0, score = 0, left = 0, repondu = false, t0 = 0;
-    const SECOURS = [
-        {
-            kanji: "火",
-            kun: ["ひ"],
-            on: ["カ"],
-            sens: "fire, flame",
-            vocab: ["花火", "火山"],
-            correct: true,
-            champ_faux: null,
-            valeur_correcte: null
-        },
-        {
-            kanji: "日",
-            kun: ["やま"],
-            on: ["ニチ"],
-            sens: "day, sun",
-            vocab: ["日本"],
-            correct: false,
-            champ_faux: "kun",
-            valeur_correcte: "ひ"
-        }
-    ];
+    let kanji = [];
+    let player_kanji_already = []
+    let kanji_number_order = 0;
+    let score = 0;
+    let hasAnswered = false;
 
-    async function charger() {
-        try {
-            const r = await fetch(DATA_URL);
-            if (!r.ok) throw new Error("server error");
-            const d = await r.json();
-            cartes = d.cartes;
-            recueil = d.recueil;
-            left = d.nb_consultations;
-        } catch (e) {
-            console.warn("Fallback mode:", e);
-            cartes = SECOURS;
-            recueil = [];
-            left = 1;
-        }
-        $("tot").textContent = cartes.length;
 
-        entrer();
+    async function start_game() {
+        playMusic();
+
+        const response_data_kanji = await fetch(data_kanji_launcher_url);
+
+        const kanji_data_json = await response_data_kanji.json();
+
+        kanji = kanji_data_json;
+
+
+        const response_data_player = await fetch(data_kanji_launcher_url);
+
+        const player_kanji_already_json = await response_data_player.json();
+
+        player_kanji_already = player_kanji_already_json
+
+        kanjiWalksIn();
+
     }
 
 
-    function entrer() {
-        const c = cartes[idx];
-        $("i").textContent = idx + 1;
-        $("msg").textContent = "";
-        $("next").style.display = "none";
-        $("card").classList.remove("show");
-        $("sprite").textContent = c.kanji;
-        $("sprite").classList.add("walking");
-        const w = $("walker");
-        w.className = "";
-        void w.offsetWidth;
-        w.className = "in";   // restart animation
+    function kanjiWalksIn() {
+        if (kanji_number_order == kanji.length) {
+            finishGame();
+            return;
+        }
+
+        rac("kanji_number").textContent = kanji_number_order + 1;
+        rac("nextButton").style.display = "none";
+        rac("card").classList.remove("show");
+
+        rac("sprite").textContent = kanji[kanji_number_order].kanji ?? "";
+
+        rac("sprite").classList.add("walking");
+
+
+        rac("walker").className = "";
+        void rac("walker").offsetWidth;
+        rac("walker").className = "in";
     }
 
-    $("walker").addEventListener("animationend", e => {
-        if (e.target !== $("walker")) return;
-        $("sprite").classList.remove("walking");
-        if (e.animationName === "walkIn") montrerCarte();
-        else {
-            idx++;
-            idx >= cartes.length ? terminer() : entrer();
+    // ===== 3. ANIMATION EVENTS =====
+    rac("walker").addEventListener("animationend", (event) => {
+        if (event.target !== rac("walker")) {
+            return;
+        }
+
+        rac("sprite").classList.remove("walking");
+
+        if (event.animationName === "walkIn") {
+            showCard();
+
+        } else if (event.animationName === "walkOut") {
+            kanji_number_order++;
+
+            if (kanji_number_order >= kanji.length) {
+                finishGame();
+            } else {
+                kanjiWalksIn();
+            }
         }
     });
 
-    function montrerCarte() {
-        const c = cartes[idx];
-        $("photo").textContent = c.kanji;
-        $("f-kun").textContent = c.kun.join("・");
-        $("f-on").textContent = c.on.join("・");
-        $("f-sens").textContent = c.sens;
-        $("f-vocab").textContent = c.vocab.join("、");
-        const img = $("strokeImg"), box = $("strokes");
-        box.style.display = "";
-        img.onerror = () => box.style.display = "none";
-        img.src = STROKE_IMG(c.kanji);
-        $("card").classList.add("show");
-        repondu = false;
-        t0 = Date.now();
-        $("approve").disabled = false;
-        $("refuse").disabled = false;
+    // ===== 4. SHOW THE CARD =====
+    function showCard() {
+        const card = kanji[kanji_number_order];
+
+        rac("profile").textContent = card.profile ?? "";
+        rac("kun").textContent = card.kunyomi ?? "";
+        rac("on").textContent = card.onyomi ?? "";
+        rac("radical").textContent = card.radical ?? "";
+        rac("correct").textContent = card.correct ?? "";
+
+        const vocabulary = card.vocabulary;
+
+        if (Array.isArray(vocabulary)) {
+            rac("words").textContent = vocabulary
+                .map((word) => {
+                    if (word && typeof word === "object") {
+                        return word.reading ?? word.word ?? "";
+                    }
+
+                    return word ?? "";
+                })
+                .join("、");
+        } else {
+            rac("words").textContent = vocabulary ?? "";
+        }
+
+        rac("card").classList.add("show");
+
+        hasAnswered = false;
+        rac("approve").hidden = false;
+        rac("approve").disabled = false;
+
+        rac("refuse").hidden = false;
+        rac("refuse").disabled = false;
     }
 
-    function repondre(approve) {
-        if (repondu) return;
-        repondu = true;
-        const c = cartes[idx], bon = approve === c.correct;
-        if (bon) score++;
-        $("score").textContent = score;
-        const nom = {kun: "the kun reading", on: "the on reading", sens: "the meaning", vocab: "the vocabulary"};
-        $("msg").className = bon ? "good" : "bad";
-        $("msg").textContent = (bon ? "Good call! " : "Wrong! ") + (c.champ_faux
-            ? `${nom[c.champ_faux]} was wrong (correct: ${c.valeur_correcte}).` : "The card was valid.");
-        $("approve").disabled = true;
-        $("refuse").disabled = true;
-        $("next").style.display = "block";
-        $("next").textContent = idx + 1 >= cartes.length ? "See result" : "Next kanji →";
+    function answer(playerSaysValid) {
+        if (hasAnswered) {
+            return;
+        }
+
+        hasAnswered = true;
+
+        const card = kanji[kanji_number_order];
+
+        const playerIsRight =
+            playerSaysValid === card.correct;
+
+        if (playerIsRight) {
+            score++;
+        }
+
+        rac("approve").disabled = true;
+        rac("refuse").disabled = true;
+
+        rac("nextButton").textContent =
+            kanji_number_order + 1 >= kanji.length
+                ? "Result"
+                : "次";
+
+        rac("nextButton").style.display = "block";
     }
 
-    function suivant() {
-        $("next").style.display = "none";
-        $("card").classList.remove("show");
-        $("sprite").classList.add("walking");
-        $("walker").className = "out";
+    // ===== 6. NEXT KANJI =====
+    function nextCard() {
+        if (!hasAnswered) {
+            return;
+        }
+        rac("approve").hidden = true;
+        rac("refuse").hidden = true;
+
+        rac("nextButton").style.display = "none";
+        rac("card").classList.remove("show");
+
+        rac("sprite").classList.add("walking");
+
+
+        rac("walker").className = "";
+        void rac("walker").offsetWidth;
+        rac("walker").className = "out";
     }
 
-    function terminer() {
-        $("end").style.display = "block";
-        $("stage").style.display = "none";
+    // ===== 7. END OF GAME =====
+    function finishGame() {
+
+        rac("stage").style.display = "none" ;
+        rac("card").style.display = "none";
+        rac("nextButton").style.display = "none";
+
         document.querySelector(".btns").style.display = "none";
-        $("end").innerHTML = `<h2>Shift complete!</h2><p>Score: <b>${score}/${cartes.length}</b></p><button id="again" style="display:inline-block" onclick="location.reload()">Play again</button>`;
+        rac("progress").style.display = "none";
+
+        rac("end").style.display = "block";
+
+        const title = document.createElement("h2");
+        title.textContent = "Shift complete!";
+
+        const result = document.createElement("p");
+        result.append("Final Score: ");
+
+        const playAgain = document.createElement("button");
+        playAgain.className = "button_retour";
+        playAgain.style.background = "var(--ink)";
+        playAgain.style.marginTop = "10px";
+        playAgain.textContent = "Play again";
+
+        playAgain.addEventListener("click", () => {
+            location.reload();
+        });
+
+        rac("end").replaceChildren(
+            title,
+            result,
+            playAgain
+        );
     }
 
-    $("approve").onclick = () => repondre(true);
-    $("refuse").onclick = () => repondre(false);
-    $("next").onclick = suivant;
-    charger();
+    // ===== 8. BUTTON EVENTS =====
+    rac("approve").addEventListener("click", () => {
+        answer(true);
+    });
+
+    rac("refuse").addEventListener("click", () => {
+        answer(false);
+    });
+
+    rac("nextButton").addEventListener("click", nextCard);
+
+    start_game();
+
 </script>
+
 </body>
 </html>

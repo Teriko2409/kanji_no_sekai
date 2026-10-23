@@ -70,7 +70,6 @@ def menu():
 
     return render_template("kanji_no_sekai_menu_login.html")
 
-
 @app.route('/category')
 def category_menu():
     return render_template("kanji_no_sekai_menu_category.html",
