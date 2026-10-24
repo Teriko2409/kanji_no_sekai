@@ -10,7 +10,7 @@ Kanji Reading :
 
 Kanji Writing : 
 
-- SabakKan ❌
+- SabakKan 🔧
 
 - Ji-KanRun ❌
 
@@ -18,7 +18,7 @@ Kanji Meaning :
 
 - Infinite Kanji ❌
 
-- Kanji Passport, please 🔧
+- Kanji Passport, please ✅
 
 Kanji Distinction :
 
