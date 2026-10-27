@@ -188,7 +188,6 @@
             font-weight: 600;
         }
 
-        /* Answer buttons */
         .btns {
             display: flex;
             justify-content: space-around;
@@ -220,7 +219,6 @@
             background: var(--ok);
         }
 
-        /* End screen and error messages */
         #end {
             display: none;
             text-align: center;
@@ -352,7 +350,6 @@
 
 
     async function start_game() {
-        playMusic();
 
         const response_data_kanji = await fetch(data_kanji_launcher_url);
 
@@ -360,12 +357,6 @@
 
         kanji = kanji_data_json;
 
-
-        const response_data_player = await fetch(data_kanji_launcher_url);
-
-        const player_kanji_already_json = await response_data_player.json();
-
-        player_kanji_already = player_kanji_already_json
 
         kanjiWalksIn();
 
@@ -468,7 +459,7 @@
 
     }
 
-    // ===== 6. NEXT KANJI =====
+
     function nextCard() {
         if (!hasAnswered) {
             return;
@@ -486,7 +477,7 @@
         rac("walker").className = "out";
     }
 
-    // ===== 7. END OF GAME =====
+
     function finishGame() {
 
         rac("stage").style.display = "none";
@@ -520,7 +511,7 @@
         );
     }
 
-    // ===== 8. BUTTON EVENTS =====
+
     rac("approve").addEventListener("click", () => {
         answer(true);
     });
@@ -529,7 +520,10 @@
         answer(false);
     });
 
+    playMusic({{mute}});
     start_game();
+
+
 
 </script>
 

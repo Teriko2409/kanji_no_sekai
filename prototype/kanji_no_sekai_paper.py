@@ -16,18 +16,20 @@ def paper_launcher():
 
     id_player = session['player_id']
     level = session['level']
+    mute = session['mute']
 
     print('Menu : KNS paper')
     print(f"Player ID : {id_player}")
     print(f"Level: {level}")
+    print(f"Mute: {mute}")
 
     return render_template(
         "kanji_no_sekai_paper.html",
         player_id=id_player,
         level=level,
+        mute=mute
 
     )
-
 
 @paper.route('/paper_data')
 def data_launcher():
@@ -40,27 +42,6 @@ def data_launcher():
         return jsonify(data)
     except (FileNotFoundError, ValueError):
         return jsonify([])
-
-@paper.route('/player_data')
-def player_data_launcher():
-
-    if 'level' not in session:
-        return jsonify([])
-
-    try:
-        current_player_id = session['player_id']
-        current_player_id_int = int(current_player_id)
-        with open('players_data.json', 'r', encoding='utf-8') as file:
-            players = json.load(file)
-
-        for player in players:
-            if player.get('player_id') == current_player_id_int:
-                kanjis = player.get('kanjis', [])
-
-        return jsonify(kanjis)
-    except (FileNotFoundError, ValueError):
-        return jsonify([])
-
 def download_json_data_paper(level_jlpt, json_file_path="paperkanji.json"):
 
     number_kanji = 10

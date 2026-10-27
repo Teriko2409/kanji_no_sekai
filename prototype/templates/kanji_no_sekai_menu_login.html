@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>kanji no sekai login</title>
@@ -21,7 +21,8 @@
             background: white;
         }
 
-        input, select {
+
+        input[type="number"], select {
             display: block;
             margin: 12px 0;
             padding: 8px;
@@ -29,6 +30,20 @@
             border: 1px solid #ccc;
             border-radius: 10px;
             box-sizing: border-box;
+        }
+
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-left: 8px;
+            width: auto;
+            cursor: pointer;
         }
 
         button {
@@ -63,7 +78,8 @@
 
     <form method="POST" action="{{ url_for('menu') }}">
         <label for="id_player">Player info:</label>
-        <input type="number" id="id_player" name="id_player" min="1" max ='10' placeholder="ID" required>
+        <input type="number" id="id_player" name="id_player" min="1" max="10" placeholder="ID" required>
+
         <label for="level">JLPT level :</label>
         <select id="level" name="level" required>
             <option value="5">JLPT N5</option>
@@ -73,7 +89,9 @@
             <option value="1">JLPT N1</option>
         </select>
 
-        <button type="submit">Se connecter</button>
+        <label for="mute" class="checkbox-group">Mute Music :<input type="checkbox" id="mute" name="mute" value="1"></label>
+
+        <button type="submit">Login</button>
     </form>
 </div>
 </body>

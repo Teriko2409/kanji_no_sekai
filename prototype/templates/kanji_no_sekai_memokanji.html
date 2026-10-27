@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -168,9 +168,16 @@
 <audio id="theme" loop>
     <source src="{{ url_for('static', filename='audio/memokanji_theme.mp3') }}" type="audio/mpeg">
 </audio>
+
 <script src="{{ url_for('static', filename='kanji_no_sekai_audio_setting.js') }}"></script>
 <script>
-    // ============VARIABLES============
+
+    const rac = (id_element_page) => document.getElementById(id_element_page);
+
+    const kanji_data_url = '/memokanji_data';
+    const player_data_url = '/player_data';
+    const save_player_url = '/player_save';
+
     let kanji_on_carte = [];
     let kanji_already_player = [];
     let time_error_to_watch = 1200;
@@ -179,12 +186,9 @@
 
     // ============ CARTES SETTING============
     async function charger() {
-        playMusic()
-        const reponse_on_carte = await fetch("/memokanji_data");
-        if (!reponse_on_carte.ok) return;
+        const reponse_on_carte = await fetch(kanji_data_url);
         kanji_on_carte = await reponse_on_carte.json();
-        const reponse_from_player = await fetch("/memokanji_data");
-        if (!reponse_from_player.ok) return;
+        const reponse_from_player = await fetch(player_data_url);
         kanji_already_player = await reponse_from_player.json();
         nouvellePartie();
     }
@@ -197,10 +201,10 @@
         premiere = null;
         verrou = false;
 
-        document.getElementById("end").style.display = "none";
+        rac("end").style.display = "none";
 
         const nbPairesTotal = Math.floor(kanji_on_carte.length / 2);
-        document.getElementById("nbPairesTotal").textContent = nbPairesTotal;
+        rac("nbPairesTotal").textContent = nbPairesTotal;
         majStats();
 
         const cartesMelangees = [...kanji_on_carte];
@@ -209,7 +213,7 @@
             [cartesMelangees[i], cartesMelangees[j]] = [cartesMelangees[j], cartesMelangees[i]];
         }
 
-        const grille = document.getElementById("table");
+        const grille = rac("table");
         grille.innerHTML = "";
 
         const fragment = document.createDocumentFragment();
@@ -260,12 +264,12 @@
     }
 
     function majStats() {
-        document.getElementById("nbPaires").textContent = paires;
-        document.getElementById("nbErreurs").textContent = erreurs;
+        rac("nbPaires").textContent = paires;
+        rac("nbErreurs").textContent = erreurs;
     }
 
     async function finir() {
-        document.getElementById("resume").textContent = `間違い : ${erreurs}`;
+        rac("resume").textContent = `間違い : ${erreurs}`;
 
         const box = document.getElementById("win_id");
         box.innerHTML = "";
@@ -283,12 +287,12 @@
             box.appendChild(sp);
         });
 
-        document.getElementById("end").style.display = "block";
+        rac("end").style.display = "block";
 
 
         if (kanjisNouveaux.length > 0) {
             try {
-                await fetch('/update_kanjis', {
+                await fetch(save_player_url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -300,8 +304,9 @@
             }
         }
     }
-
+    playMusic({{ mute }});
     charger();
+
 
 </script>
 </body>

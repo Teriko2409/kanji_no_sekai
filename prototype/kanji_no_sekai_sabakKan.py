@@ -16,7 +16,7 @@ def sabakkan_launcher():
     id_player = session['player_id']
     level = session['level']
 
-    print('Menu : KNS sabakkan')
+    print('Menu : KNS sabakkan.json')
     print(f"Player ID : {id_player}")
     print(f"Level: {level}")
 
