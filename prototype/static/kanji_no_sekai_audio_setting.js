@@ -4,7 +4,9 @@ if (music) {
     music.volume = 0.05;
     music.loop = true;
 
-    function playMusic() {
-        music.play()
+    function playMusic(mute) {
+        if (mute == 0) {
+            music.play()
+        }
     }
 }
