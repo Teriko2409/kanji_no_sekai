@@ -1,6 +1,6 @@
 import json
 import random
-from flask import Blueprint, render_template, redirect, url_for, session, jsonify, request
+from flask import Blueprint, render_template, redirect, url_for, session, jsonify
 
 memokanji = Blueprint('memokanji', __name__)
 
@@ -37,6 +37,18 @@ def launcher():
 
     if 'player_id' not in session:
         return redirect(url_for('menu'))
+
+    id_player = session['player_id']
+    level = session['level']
+    mute = session['mute']
+    print('Menu : KNS Memokanji')
+    print(f"Player ID : {id_player}")
+    print(f"Level: {level}")
+
+    if mute == 0:
+        print("Music : ON")
+    else:
+        print("Music : OFF")
 
     return render_template("kanji_no_sekai_memokanji.html",
                            player_id=session['player_id'],

@@ -21,7 +21,11 @@ def paper_launcher():
     print('Menu : KNS paper')
     print(f"Player ID : {id_player}")
     print(f"Level: {level}")
-    print(f"Mute: {mute}")
+
+    if mute == 0:
+        print("Music : ON")
+    else:
+        print("Music : OFF")
 
     return render_template(
         "kanji_no_sekai_paper.html",

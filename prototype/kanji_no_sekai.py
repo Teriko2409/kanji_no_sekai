@@ -66,10 +66,14 @@ def menu():
             session['player_id'] = id_player
             session['level'] = level
 
-            print('Menu : Kanji no Sekai')
+            print('Kanji no Sekai')
             print(f"Player ID : {id_player}")
             print(f"Level: {level}")
-            print(f"Mute: {mute}")
+
+            if mute == 0:
+                print("Music : ON")
+            else:
+                print("Music : OFF")
 
 
             return redirect(url_for('category_menu'))
