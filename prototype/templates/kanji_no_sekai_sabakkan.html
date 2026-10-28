@@ -1,10 +1,528 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>SabaKkan</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SabakKan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #2b2b2b;
+            --paper: #f4efe6;
+            --red: #d32f2f;
+            --green: #2e7d32;
+            --orange: #ef6c00;
+            --gold: #d4af37;
+        }
+        .button_retour {
+            padding: 8px 16px;
+            font-size: 15px;
+            background: mediumvioletred;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Klee One", system-ui, sans-serif;
+            margin: 0;
+            padding: 12px;
+            background: var(--paper);
+            color: var(--ink);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 100vh;
+            max-width: 480px;
+            margin-inline: auto;
+        }
+
+        .top-bar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        .btn-back {
+            padding: 6px 12px;
+            background: #d81b60;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .section {
+            width: 100%;
+            text-align: center;
+        }
+
+        .section-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+            color: #555;
+        }
+
+        .cards-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            min-height: 110px;
+        }
+
+        .card {
+            width: 75px;
+            height: 110px;
+            border: 3px solid var(--ink);
+            border-radius: 10px;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+            cursor: default;
+            position: relative;
+        }
+
+        .card .kanji {
+            font-size: 2.4rem;
+            line-height: 1;
+            font-weight: 600;
+        }
+
+        .card .value {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .card.red { color: var(--red); border-color: var(--red); }
+        .card.green { color: var(--green); border-color: var(--green); }
+        .card.orange { color: var(--orange); border-color: var(--orange); }
+
+        .card.back {
+            background: #c8402f;
+            color: #fff;
+            border-color: var(--ink);
+            font-size: 1.8rem;
+        }
+
+        .card.shu-slot {
+            border: 3px solid var(--gold);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        .card.pick {
+            cursor: pointer;
+            border-style: dashed;
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(0.97); }
+            to { transform: scale(1.03); }
+        }
+
+        .center-board {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            width: 100%;
+            background: #e8e0d0;
+            border: 2px solid var(--ink);
+            border-radius: 12px;
+            padding: 10px;
+            margin: 8px 0;
+        }
+
+        .center-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .deck-box {
+            width: 65px;
+            height: 90px;
+            background: #c8402f;
+            color: #fff;
+            border: 2px solid var(--ink);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+
+        .deck-box:disabled {
+            opacity: 0.4;
+            cursor: default;
+        }
+
+        .action-side-btn {
+            padding: 8px 12px;
+            background: var(--orange);
+            color: #fff;
+            border: 2px solid var(--ink);
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .action-side-btn:disabled {
+            background: #ccc;
+            color: #777;
+            cursor: default;
+        }
+
+        #status {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+            min-height: 2.2em;
+            margin: 4px 0;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .action-btns button {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid var(--ink);
+            border-radius: 8px;
+            background: var(--ink);
+            color: #fff;
+            font-size: 0.9rem;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .action-btns button:disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+
+        #result {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            border: 3px solid var(--ink);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            z-index: 10;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        #result .verdict {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin: 8px 0;
+        }
+    </style>
 </head>
 <body>
 
+<div class="top-bar">
+    <button
+            class="button_retour"
+            onclick="location.href='/choice_game_writing'">
+        BACK
+    </button>
+    <div>ID : {{ player_id }} | Niveau : {{ level }}</div>
+</div>
+
+<div class="section">
+    <div class="section-label">BOT</div>
+    <div class="cards-container" id="botRow"></div>
+</div>
+
+<div class="center-board">
+    <div class="center-col">
+        <span>DECK</span>
+        <button class="deck-box" id="deckBtn" onclick="drawCard()">
+            <span>🎴</span>
+            <span id="deckCount">0</span>
+        </button>
+    </div>
+
+    <div class="center-col">
+        <span>BOT SHU (守)</span>
+        <div id="botShuSlot"></div>
+    </div>
+
+    <div class="center-col">
+        <span>YOU SHU (守)</span>
+        <div id="playerShuSlot"></div>
+    </div>
+
+    <div class="center-col">
+        <span>SPECIAL</span>
+        <button class="action-side-btn" id="boomBtn" onclick="useKanBoomu()">KanBoomu</button>
+    </div>
+</div>
+
+<div id="status">Chargement...</div>
+
+<div class="section">
+    <div class="section-label">VOUS (Main)</div>
+    <div class="cards-container" id="playerRow"></div>
+    <div class="action-btns" style="margin-top: 10px;">
+        <button id="endTurnBtn" onclick="endTurn()">Fin du tour</button>
+        <button id="revealBtn" onclick="revealCards()">Révéler / Fin (Tour <span id="turnNum">1</span>/5)</button>
+    </div>
+</div>
+
+<div id="result">
+    <div id="resultText"></div>
+    <div class="verdict" id="resultVerdict"></div>
+    <br>
+    <button class="btn-back" style="padding: 10px 20px; font-size: 1rem;" onclick="location.reload()">Rejouer</button>
+</div>
+<audio id="theme" loop>
+    <source src="{{ url_for('static', filename='audio/sabakkan_theme.mp3') }}" type="audio/mpeg">
+</audio>
+<script src="{{ url_for('static', filename='kanji_no_sekai_audio_setting.js') }}"></script>
+<script>
+    const DATA_URL = "/sabakkan_data";
+    const SAVE_URL = "/update_kanjis";
+    const RESULT_URL = "/sabakkan_result"; // Nouvelle route Flask pour ta fonction Python
+    const $ = id => document.getElementById(id);
+
+    let deck = [];
+    let playerHand = [];
+    let botHand = [];
+    let playerShu = null, botShu = null;
+    let turn = 1, phase = "chooseShu", hasDrawn = false, boomUsed = false;
+    let kanji_learned = [];
+
+    async function start() {
+        const response = await fetch(DATA_URL);
+        const cards = response.ok ? await response.json() : [];
+
+        const fallback = [
+            {kanji:"水", color:"red", strokes:-4},
+            {kanji:"木", color:"green", strokes:4},
+            {kanji:"土", color:"red", strokes:-3}, {kanji:"一", color:"orange", strokes:0},
+            {kanji:"乙", color:"orange", strokes:0}, {kanji:"山", color:"red", strokes:-3},
+            {kanji:"人", color:"red", strokes:-2}, {kanji:"力", color:"green", strokes:2}
+        ];
+
+        deck = (cards.length >= 8 ? cards : fallback).sort(() => Math.random() - 0.5);
+
+        playerHand = [deck.pop(), deck.pop(), deck.pop()];
+        botHand = [deck.pop(), deck.pop(), deck.pop()];
+
+        render();
+    }
+
+    function chooseShu(index) {
+        if (phase !== "chooseShu") return;
+        playerShu = playerHand.splice(index, 1)[0];
+
+        const botIndex = Math.floor(Math.random() * botHand.length);
+        botShu = botHand.splice(botIndex, 1)[0];
+
+        phase = "play";
+        render();
+    }
+
+    function drawCard() {
+        if (phase !== "play" || hasDrawn || deck.length === 0) return;
+        playerHand.push(deck.pop());
+        hasDrawn = true;
+        render();
+    }
+
+    function discardCard(index) {
+        if (phase !== "play") return;
+
+        if (playerHand.length <= 1) {
+            alert("Vous devez garder au moins 1 carte dans votre main !");
+            return;
+        }
+        playerHand.splice(index, 1);
+        render();
+    }
+
+    function useKanBoomu() {
+        if (phase !== "play" || boomUsed || botHand.length === 0) return;
+
+        const stolenCard = botHand.splice(Math.floor(Math.random() * botHand.length), 1)[0];
+        playerHand = [stolenCard];
+        boomUsed = true;
+        hasDrawn = true;
+
+        alert("KanBoomu activé ! Vos cartes ont été sacrifiées et vous avez pris une carte au Bot.");
+        render();
+    }
+
+    function endTurn() {
+        if (phase !== "play") return;
+
+        if (deck.length > 0 && Math.random() < 0.6 && botHand.length < 3) {
+            botHand.push(deck.pop());
+        } else if (botHand.length > 1) {
+            botHand.splice(Math.floor(Math.random() * botHand.length), 1);
+        }
+
+        turn++;
+        hasDrawn = false;
+
+        if (turn > 5) {
+            revealCards();
+            return;
+        }
+        render();
+    }
+
+
+    async function revealCards() {
+        if (phase === "over") return;
+
+        if (turn >= 5 && playerHand.length < 1) {
+            alert("Vous devez avoir au moins 1 carte en main pour révéler !");
+            return;
+        }
+
+        phase = "over";
+
+        // Regroupe le Shu et la main pour chaque joueur
+        const playerAll = [playerShu, ...playerHand];
+        const botAll = [botShu, ...botHand];
+
+        try {
+            // Envoi des mains à la route Python via fetch (POST)
+            const response = await fetch(RESULT_URL, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    hand_play: playerAll,
+                    hand_bot: botAll
+                })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+
+                $("resultText").innerHTML = `Votre main : <b>${result.player_label}</b><br>Main du Bot : <b>${result.bot_label}</b>`;
+                $("resultVerdict").textContent = result.verdict;
+            } else {
+                $("resultVerdict").textContent = "Erreur de calcul du score par le serveur.";
+            }
+        } catch (e) {
+            $("resultVerdict").textContent = "Impossible de contacter le serveur Python.";
+        }
+
+        $("result").style.display = "block";
+
+        // Sauvegarde des kanjis appris
+        kanji_learned = [...new Set(playerAll.map(c => c.kanji))];
+        fetch(SAVE_URL, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({kanjis: kanji_learned})
+        }).catch(() => {});
+
+        render();
+    }
+
+    function createCardElement(card, hidden = false, isShu = false, onClick = null) {
+        const div = document.createElement("div");
+        if (hidden) {
+            div.className = "card back";
+            div.textContent = "裏";
+            return div;
+        }
+        div.className = `card ${card.color}`;
+        if (isShu) div.classList.add("shu-slot");
+
+        const val = card.color === "orange" ? "±1" : (card.color === "red" ? "-" : "+") + card.strokes;
+        div.innerHTML = `<div class="kanji">${card.kanji}</div><div class="value">${val}</div>`;
+        if (onClick) div.onclick = onClick;
+        return div;
+    }
+
+    function render() {
+        $("botRow").innerHTML = "";
+        botHand.forEach(card => {
+            $("botRow").appendChild(createCardElement(card, phase !== "over"));
+        });
+
+        $("botShuSlot").innerHTML = "";
+        if (botShu) {
+            $("botShuSlot").appendChild(createCardElement(botShu, phase !== "over", true));
+        }
+
+        $("playerShuSlot").innerHTML = "";
+        if (playerShu) {
+            $("playerShuSlot").appendChild(createCardElement(playerShu, false, true));
+        }
+
+        $("playerRow").innerHTML = "";
+        playerHand.forEach((card, index) => {
+            let elem;
+            if (phase === "chooseShu") {
+                elem = createCardElement(card, false, false, () => chooseShu(index));
+                elem.classList.add("pick");
+                elem.title = "Cliquez pour choisir comme Shu 守";
+            } else {
+                elem = createCardElement(card, false, false, null);
+                elem.ondblclick = () => discardCard(index);
+                elem.title = "Double-cliquez pour défausser (gardez au moins 1 en main)";
+            }
+            $("playerRow").appendChild(elem);
+        });
+
+        $("deckCount").textContent = deck.length;
+        $("deckBtn").disabled = phase !== "play" || hasDrawn || deck.length === 0;
+        $("boomBtn").disabled = phase !== "play" || boomUsed;
+        $("endTurnBtn").disabled = phase !== "play";
+        $("revealBtn").disabled = phase !== "play";
+        $("turnNum").textContent = turn;
+
+        if (phase === "chooseShu") {
+            $("status").textContent = "Étape 1 : Cliquez sur une de vos 3 cartes en bas pour fixer votre SHU (守) !";
+        } else if (phase === "play") {
+            $("status").textContent = `Tour ${turn}/5 — Piochez, défaussez (double-clic) ou passez votre tour.`;
+        } else {
+            $("status").textContent = "Partie terminée.";
+        }
+    }
+    playMusic({{mute}});
+    start();
+</script>
 </body>
 </html>
