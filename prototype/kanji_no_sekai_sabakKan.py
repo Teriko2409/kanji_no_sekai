@@ -80,24 +80,9 @@ def resultat_comparatif_player_bot(hand_play, hand_bot):
     verdict_final = 'PlaceHolder'
 
     player_resultat = resultat_hand(hand_play)
-    print("Player")
-    print(f"type : {player_resultat['hand_type']}")
-    print(f"Score : {player_resultat['score']}")
-    player_gap_to_zero = (abs(0 - player_resultat['score']))
-    print(f'Gap: {player_gap_to_zero}')
-    print(f"Big Number: {player_resultat['big_number']}")
-    print(f"Hand : {player_resultat['hand_length']}")
 
     bot_resultat = resultat_hand(hand_bot)
-    print("=" * 33)
 
-    print("Bot")
-    print(f"type : {bot_resultat['hand_type']}")
-    print(f"Score : {bot_resultat['score']}")
-    bot_gap_to_zero = (abs(0 - bot_resultat['score']))
-    print(f'Gap: {bot_gap_to_zero}')
-    print(f"Big Number: {bot_resultat['big_number']}")
-    print(f"Hand : {bot_resultat['hand_length']}")
 
     if player_resultat['hand_type'] == '完零':
         verdict_final = message_verdict(add_message= "完零",winner='Player')
@@ -111,13 +96,19 @@ def resultat_comparatif_player_bot(hand_play, hand_bot):
     elif player_resultat['hand_type'] == '零' and not bot_resultat['hand_type'] == '零':
         verdict_final = message_verdict(add_message="零", winner='Player')
 
-    elif player_resultat['hand_type'] == '超':
+    elif player_resultat['hand_type'] == '超' and not bot_resultat['hand_type'] == '超':
         verdict_final = message_verdict(add_message="超 from the Player", winner='Bot')
 
-    elif bot_resultat['hand_type'] == '超':
+    elif bot_resultat['hand_type'] == '超' and not player_resultat['hand_type'] == '超':
         verdict_final = message_verdict(add_message="超 from the Bot", winner='Player')
 
+    elif bot_resultat['hand_type'] == '超' == player_resultat['hand_type'] == '超':
+        verdict_final = message_verdict(add_message="", winner='')
+
     else:
+        player_gap_to_zero = (abs(0 - player_resultat['score']))
+
+        bot_gap_to_zero = (abs(0 - bot_resultat['score']))
 
         if bot_gap_to_zero > player_gap_to_zero:
 
@@ -136,11 +127,6 @@ def resultat_comparatif_player_bot(hand_play, hand_bot):
                 verdict_final = message_verdict(add_message=f'The Big Number : Player {player_resultat["big_number"]} / Bot {bot_resultat["big_number"]}', winner='Player')
 
             if bot_resultat["big_number"] == player_resultat["big_number"]:
-                if bot_resultat["hand_length"] > player_resultat["hand_length"]:
-                    verdict_final = message_verdict(add_message="Number of Cartes", winner='Bot')
-                if bot_resultat["hand_length"] < player_resultat["hand_length"]:
-                    verdict_final = message_verdict(add_message="Number of Cartes", winner='Player')
-                if bot_resultat["hand_length"] == player_resultat["hand_length"]:
                     verdict_final = message_verdict(add_message= "", winner = '')
 
 
@@ -212,8 +198,7 @@ def resultat_hand(hand):
     resultat = {
         "hand_type": hand_type,
         "score": score_with_joker,
-        "big_number": big_number,
-        "hand_length": hand_length
+        "big_number": big_number
     }
 
     return resultat
