@@ -25,7 +25,7 @@
             --ok: #3a8a4f;
         }
 
-        * {
+        *, *::before, *::after {
             box-sizing: border-box;
         }
 
@@ -43,12 +43,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
-        }
-
-        #stats {
-            font-variant-numeric: tabular-nums;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
 
         #table {
@@ -112,11 +107,13 @@
             border-radius: 12px;
             padding: 16px;
             margin-top: 16px;
+            text-align: center;
         }
 
         #end .win {
             display: flex;
             flex-wrap: wrap;
+            justify-content: center;
             gap: 8px;
             margin: 12px 0;
         }
@@ -152,18 +149,13 @@
     </div>
 </header>
 
-<div id="stats">
-    組 : <span id="nbPaires">0</span>/<span id="nbPairesTotal">8</span><br>
-    間違い : <span id="nbErreurs">0</span>
-</div>
 <div id="table"></div>
 
 <div id="end">
     <h2>成功 !🎉</h2>
-    <div id="resume"></div>
     <p>新</p>
     <div class="win" id="win_id"></div>
-    <button class="action" onclick="charger()">やり直す</button>
+    <button class="action" onclick="loadGame()">やり直す</button>
 </div>
 <audio id="theme" loop>
     <source src="{{ url_for('static', filename='audio/memokanji_theme.mp3') }}" type="audio/mpeg">
@@ -181,107 +173,86 @@
     let kanji_on_carte = [];
     let kanji_already_player = [];
     let time_error_to_watch = 1200;
-    let premiere = null, verrou = false;
-    let paires = 0, erreurs = 0;
+    let firstCard = null, lockBoard = false;
+    let pairsCount = 0;
 
-    // ============ CARTES SETTING============
-    async function charger() {
-        const reponse_on_carte = await fetch(kanji_data_url);
-        kanji_on_carte = await reponse_on_carte.json();
-        const reponse_from_player = await fetch(player_data_url);
-        kanji_already_player = await reponse_from_player.json();
-        nouvellePartie();
+    // ============ CARDS SETTING ============
+    async function loadGame() {
+        const responseCards = await fetch(kanji_data_url);
+        kanji_on_carte = await responseCards.json();
+        const responsePlayer = await fetch(player_data_url);
+        kanji_already_player = await responsePlayer.json();
+        newGame();
     }
 
-    // ============ PARTIE ============
-    function nouvellePartie() {
-
-        paires = 0;
-        erreurs = 0;
-        premiere = null;
-        verrou = false;
+    // ============ GAME ============
+    function newGame() {
+        pairsCount = 0;
+        firstCard = null;
+        lockBoard = false;
 
         rac("end").style.display = "none";
 
-        const nbPairesTotal = Math.floor(kanji_on_carte.length / 2);
-        rac("nbPairesTotal").textContent = nbPairesTotal;
-        majStats();
-
-        const cartesMelangees = [...kanji_on_carte];
-        for (let i = cartesMelangees.length - 1; i > 0; i--) {
+        const shuffledCards = [...kanji_on_carte];
+        for (let i = shuffledCards.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [cartesMelangees[i], cartesMelangees[j]] = [cartesMelangees[j], cartesMelangees[i]];
+            [shuffledCards[i], shuffledCards[j]] = [shuffledCards[j], shuffledCards[i]];
         }
 
-        const grille = rac("table");
-        grille.innerHTML = "";
+        const grid = rac("table");
+        grid.innerHTML = "";
 
         const fragment = document.createDocumentFragment();
 
-        cartesMelangees.forEach((ch) => {
-            const carte = document.createElement("button");
-            carte.className = "carte";
-            carte.dataset.id = ch;
-            carte.innerHTML = `<div class="face dos">後</div><div class="face avant"></div>`;
-            carte.querySelector(".avant").textContent = ch;
-            carte.addEventListener("click", () => cliquer(carte));
-            fragment.appendChild(carte);
+        shuffledCards.forEach((ch) => {
+            const card = document.createElement("button");
+            card.className = "carte";
+            card.dataset.id = ch;
+            card.innerHTML = `<div class="face dos">後</div><div class="face avant"></div>`;
+            card.querySelector(".avant").textContent = ch;
+            card.addEventListener("click", () => clickCard(card));
+            fragment.appendChild(card);
         });
 
-        grille.appendChild(fragment);
+        grid.appendChild(fragment);
     }
 
-    function cliquer(carte) {
-        if (verrou || carte === premiere || carte.classList.contains("trouvee")) return;
-        carte.classList.add("retournee");
+    function clickCard(card) {
+        if (lockBoard || card === firstCard || card.classList.contains("trouvee")) return;
+        card.classList.add("retournee");
 
-        if (!premiere) {
-            premiere = carte;
+        if (!firstCard) {
+            firstCard = card;
             return;
         }
 
-        if (premiere.dataset.id === carte.dataset.id) {
-            premiere.classList.add("trouvee");
-            carte.classList.add("trouvee");
+        if (firstCard.dataset.id === card.dataset.id) {
+            firstCard.classList.add("trouvee");
+            card.classList.add("trouvee");
 
-            premiere = null;
-            paires++;
-            majStats();
-            if (paires === kanji_on_carte.length / 2) finir();
+            firstCard = null;
+            pairsCount++;
+            if (pairsCount === kanji_on_carte.length / 2) finishGame();
         } else {
-            erreurs++;
-            majStats();
-
-            verrou = true;
-            const a = premiere, b = carte;
+            lockBoard = true;
+            const a = firstCard, b = card;
             setTimeout(() => {
                 a.classList.remove("retournee");
                 b.classList.remove("retournee");
-                verrou = false;
+                lockBoard = false;
             }, time_error_to_watch);
-            premiere = null;
+            firstCard = null;
         }
     }
 
-    function majStats() {
-        rac("nbPaires").textContent = paires;
-        rac("nbErreurs").textContent = erreurs;
-    }
-
-    async function finir() {
-        rac("resume").textContent = `間違い : ${erreurs}`;
-
+    async function finishGame() {
         const box = document.getElementById("win_id");
         box.innerHTML = "";
 
+        const uniqueKanjis = [...new Set(kanji_on_carte)];
+        const newKanjis = uniqueKanjis.filter(kanji => !kanji_already_player.includes(kanji));
 
-        const kanjisUniques = [...new Set(kanji_on_carte)];
-
-
-        const kanjisNouveaux = kanjisUniques.filter(kanji => !kanji_already_player.includes(kanji));
-
-
-        kanjisNouveaux.forEach(ch => {
+        newKanjis.forEach(ch => {
             const sp = document.createElement("span");
             sp.textContent = ch;
             box.appendChild(sp);
@@ -289,24 +260,23 @@
 
         rac("end").style.display = "block";
 
-
-        if (kanjisNouveaux.length > 0) {
+        if (newKanjis.length > 0) {
             try {
                 await fetch(save_player_url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ kanjis: kanjisNouveaux })
+                    body: JSON.stringify({ kanjis: newKanjis })
                 });
             } catch (err) {
                 console.error("Erreur d'envoi des kanjis :", err);
             }
         }
     }
-    playMusic({{ mute }});
-    charger();
 
+    playMusic({{ mute }});
+    loadGame();
 
 </script>
 </body>
