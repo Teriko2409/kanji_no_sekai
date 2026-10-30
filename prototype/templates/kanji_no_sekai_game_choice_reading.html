@@ -73,7 +73,7 @@
 <p class="player-info">Player : ID {{ session.get('player_id') }}</p>
 <p class="player-info">JLPT : {{ session.get('level') }}</p>
 
-<a class="Category off" >Fun Kanji Beat<small>Soon</small></a>
+<a class="Category " href="{{ url_for('fun.fun_launcher') }}">Fun Kanji Beat<small>Soon</small></a>
 <a class="Category off" >Kan Bombu<small>Soon</small></a>
 </body>
 </html>
