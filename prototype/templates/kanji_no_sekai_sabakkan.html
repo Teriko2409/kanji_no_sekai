@@ -31,7 +31,6 @@
         }
 
         body {
-            font-family: "Klee One", system-ui, sans-serif;
             margin: 0;
             padding: 12px;
             background: var(--paper);
@@ -101,6 +100,7 @@
 
         .card .kanji {
             font-size: 2.4rem;
+            font-family: "Klee One", system-ui, sans-serif;
             line-height: 1;
             font-weight: 600;
         }
@@ -251,6 +251,14 @@
             font-weight: 600;
             margin: 8px 0;
         }
+
+        /* Shu du Bot : droit et toujours visible */
+        .card.bot-shu-visible {
+            border-color: var(--gold);
+        }
+        .card.player-shu-visible {
+            border-color: var(--gold);
+        }
     </style>
 </head>
 <body>
@@ -279,12 +287,12 @@
     </div>
 
     <div class="center-col">
-        <span>BOT SHU (守)</span>
+        <span>丸さんの守</span>
         <div id="botShuSlot"></div>
     </div>
 
     <div class="center-col">
-        <span>YOU SHU (守)</span>
+        <span>あなたの守</span>
         <div id="playerShuSlot"></div>
     </div>
 
@@ -318,29 +326,26 @@
 <script>
     const DATA_URL = "/sabakkan_data";
     const SAVE_URL = "/update_kanjis";
-    const RESULT_URL = "/sabakkan_result"; // Nouvelle route Flask pour ta fonction Python
-    const $ = id => document.getElementById(id);
+    const RESULT_URL = "/sabakkan_result";
+    const BOT_ACTION_URL = "/sabakkan_bot_action";
+    const rac = id => document.getElementById(id);
 
     let deck = [];
     let playerHand = [];
     let botHand = [];
     let playerShu = null, botShu = null;
-    let turn = 1, phase = "chooseShu", hasDrawn = false, boomUsed = false;
+    let turn = 1;
+    let phase = "chooseShu"; // "chooseShu", "play", "solo_turns", "over"
+    let hasDrawn = false;
+    let boomUsed = false;
+    let botBoomUsed = false;
     let kanji_learned = [];
 
     async function start() {
         const response = await fetch(DATA_URL);
         const cards = response.ok ? await response.json() : [];
 
-        const fallback = [
-            {kanji:"水", color:"red", strokes:-4},
-            {kanji:"木", color:"green", strokes:4},
-            {kanji:"土", color:"red", strokes:-3}, {kanji:"一", color:"orange", strokes:0},
-            {kanji:"乙", color:"orange", strokes:0}, {kanji:"山", color:"red", strokes:-3},
-            {kanji:"人", color:"red", strokes:-2}, {kanji:"力", color:"green", strokes:2}
-        ];
-
-        deck = (cards.length >= 8 ? cards : fallback).sort(() => Math.random() - 0.5);
+        deck = cards.sort(() => Math.random() - 0.5);
 
         playerHand = [deck.pop(), deck.pop(), deck.pop()];
         botHand = [deck.pop(), deck.pop(), deck.pop()];
@@ -359,26 +364,88 @@
         render();
     }
 
-    function drawCard() {
-        if (phase !== "play" || hasDrawn || deck.length === 0) return;
-        playerHand.push(deck.pop());
-        hasDrawn = true;
-        render();
+    async function playBotTurn() {
+        if (phase === "solo_turns") return "continue";
+
+        try {
+            const response = await fetch(BOT_ACTION_URL, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    bot_hand: botHand,
+                    player_hand_count: playerHand.length,
+                    deck_count: deck.length,
+                    turn: turn,
+                    bot_boom_used: botBoomUsed
+                })
+            });
+            if (response.ok) {
+                const decision = await response.json();
+
+                if (decision.action === "stop") {
+                    return "bot_stopped";
+                }
+                else if (decision.action === "kanboomu" && !botBoomUsed && playerHand.length > 0) {
+                    botBoomUsed = true;
+                    const stolenCard = playerHand.splice(Math.floor(Math.random() * playerHand.length), 1)[0];
+                    botHand = [stolenCard];
+                    alert("⚡ Le Bot a activé KanBoomu ! Il a sacrifié ses cartes et vous a pris une carte.");
+                }
+                else if (decision.action === "draw" && deck.length > 0 && botHand.length < 3) {
+                    botHand.push(deck.pop());
+                }
+                else if (decision.action === "discard" && botHand.length > 1) {
+                    let idx = decision.card_index_to_discard;
+                    if (idx === undefined || idx < 0 || idx >= botHand.length) idx = 0;
+                    botHand.splice(idx, 1);
+                }
+            }
+        } catch (e) {
+            console.log("Erreur bot action Python");
+        }
+        return "continue";
     }
 
-    function discardCard(index) {
-        if (phase !== "play") return;
+    async function drawCard() {
+        if ((phase !== "play" && phase !== "solo_turns") || hasDrawn || deck.length === 0) return;
+        playerHand.push(deck.pop());
+        hasDrawn = true;
+
+        if (phase === "solo_turns") {
+            checkTurnProgression();
+        } else {
+            let botStatus = await playBotTurn();
+            if (botStatus === "bot_stopped") {
+                startSoloTurns();
+            } else {
+                checkTurnProgression();
+            }
+        }
+    }
+
+    async function discardCard(index) {
+        if (phase !== "play" && phase !== "solo_turns") return;
 
         if (playerHand.length <= 1) {
             alert("Vous devez garder au moins 1 carte dans votre main !");
             return;
         }
         playerHand.splice(index, 1);
-        render();
+
+        if (phase === "solo_turns") {
+            checkTurnProgression();
+        } else {
+            let botStatus = await playBotTurn();
+            if (botStatus === "bot_stopped") {
+                startSoloTurns();
+            } else {
+                checkTurnProgression();
+            }
+        }
     }
 
     function useKanBoomu() {
-        if (phase !== "play" || boomUsed || botHand.length === 0) return;
+        if ((phase !== "play" && phase !== "solo_turns") || boomUsed || botHand.length === 0) return;
 
         const stolenCard = botHand.splice(Math.floor(Math.random() * botHand.length), 1)[0];
         playerHand = [stolenCard];
@@ -389,42 +456,63 @@
         render();
     }
 
-    function endTurn() {
-        if (phase !== "play") return;
+    async function endTurn() {
+        if (phase !== "play" && phase !== "solo_turns") return;
 
-        if (deck.length > 0 && Math.random() < 0.6 && botHand.length < 3) {
-            botHand.push(deck.pop());
-        } else if (botHand.length > 1) {
-            botHand.splice(Math.floor(Math.random() * botHand.length), 1);
+        if (phase === "solo_turns") {
+            checkTurnProgression();
+        } else {
+            let botStatus = await playBotTurn();
+            if (botStatus === "bot_stopped") {
+                startSoloTurns();
+            } else {
+                checkTurnProgression();
+            }
         }
+    }
 
+    function startSoloTurns() {
+        phase = "solo_turns";
+        alert("⚡ Le Bot a coupé le jeu ! Vous enchaînez vos tours restants d'affilée.");
+        render();
+    }
+
+    async function checkTurnProgression() {
         turn++;
         hasDrawn = false;
 
         if (turn > 5) {
-            revealCards();
+            await revealCards();
             return;
         }
         render();
     }
 
-
+    // --- FIN DE PARTIE / REVELATION (AVEC LE BOT QUI TERMINE SES TOURS) ---
     async function revealCards() {
         if (phase === "over") return;
 
-        if (turn >= 5 && playerHand.length < 1) {
+        if (playerHand.length < 1) {
             alert("Vous devez avoir au moins 1 carte en main pour révéler !");
             return;
         }
 
         phase = "over";
+        rac("status").textContent = "Fin anticipée ! Le Bot termine ses tours restants...";
+        render();
 
-        // Regroupe le Shu et la main pour chaque joueur
+        // Le bot joue tous les tours restants jusqu'au tour 5
+        while (turn <= 5) {
+            await playBotTurn();
+            turn++;
+            await new Promise(r => setTimeout(r, 600)); // Petite pause visuelle de 0.6s par tour
+            render();
+        }
+
         const playerAll = [playerShu, ...playerHand];
         const botAll = [botShu, ...botHand];
 
         try {
-            // Envoi des mains à la route Python via fetch (POST)
             const response = await fetch(RESULT_URL, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
@@ -436,19 +524,17 @@
 
             if (response.ok) {
                 const result = await response.json();
-
-                $("resultText").innerHTML = `Votre main : <b>${result.player_label}</b><br>Main du Bot : <b>${result.bot_label}</b>`;
-                $("resultVerdict").textContent = result.verdict;
+                rac("resultText").innerHTML = `あなたは: <b>${result.player_label}</b><br> 丸さんは: <b>${result.bot_label}</b>`;
+                rac("resultVerdict").textContent = result.verdict;
             } else {
-                $("resultVerdict").textContent = "Erreur de calcul du score par le serveur.";
+                rac("resultVerdict").textContent = "Erreur de calcul du score par le serveur.";
             }
         } catch (e) {
-            $("resultVerdict").textContent = "Impossible de contacter le serveur Python.";
+            rac("resultVerdict").textContent = "Impossible de contacter le serveur Python.";
         }
 
-        $("result").style.display = "block";
+        rac("result").style.display = "block";
 
-        // Sauvegarde des kanjis appris
         kanji_learned = [...new Set(playerAll.map(c => c.kanji))];
         fetch(SAVE_URL, {
             method: "POST",
@@ -463,7 +549,7 @@
         const div = document.createElement("div");
         if (hidden) {
             div.className = "card back";
-            div.textContent = "裏";
+            div.textContent = "後";
             return div;
         }
         div.className = `card ${card.color}`;
@@ -476,22 +562,24 @@
     }
 
     function render() {
-        $("botRow").innerHTML = "";
+        rac("botRow").innerHTML = "";
         botHand.forEach(card => {
-            $("botRow").appendChild(createCardElement(card, phase !== "over"));
+            rac("botRow").appendChild(createCardElement(card, phase !== "over"));
         });
 
-        $("botShuSlot").innerHTML = "";
+        rac("botShuSlot").innerHTML = "";
         if (botShu) {
-            $("botShuSlot").appendChild(createCardElement(botShu, phase !== "over", true));
+            const botShuElem = createCardElement(botShu, false, true);
+            botShuElem.classList.add("bot-shu-visible");
+            rac("botShuSlot").appendChild(botShuElem);
         }
 
-        $("playerShuSlot").innerHTML = "";
+        rac("playerShuSlot").innerHTML = "";
         if (playerShu) {
-            $("playerShuSlot").appendChild(createCardElement(playerShu, false, true));
+            rac("playerShuSlot").appendChild(createCardElement(playerShu, false, true));
         }
 
-        $("playerRow").innerHTML = "";
+        rac("playerRow").innerHTML = "";
         playerHand.forEach((card, index) => {
             let elem;
             if (phase === "chooseShu") {
@@ -503,22 +591,24 @@
                 elem.ondblclick = () => discardCard(index);
                 elem.title = "Double-cliquez pour défausser (gardez au moins 1 en main)";
             }
-            $("playerRow").appendChild(elem);
+            rac("playerRow").appendChild(elem);
         });
 
-        $("deckCount").textContent = deck.length;
-        $("deckBtn").disabled = phase !== "play" || hasDrawn || deck.length === 0;
-        $("boomBtn").disabled = phase !== "play" || boomUsed;
-        $("endTurnBtn").disabled = phase !== "play";
-        $("revealBtn").disabled = phase !== "play";
-        $("turnNum").textContent = turn;
+        rac("deckCount").textContent = deck.length;
+        rac("deckBtn").disabled = (phase !== "play" && phase !== "solo_turns") || hasDrawn || deck.length === 0;
+        rac("boomBtn").disabled = (phase !== "play" && phase !== "solo_turns") || boomUsed;
+        rac("endTurnBtn").disabled = phase !== "play" && phase !== "solo_turns";
+        rac("revealBtn").disabled = phase !== "play" && phase !== "solo_turns";
+        rac("turnNum").textContent = turn;
 
         if (phase === "chooseShu") {
-            $("status").textContent = "Étape 1 : Cliquez sur une de vos 3 cartes en bas pour fixer votre SHU (守) !";
+            rac("status").textContent = "皆さん ! Select your 守!";
         } else if (phase === "play") {
-            $("status").textContent = `Tour ${turn}/5 — Piochez, défaussez (double-clic) ou passez votre tour.`;
+            rac("status").textContent = `Tour ${turn}/5 — Piochez, défaussez (double-clic) ou finissez votre tour.`;
+        } else if (phase === "solo_turns") {
+            rac("status").textContent = `⚡ Tour ${turn}/5 — Le Bot a coupé ! À vous de jouer d'affilée.`;
         } else {
-            $("status").textContent = "Partie terminée.";
+            rac("status").textContent = "Partie terminée.";
         }
     }
     playMusic({{mute}});

@@ -1,5 +1,4 @@
-import json
-
+import json, random
 from flask import Blueprint, jsonify, render_template, request, redirect, url_for, session
 
 sabakkan = Blueprint('sabakkan', __name__)
@@ -36,34 +35,33 @@ def data_launcher():
         return jsonify(data)
     except (FileNotFoundError, ValueError):
         return jsonify([])
-
 def download_json_data_sabakkan(json_file_path="sabakkan.json"):
 
     with open(json_file_path, encoding="utf-8") as paperkanji_file:
-        kanji_data = json.load(paperkanji_file)
+        kanji_json = json.load(paperkanji_file)
 
+        kanjis = kanji_strokes_recup(kanji_json, 2)
 
-        for kanji in kanji_data:
-            if kanji['strokes'] < 0:
+        for kanji in kanjis:
+            if kanji["strokes"] < 0:
                 kanji["color"] = "red"
             else:
-                if kanji['strokes'] > 0:
+                if kanji["strokes"] > 0:
                     kanji["color"] = "green"
 
-        kanji_data.append({
+        kanjis.append({
             "kanji": "乙",
             "color": "orange",
             "strokes": 0
         })
 
-        kanji_data.append({
+        kanjis.append({
             "kanji": "一",
             "color": "orange",
             "strokes": 0
         })
 
-        return kanji_data
-
+        return kanjis
 
 @sabakkan.route('/sabakkan_result', methods=['POST'])
 def sabakkan_result():
@@ -144,7 +142,7 @@ def message_verdict(add_message, winner):
     if winner == 'Player':
         message = f'Player Win by {add_message}'
     elif winner == 'Bot':
-        message = f'Bot Win by {add_message}'
+        message = f'丸さん Win by {add_message}'
     else:
         message = 'Drew'
     return message
@@ -156,13 +154,12 @@ def joker(joker_number, score):
             score += 1
         else:
             score -= 1
-
         turn += 1
 
     return score
 def resultat_hand(hand):
 
-    hand_type = ''
+    hand_type = 'Placehorlder'
     seifu = 0
     score = 0
     hand_length = len(hand)
@@ -191,7 +188,7 @@ def resultat_hand(hand):
             else:
                 hand_type = f'{abs(score_with_joker)}負'
 
-        if (-4 > score_with_joker or score_with_joker > 4) and score_with_joker != 0:
+        if (-4 > score_with_joker or score_with_joker > 4):
             hand_type = "超"
 
 
@@ -202,4 +199,62 @@ def resultat_hand(hand):
     }
 
     return resultat
+def kanji_strokes_recup(kanji_file, number_strokes):
 
+    number_category = 3
+    if number_strokes > 10:
+        return []
+
+    kanji_positif = []
+    kanji_negatif = []
+
+    for i in kanji_file:
+        if i.get('strokes') == number_strokes:
+            kanji_positif.append(i)
+
+        if i.get('strokes') == (-number_strokes):
+            kanji_negatif.append(i)
+
+    kanji_positif_3 = random.sample(kanji_positif, number_category)
+    kanji_negatif_3 = random.sample(kanji_negatif, number_category)
+
+    kanji_cartes = kanji_positif_3 + kanji_negatif_3
+
+    return kanji_cartes + kanji_strokes_recup(kanji_file, number_strokes + 1)
+
+
+@sabakkan.route('/sabakkan_bot_action', methods=['POST'])
+def sabakkan_bot_action():
+    data = request.get_json()
+
+    bot_hand = data.get("bot_hand", [])
+
+    turn = data.get("turn")
+
+    bot_boom_used = data.get("bot_boom_used", False)
+
+    action = "nothing"
+
+    card_index_to_discard = None
+
+    bot_action_probability = random.random()
+
+
+    if turn > 2 and bot_action_probability < 0.10:
+        action = "stop"
+
+    elif not bot_boom_used and bot_action_probability and turn > 2 < 0.15:
+        action = "kanboomu"
+
+    elif len(bot_hand) < 1 or bot_action_probability < 0.25:
+        action = "draw"
+
+    elif len(bot_hand) > 2 or bot_action_probability < 0.20:
+        action = "discard"
+        card_index_to_discard = random.randint(0, len(bot_hand) - 1)
+
+    print(f'{action}')
+    return jsonify({
+        "action": action,
+        "card_index_to_discard": card_index_to_discard
+    })
