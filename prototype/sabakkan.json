@@ -17,6 +17,14 @@
     "strokes": 2
   },
   {
+    "kanji": "十",
+    "strokes": 2
+  },
+  {
+    "kanji": "二",
+    "strokes": -2
+  },
+  {
     "kanji": "力",
     "strokes": 2
   },
@@ -27,6 +35,14 @@
   {
     "kanji": "口",
     "strokes": -3
+  },
+  {
+    "kanji" : "子",
+    "strokes" : -3
+  },
+  {
+    "kanji" : "小",
+    "strokes": 3
   },
   {
     "kanji": "土",

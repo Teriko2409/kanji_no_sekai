@@ -273,7 +273,7 @@
 </div>
 
 <div class="section">
-    <div class="section-label">BOT</div>
+    <div class="section-label">丸さん</div>
     <div class="cards-container" id="botRow"></div>
 </div>
 
@@ -305,11 +305,11 @@
 <div id="status">Chargement...</div>
 
 <div class="section">
-    <div class="section-label">VOUS (Main)</div>
+    <div class="section-label">あなた</div>
     <div class="cards-container" id="playerRow"></div>
     <div class="action-btns" style="margin-top: 10px;">
         <button id="endTurnBtn" onclick="endTurn()">Fin du tour</button>
-        <button id="revealBtn" onclick="revealCards()">Révéler / Fin (Tour <span id="turnNum">1</span>/5)</button>
+        <button id="revealBtn" onclick="revealCards()">Révéler / Fin (Tour <span id="turnNum">1</span>/7)</button>
     </div>
 </div>
 
@@ -481,14 +481,14 @@
         turn++;
         hasDrawn = false;
 
-        if (turn > 5) {
+        if (turn > 7) {
             await revealCards();
             return;
         }
         render();
     }
 
-    // --- FIN DE PARTIE / REVELATION (AVEC LE BOT QUI TERMINE SES TOURS) ---
+    // --- FIN DE PARTIE / REVELATION (7 TOURS MAX) ---
     async function revealCards() {
         if (phase === "over") return;
 
@@ -501,11 +501,11 @@
         rac("status").textContent = "Fin anticipée ! Le Bot termine ses tours restants...";
         render();
 
-        // Le bot joue tous les tours restants jusqu'au tour 5
-        while (turn <= 5) {
+
+        while (turn <= 7) {
             await playBotTurn();
             turn++;
-            await new Promise(r => setTimeout(r, 600)); // Petite pause visuelle de 0.6s par tour
+            await new Promise(r => setTimeout(r, 600));
             render();
         }
 
@@ -555,7 +555,7 @@
         div.className = `card ${card.color}`;
         if (isShu) div.classList.add("shu-slot");
 
-        const val = card.color === "orange" ? "±1" : (card.color === "red" ? "-" : "+") + card.strokes;
+        const val = card.color === "orange" ? "±1" : (card.color === "red" ? "" : "+") + card.strokes;
         div.innerHTML = `<div class="kanji">${card.kanji}</div><div class="value">${val}</div>`;
         if (onClick) div.onclick = onClick;
         return div;
@@ -585,7 +585,7 @@
             if (phase === "chooseShu") {
                 elem = createCardElement(card, false, false, () => chooseShu(index));
                 elem.classList.add("pick");
-                elem.title = "Cliquez pour choisir comme Shu 守";
+                elem.title = "守";
             } else {
                 elem = createCardElement(card, false, false, null);
                 elem.ondblclick = () => discardCard(index);
@@ -604,9 +604,9 @@
         if (phase === "chooseShu") {
             rac("status").textContent = "皆さん ! Select your 守!";
         } else if (phase === "play") {
-            rac("status").textContent = `Tour ${turn}/5 — Piochez, défaussez (double-clic) ou finissez votre tour.`;
+            rac("status").textContent = `Turn : ${turn}/7`;
         } else if (phase === "solo_turns") {
-            rac("status").textContent = `⚡ Tour ${turn}/5 — Le Bot a coupé ! À vous de jouer d'affilée.`;
+            rac("status").textContent = `⚡ Turn :  ${turn}/7`;
         } else {
             rac("status").textContent = "Partie terminée.";
         }

@@ -246,10 +246,10 @@ def sabakkan_bot_action():
     elif not bot_boom_used and bot_action_probability and turn > 2 < 0.15:
         action = "kanboomu"
 
-    elif len(bot_hand) < 1 or bot_action_probability < 0.25:
+    elif len(bot_hand) < 1 or bot_action_probability < 0.35:
         action = "draw"
 
-    elif len(bot_hand) > 2 or bot_action_probability < 0.20:
+    elif len(bot_hand) > 2 or bot_action_probability < 0.40:
         action = "discard"
         card_index_to_discard = random.randint(0, len(bot_hand) - 1)
 
