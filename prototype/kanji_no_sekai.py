@@ -125,21 +125,50 @@ def choice_game_usage():
                            mute=session.get('mute'))
 
 # Player data
+@app.route('/player_data', methods=['GET'])
+def player_data():
+    if 'level' not in session:
+        return jsonify([])
+    try:
+        current_player_id = session['player_id']
+        current_player_id_int = int(current_player_id)
+
+        with open('players_data.json', 'r', encoding='utf-8') as file:
+            players = json.load(file)
+
+        for player in players:
+            if player.get('id') == current_player_id_int:
+                kanjis = player.get('kanjis', [])
+                return jsonify(kanjis), 200
+
+        return jsonify([]), 200
+
+    except (FileNotFoundError, ValueError):
+        return jsonify([]), 200
+
+
 @app.route("/player_save", methods=["POST"])
 def player_save():
     data = request.get_json()
+    if not data:
+        return jsonify({"status": "error", "message": "No JSON data"}), 400
+
     kanji_list = data.get("kanjis", [])
     player_id = session.get("player_id")
 
-    if player_id:
+    if not player_id:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+
+    try:
         player_id = int(player_id)
 
         with open("players_data.json", "r", encoding="utf-8") as file:
             players = json.load(file)
 
         player = next((p for p in players if p.get("id") == player_id), None)
+
         if not player:
-            return
+            return jsonify({"status": "error", "message": "Player not found"}), 404
 
         if "kanjis:" in player:
             del player["kanjis:"]
@@ -151,25 +180,10 @@ def player_save():
         with open("players_data.json", "w", encoding="utf-8") as f:
             json.dump(players, f, ensure_ascii=False, indent=2)
 
-@app.route('/player_data')
-def player_data():
-    if 'level' not in session:
-        return jsonify([])
-    try:
-        current_player_id = session['player_id']
-        current_player_id_int = int(current_player_id)
-        with open('players_data.json', 'r', encoding='utf-8') as file:
-            players = json.load(file)
+        return jsonify({"status": "success", "kanjis": new_kanjis}), 200
 
-        for player in players:
-            if player.get('id') == current_player_id_int:
-                kanjis = player.get('kanjis', [])
-                print(kanjis)
-
-        return jsonify(kanjis)
-    except (FileNotFoundError, ValueError):
-        return jsonify([])
-
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 if __name__ == '__main__':
 
     app.run(host='0.0.0.0', port=5000, debug=True)
