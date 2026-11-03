@@ -1,8 +1,5 @@
 import json
-import random
-import threading
 from flask import Blueprint,Flask, render_template, request, redirect, url_for, session,jsonify
-from datetime import date, timedelta, datetime
 from kanji_no_sekai_fun import fun
 from kanji_no_sekai_bombu import bombu
 from kanji_no_sekai_sabakKan import sabakkan
@@ -12,22 +9,11 @@ from kanji_no_sekai_paper import paper
 from kanji_no_sekai_memokanji import memokanji
 from kanji_no_sekai_kankey import kankey
 from kanji_no_sekai_kanter import kanter
+from kanji_no_sekai_function import print_player_info, read_session_key, player_data_get, player_data_save
 
-def read_session(chemin_fichier) -> str:
-
-    try:
-        with open(chemin_fichier, "r", encoding="utf-8") as f:
-            first_line = f.readline().strip()
-            return first_line
-    except FileNotFoundError:
-        print(f"Error File Not Found: '{chemin_fichier}'")
-        return ""
-    except Exception as error_message:
-        print(f"Error: {error_message}")
-        return ""
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = read_session("sessionKey")
+app.config['SECRET_KEY'] = read_session_key("sessionKey")
 
 #Routes for minigames
 
@@ -66,15 +52,7 @@ def menu():
             session['player_id'] = id_player
             session['level'] = level
 
-            print('Kanji no Sekai')
-            print(f"Player ID : {id_player}")
-            print(f"Level: {level}")
-
-            if mute == 0:
-                print("Music : ON")
-            else:
-                print("Music : OFF")
-
+            print_player_info(game_name='KNS Menu',player_id=id_player, level=level, mute=mute)
 
             return redirect(url_for('category_menu'))
 
@@ -126,64 +104,23 @@ def choice_game_usage():
 
 # Player data
 @app.route('/player_data', methods=['GET'])
-def player_data():
-    if 'level' not in session:
-        return jsonify([])
-    try:
-        current_player_id = session['player_id']
-        current_player_id_int = int(current_player_id)
+def player_data_launcher():
 
-        with open('players_data.json', 'r', encoding='utf-8') as file:
-            players = json.load(file)
+    current_player_id = session['player_id']
 
-        for player in players:
-            if player.get('id') == current_player_id_int:
-                kanjis = player.get('kanjis', [])
-                return jsonify(kanjis), 200
-
-        return jsonify([]), 200
-
-    except (FileNotFoundError, ValueError):
-        return jsonify([]), 200
-
+    return player_data_get(int(current_player_id))
 
 @app.route("/player_save", methods=["POST"])
-def player_save():
+def player_save_launcher():
+
     data = request.get_json()
-    if not data:
-        return jsonify({"status": "error", "message": "No JSON data"}), 400
 
     kanji_list = data.get("kanjis", [])
     player_id = session.get("player_id")
 
-    if not player_id:
-        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    return player_data_save(kanji_list=kanji_list, player_id=int(player_id))
 
-    try:
-        player_id = int(player_id)
 
-        with open("players_data.json", "r", encoding="utf-8") as file:
-            players = json.load(file)
-
-        player = next((p for p in players if p.get("id") == player_id), None)
-
-        if not player:
-            return jsonify({"status": "error", "message": "Player not found"}), 404
-
-        if "kanjis:" in player:
-            del player["kanjis:"]
-
-        kanji_current = player.get("kanjis", [])
-        new_kanjis = list(set(kanji_current + kanji_list))
-        player["kanjis"] = new_kanjis
-
-        with open("players_data.json", "w", encoding="utf-8") as f:
-            json.dump(players, f, ensure_ascii=False, indent=2)
-
-        return jsonify({"status": "success", "kanjis": new_kanjis}), 200
-
-    except Exception as e:
-        return jsonify({"status": "error", "message": str(e)}), 500
 if __name__ == '__main__':
 
     app.run(host='0.0.0.0', port=5000, debug=True)

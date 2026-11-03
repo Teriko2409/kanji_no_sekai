@@ -1,9 +1,9 @@
 import json
 import random
 from flask import Blueprint, render_template, redirect, url_for, session, jsonify
+from kanji_no_sekai_function import print_player_info
 
 memokanji = Blueprint('memokanji', __name__)
-
 
 def download_json_data(level_jlpt, json_file_path="memokanji.json"):
 
@@ -41,14 +41,8 @@ def launcher():
     id_player = session['player_id']
     level = session['level']
     mute = session['mute']
-    print('Menu : KNS Memokanji')
-    print(f"Player ID : {id_player}")
-    print(f"Level: {level}")
 
-    if mute == 0:
-        print("Music : ON")
-    else:
-        print("Music : OFF")
+    print_player_info(game_name='KNS Memokanji', player_id=id_player, level=level, mute=mute)
 
     return render_template("kanji_no_sekai_memokanji.html",
                            player_id=session['player_id'],

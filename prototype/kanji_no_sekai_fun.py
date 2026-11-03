@@ -4,6 +4,7 @@ import random
 import threading
 from flask import Blueprint, Flask, jsonify, render_template, request, redirect, url_for, session
 from datetime import date, timedelta, datetime
+from kanji_no_sekai_function import print_player_info
 fun = Blueprint('fun', __name__)
 
 
@@ -17,13 +18,7 @@ def fun_launcher():
     level = session['level']
     mute = session['mute']
 
-    print('Menu : KNS Fun beat')
-    print(f"Player ID : {id_player}")
-    print(f"Level: {level}")
+    print_player_info('KNS Fun beat',id_player=id_player, level=level, mute=mute)
 
-    if mute == 0:
-        print("Music : ON")
-    else:
-        print("Music : OFF")
 
     return render_template("kanji_no_sekai_fun.html",player_id=id_player,level=level, mute=mute)

@@ -1,9 +1,8 @@
 import json
-import time
 import random
-import threading
 from flask import Blueprint, Flask, jsonify, render_template, request, redirect, url_for, session
-from datetime import date, timedelta, datetime
+from kanji_no_sekai_function import print_player_info
+
 
 paper = Blueprint('paper', __name__)
 
@@ -18,14 +17,7 @@ def paper_launcher():
     level = session['level']
     mute = session['mute']
 
-    print('Menu : KNS paper')
-    print(f"Player ID : {id_player}")
-    print(f"Level: {level}")
-
-    if mute == 0:
-        print("Music : ON")
-    else:
-        print("Music : OFF")
+    print_player_info(game_name='KNS paper',player_id=id_player, level=level, mute=mute)
 
     return render_template(
         "kanji_no_sekai_paper.html",

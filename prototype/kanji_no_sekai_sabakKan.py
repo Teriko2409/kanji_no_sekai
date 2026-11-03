@@ -1,5 +1,6 @@
 import json, random
 from flask import Blueprint, jsonify, render_template, request, redirect, url_for, session
+from kanji_no_sekai_function import print_player_info
 
 sabakkan = Blueprint('sabakkan', __name__)
 
@@ -13,14 +14,8 @@ def sabakkan_launcher():
     level = session['level']
     mute = session['mute']
 
-    print('Menu : KNS SabakKan')
-    print(f"Player ID : {id_player}")
-    print(f"Level: {level}")
+    print_player_info(game_name='KNS SabakKan', player_id=id_player, level=level, mute=mute)
 
-    if mute == 0:
-        print("Music : ON")
-    else:
-        print("Music : OFF")
 
     return render_template("kanji_no_sekai_sabakkan.html",player_id=id_player,level=level, mute=mute)
 
