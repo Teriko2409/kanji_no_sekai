@@ -7,3 +7,7 @@ sessionkey
 README.md
 static/audio
 static/image
+Dockerfile
+compose.yaml
+Dockerfile
+requirements.txt
