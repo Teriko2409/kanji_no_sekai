@@ -4,7 +4,7 @@ Prototype for January
 
 Kanji Reading : 
 
-- Fun Kanji Beat🤔
+- Fun Kanji Beat 🔧
 
 - Kan-BOMBU 🤔
 
@@ -22,18 +22,18 @@ Kanji Meaning :
 
 Kanji Distinction :
 
-- MemoKanji 🔧
+- MemoKanji ✅
 
 - KanKey 🤔
 
 Kanji Usage : 
 
-- Kanter ❌
+- Kanter 🤔
 
 
 Un système de recompense : 
 
-- Kanjidex ❌
+- Kanjidex 🤔
 
 Nous avons utilisez le api kanjiapi pour récupèrer
 https://kanjiapi.dev/v1/kanji/jlpt-1
