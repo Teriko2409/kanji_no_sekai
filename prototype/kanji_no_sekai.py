@@ -9,6 +9,7 @@ from kanji_no_sekai_paper import paper
 from kanji_no_sekai_memokanji import memokanji
 from kanji_no_sekai_kankey import kankey
 from kanji_no_sekai_kanter import kanter
+from kanji_no_sekai_kanjidex import kanjidex
 from kanji_no_sekai_function import print_player_info, read_session_key, player_data_get, player_data_save
 
 
@@ -34,6 +35,8 @@ app.register_blueprint(memokanji)
 app.register_blueprint(kankey)
 
 app.register_blueprint(kanter)
+
+app.register_blueprint(kanjidex)
 
 @app.route('/', methods=['GET', 'POST'])
 def menu():
@@ -74,6 +77,7 @@ def choice_game_reading():
                            player_id=session.get('player_id'),
                            level=session.get('level'),
                            mute=session.get('mute'))
+
 @app.route('/choice_game_writing')
 def choice_game_writing():
     return render_template("kanji_no_sekai_game_choice_writing.html",
@@ -112,14 +116,12 @@ def player_data_launcher():
 
 @app.route("/player_save", methods=["POST"])
 def player_save_launcher():
-
     data = request.get_json()
 
     kanji_list = data.get("kanjis", [])
     player_id = session.get("player_id")
 
     return player_data_save(kanji_list=kanji_list, player_id=int(player_id))
-
 
 if __name__ == '__main__':
 
