@@ -253,7 +253,6 @@
             margin: 8px 0;
         }
 
-        /* Shu du Bot : droit et toujours visible */
         .card.bot-shu-visible {
             border-color: var(--gold);
         }
@@ -310,7 +309,7 @@
     <div class="cards-container" id="playerRow"></div>
     <div class="action-btns" style="margin-top: 10px;">
         <button id="endTurnBtn" onclick="endTurn()">Fin du tour</button>
-        <button id="revealBtn" onclick="revealCards()">Révéler / Fin (Tour <span id="turnNum">1</span>/7)</button>
+        <button id="revealBtn" onclick="revealCards()">Révéler / Fin (Tour <span id="turnNum">1</span>/<span id="maxTurnNum">7</span>)</button>
     </div>
 </div>
 
@@ -336,7 +335,10 @@
     let botHand = [];
     let playerShu = null, botShu = null;
     let turn = 1;
-    let phase = "chooseShu"; // "chooseShu", "play", "solo_turns", "over"
+    let number_turn = 5;
+
+    // "chooseShu", "play", "solo_turns", "over"
+    let phase = "chooseShu";
     let hasDrawn = false;
     let boomUsed = false;
     let botBoomUsed = false;
@@ -482,14 +484,14 @@
         turn++;
         hasDrawn = false;
 
-        if (turn > 7) {
+        if (turn > number_turn) {
             await revealCards();
             return;
         }
         render();
     }
 
-    // --- FIN DE PARTIE / REVELATION (7 TOURS MAX) ---
+    // --- FIN DE PARTIE / REVELATION ---
     async function revealCards() {
         if (phase === "over") return;
 
@@ -503,7 +505,7 @@
         render();
 
 
-        while (turn <= 7) {
+        while (turn <= number_turn) {
             await playBotTurn();
             turn++;
             await new Promise(r => setTimeout(r, 600));
@@ -601,13 +603,14 @@
         rac("endTurnBtn").disabled = phase !== "play" && phase !== "solo_turns";
         rac("revealBtn").disabled = phase !== "play" && phase !== "solo_turns";
         rac("turnNum").textContent = turn;
+        rac("maxTurnNum").textContent = number_turn;
 
         if (phase === "chooseShu") {
             rac("status").textContent = "皆さん ! Select your 守!";
         } else if (phase === "play") {
-            rac("status").textContent = `Turn : ${turn}/7`;
+            rac("status").textContent = `Turn : ${turn}/${number_turn}`;
         } else if (phase === "solo_turns") {
-            rac("status").textContent = `⚡ Turn :  ${turn}/7`;
+            rac("status").textContent = `⚡ Turn :  ${turn}/${number_turn}`;
         } else {
             rac("status").textContent = "Partie terminée.";
         }
