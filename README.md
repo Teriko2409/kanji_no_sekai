@@ -18,7 +18,7 @@ Kanji Meaning :
 
 - Infinite Kanji ❌
 
-- Kanji Passport, please 🔧
+- Kanji Passport, please ✅
 
 Kanji Distinction :
 
