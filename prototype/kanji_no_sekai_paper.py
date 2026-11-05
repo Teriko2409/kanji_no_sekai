@@ -40,7 +40,7 @@ def data_launcher():
         return jsonify([])
 def download_json_data_paper(level_jlpt, json_file_path="paperkanji.json"):
 
-    number_kanji = 10
+    number_kanji = 6
     level_jlpt_int = int(level_jlpt)
 
     false_kanji_number = random.randint(0, (number_kanji - 1))
