@@ -157,7 +157,7 @@
     <h2>成功 !🎉</h2>
     <p>新</p>
     <div class="win" id="win_id"></div>
-    <button class="action" onclick="loadGame()">やり直す</button>
+    <button class="action" onclick="newGame()">やり直す</button>
 </div>
 <audio id="theme" loop>
     <source src="{{ url_for('static', filename='audio/memokanji_theme.mp3') }}" type="audio/mpeg">
@@ -180,20 +180,25 @@
 
     // ============ CARDS SETTING ============
     async function loadGame() {
-        const responseCards = await fetch(kanji_data_url);
-        kanji_on_carte = await responseCards.json();
-        const responsePlayer = await fetch(player_data_url);
-        kanji_already_player = await responsePlayer.json();
+        playMusic({{ mute }});
         newGame();
     }
 
     // ============ GAME ============
-    function newGame() {
+    async function newGame() {
+
+        const responseCards = await fetch(kanji_data_url);
+        kanji_on_carte = await responseCards.json();
+        const responsePlayer = await fetch(player_data_url);
+        kanji_already_player = await responsePlayer.json();
+
+
         pairsCount = 0;
         firstCard = null;
         lockBoard = false;
 
         rac("end").style.display = "none";
+        rac("table").style.display = "grid";
 
         const shuffledCards = [...kanji_on_carte];
         for (let i = shuffledCards.length - 1; i > 0; i--) {
@@ -260,16 +265,17 @@
             box.appendChild(sp);
         });
 
+        rac("table").style.display = "none";
         rac("end").style.display = "block";
 
-        if (newKanjis.length > 0) {
+        if (uniqueKanjis.length > 0) {
             try {
                 await fetch(save_player_url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ kanjis: newKanjis })
+                    body: JSON.stringify({ kanjis: uniqueKanjis })
                 });
             } catch (err) {
                 console.error("Erreur d'envoi des kanjis :", err);
@@ -277,7 +283,6 @@
         }
     }
 
-    playMusic({{ mute }});
     loadGame();
 
 </script>

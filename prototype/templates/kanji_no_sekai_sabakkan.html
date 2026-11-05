@@ -317,7 +317,7 @@
     <div id="resultText"></div>
     <div class="verdict" id="resultVerdict"></div>
     <br>
-    <button class="btn-back" style="padding: 10px 20px; font-size: 1rem;" onclick="location.reload()">Rejouer</button>
+    <button class="btn-back" style="padding: 10px 20px; font-size: 1rem;" onclick="resetGame()">Rejouer</button>
 </div>
 <audio id="theme" loop>
     <source src="{{ url_for('static', filename='audio/sabakkan_theme.mp3') }}" type="audio/mpeg">
@@ -335,7 +335,7 @@
     let botHand = [];
     let playerShu = null, botShu = null;
     let turn = 1;
-    let number_turn = 5;
+    let number_turn = 10;
 
     // "chooseShu", "play", "solo_turns", "over"
     let phase = "chooseShu";
@@ -354,6 +354,23 @@
         botHand = [deck.pop(), deck.pop(), deck.pop()];
 
         render();
+    }
+
+    async function resetGame() {
+        // Masquer la fenêtre de résultat
+        rac("result").style.display = "none";
+
+        // Réinitialiser les états
+        turn = 1;
+        phase = "chooseShu";
+        hasDrawn = false;
+        boomUsed = false;
+        botBoomUsed = false;
+        playerShu = null;
+        botShu = null;
+
+        // Relancer une nouvelle partie (reprend les cartes ou recharge le deck)
+        await start();
     }
 
     function chooseShu(index) {

@@ -7,9 +7,6 @@ sabakkan = Blueprint('sabakkan', __name__)
 @sabakkan.route('/sabakkan')
 def sabakkan_launcher():
 
-    if 'player_id' not in session:
-        return redirect(url_for('menu'))
-
     id_player = session['player_id']
     level = session['level']
     mute = session['mute']
@@ -21,9 +18,6 @@ def sabakkan_launcher():
 
 @sabakkan.route('/sabakkan_data')
 def data_launcher():
-
-    if 'level' not in session:
-        return jsonify([])
 
     try:
         data = download_json_data_sabakkan()
@@ -75,6 +69,16 @@ def resultat_comparatif_player_bot(hand_play, hand_bot):
     player_resultat = resultat_hand(hand_play)
 
     bot_resultat = resultat_hand(hand_bot)
+
+    def message_verdict(add_message, winner):
+
+        if winner == 'Player':
+            message = f'Player Win by {add_message}'
+        elif winner == 'Bot':
+            message = f'丸さん Win by {add_message}'
+        else:
+            message = 'Drew'
+        return message
 
 
     if player_resultat['hand_type'] == '完零':
@@ -132,15 +136,6 @@ def resultat_comparatif_player_bot(hand_play, hand_bot):
 
     return resultat
 
-def message_verdict(add_message, winner):
-
-    if winner == 'Player':
-        message = f'Player Win by {add_message}'
-    elif winner == 'Bot':
-        message = f'丸さん Win by {add_message}'
-    else:
-        message = 'Drew'
-    return message
 
 def joker(joker_number, score):
     turn = 0

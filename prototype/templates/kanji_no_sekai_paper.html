@@ -12,6 +12,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
+        button.action {
+            font-size: 1rem;
+            padding: 10px 16px;
+            border: 2px solid var(--ink);
+            background: var(--ink);
+            color: #fff;
+            border-radius: 10px;
+            cursor: pointer;
+        }
         :root {
             --ink: #2b2b2b;
             --paper: #faf6ee;
@@ -19,7 +28,7 @@
             --ko: #e5231b;
         }
 
-        * {
+        *, *::before, *::after {
             box-sizing: border-box;
         }
 
@@ -50,16 +59,11 @@
             cursor: pointer;
         }
 
-        #progress {
-            margin: 8px 0;
-            font-size: 0.9rem;
-        }
-
-
         #stage {
             position: relative;
             height: 190px;
             overflow: hidden;
+            margin-top: 10px;
         }
 
         #walker {
@@ -78,11 +82,15 @@
         }
 
         #walker.in {
-            animation: walkIn 3.0s ease-out forwards;
+            animation: walkIn var(--walk-in-duration, 3.0s) ease-out forwards;
         }
 
-        #walker.out {
-            animation: walkOut 0.9s ease-in forwards;
+        #walker.out-right {
+            animation: walkOutRight var(--walk-out-duration, 0.9s) ease-in forwards;
+        }
+
+        #walker.out-left {
+            animation: walkOutLeft var(--walk-out-duration, 0.9s) ease-in forwards;
         }
 
         #sprite.walking {
@@ -98,12 +106,21 @@
             }
         }
 
-        @keyframes walkOut {
+        @keyframes walkOutRight {
             from {
                 left: 50%;
             }
             to {
                 left: 140%;
+            }
+        }
+
+        @keyframes walkOutLeft {
+            from {
+                left: 50%;
+            }
+            to {
+                left: -40%;
             }
         }
 
@@ -211,7 +228,6 @@
             cursor: default;
         }
 
-
         #refuse {
             background: var(--ko);
         }
@@ -235,6 +251,46 @@
             cursor: pointer;
         }
 
+        /* Grilles pour les listes de kanjis */
+        .kanji-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin: 8px 0 12px 0;
+        }
+
+        /* Style pour les réussites (Rights) et Nouveaux Kanjis */
+        .rights-grid span {
+            font-size: 1.8rem;
+            border: 2px solid var(--ok);
+            border-radius: 8px;
+            padding: 2px 10px;
+            background: #e6f4ea;
+            font-family: "Klee One", sans-serif;
+            font-weight: 600;
+            color: var(--ok);
+        }
+
+        /* Style pour les erreurs (Mistakes) */
+        .mistakes-grid span {
+            font-size: 1.8rem;
+            border: 2px solid var(--ko);
+            border-radius: 8px;
+            padding: 2px 10px;
+            background: #fde8e8;
+            font-family: "Klee One", sans-serif;
+            font-weight: 600;
+            color: var(--ko);
+        }
+
+        .empty-notice {
+            font-size: 1.2rem;
+            font-family: "Klee One", sans-serif;
+            color: #777;
+            margin: 4px 0 8px 0;
+        }
+
         @media (max-width: 360px) {
             body {
                 padding: 10px;
@@ -251,13 +307,11 @@
             .row b {
                 min-width: 70px;
             }
-
         }
     </style>
 </head>
 
 <body>
-
 
 <div class="top">
     <button
@@ -271,11 +325,6 @@
     </div>
 </div>
 
-
-<div id="progress">
-    <span id="kanji_number"></span>
-</div>
-
 <div id="stage">
     <div id="walker">
         <span id="sprite"></span>
@@ -283,7 +332,6 @@
 </div>
 
 <div class="card-container">
-
     <div id="card">
         <div class="row">
             <div id="profile"></div>
@@ -304,20 +352,11 @@
             <span id="radical"></span>
         </div>
 
-        <!--
- <div class="row">
-     <b>correct:</b>
-     <span id="correct"></span>
- </div>
- -->
-
         <div class="row">
             <b>語彙 :</b>
             <span id="words"></span>
         </div>
     </div>
-
-
 </div>
 
 <div class="btns">
@@ -331,36 +370,54 @@
 </div>
 
 <div id="end"></div>
+
 <audio id="theme" loop>
     <source src="{{ url_for('static', filename='audio/paper_theme.mp3') }}" type="audio/mpeg">
 </audio>
+
 <script src="{{ url_for('static', filename='kanji_no_sekai_audio_setting.js') }}"></script>
 <script>
     const rac = (id_element_page) => document.getElementById(id_element_page);
 
     const data_kanji_launcher_url = "/paper_data";
     const data_player_launcher_url = "/player_data";
-    const update_playey_url = "/";
-
+    const update_player_url = "/player_save";
 
     let kanji = [];
-    let player_kanji_already = []
+    let player_kanji_already = [];
     let kanji_number_order = 0;
-    let score = 0;
     let hasAnswered = false;
+    let mistakes = [];
+    let rights = [];
 
+    let kanji_speed = 1.3;
+    let lastPlayerChoice = true;
 
-    async function start_game() {
+    document.documentElement.style.setProperty('--walk-in-duration', kanji_speed + 's');
+    document.documentElement.style.setProperty('--walk-out-duration', (kanji_speed * 0.5) + 's');
 
-        const response_data_kanji = await fetch(data_kanji_launcher_url);
+    async function loadGame() {
+        playMusic({{mute}});
+        newGame();
+    }
 
-        const kanji_data_json = await response_data_kanji.json();
+    async function newGame() {
+        const response_data_paper = await fetch(data_kanji_launcher_url);
+        kanji = await response_data_paper.json();
+        const response_data_player = await fetch(data_player_launcher_url);
+        player_kanji_already = await response_data_player.json();
 
-        kanji = kanji_data_json;
+        kanji_number_order = 0;
+        hasAnswered = false;
+        mistakes = [];
+        rights = [];
 
+        rac("stage").style.display = "block";
+        rac("card").style.display = "none";
+        document.querySelector(".btns").style.display = "flex";
+        rac("end").style.display = "none";
 
         kanjiWalksIn();
-
     }
 
     function kanjiWalksIn() {
@@ -369,12 +426,8 @@
             return;
         }
 
-        rac("kanji_number").textContent = kanji_number_order + 1;
-
         rac("sprite").textContent = kanji[kanji_number_order].kanji ?? "";
-
         rac("sprite").classList.add("walking");
-
 
         rac("walker").className = "";
         void rac("walker").offsetWidth;
@@ -391,7 +444,7 @@
         if (event.animationName === "walkIn") {
             showCard();
 
-        } else if (event.animationName === "walkOut") {
+        } else if (event.animationName === "walkOutRight" || event.animationName === "walkOutLeft") {
             kanji_number_order++;
 
             if (kanji_number_order == kanji.length) {
@@ -409,7 +462,6 @@
         rac("kun").textContent = card.kunyomi;
         rac("on").textContent = card.onyomi;
         rac("radical").textContent = card.radical;
-        //rac("correct").textContent = card.correct;
 
         const vocabulary = card.vocabulary;
 
@@ -419,7 +471,6 @@
                     if (word && typeof word === "object") {
                         return word.reading ?? word.word ?? "";
                     }
-
                     return word ?? "";
                 })
                 .join("、");
@@ -427,6 +478,7 @@
             rac("words").textContent = vocabulary ?? "";
         }
 
+        rac("card").style.display = "block";
         rac("card").classList.add("show");
 
         hasAnswered = false;
@@ -443,23 +495,22 @@
         }
 
         hasAnswered = true;
+        lastPlayerChoice = playerSaysValid;
 
         const card = kanji[kanji_number_order];
-
-        const playerIsRight =
-            playerSaysValid === card.correct;
+        const playerIsRight = (playerSaysValid === card.correct);
 
         if (playerIsRight) {
-            score++;
+            rights.push(card.kanji);
+        } else {
+            mistakes.push(card.kanji);
         }
 
         rac("approve").disabled = true;
         rac("refuse").disabled = true;
 
         nextCard();
-
     }
-
 
     function nextCard() {
         if (!hasAnswered) {
@@ -469,49 +520,126 @@
         rac("refuse").hidden = true;
 
         rac("card").classList.remove("show");
+        rac("card").style.display = "none";
 
         rac("sprite").classList.add("walking");
 
-
         rac("walker").className = "";
         void rac("walker").offsetWidth;
-        rac("walker").className = "out";
+
+        if (lastPlayerChoice) {
+            rac("walker").className = "out-right";
+        } else {
+            rac("walker").className = "out-left";
+        }
     }
 
-
-    function finishGame() {
-
+    async function finishGame() {
         rac("stage").style.display = "none";
         rac("card").style.display = "none";
-
         document.querySelector(".btns").style.display = "none";
-        rac("progress").style.display = "none";
-
         rac("end").style.display = "block";
 
-        const title = document.createElement("h2");
-        title.textContent = "Shift complete!";
+        const rightsTitle = document.createElement("p");
+        rightsTitle.style.fontWeight = "600";
+        rightsTitle.style.marginTop = "5px";
+        rightsTitle.textContent = "Correct answers:";
 
-        const result = document.createElement("p");
-        result.append("Final Score: ");
+        const rightsGrid = document.createElement("div");
+        rightsGrid.className = "kanji-grid rights-grid";
+
+        if (rights.length > 0) {
+            rights.forEach(ch => {
+                const sp = document.createElement("span");
+                sp.textContent = ch;
+                rightsGrid.appendChild(sp);
+            });
+        } else {
+            const emptyNotice = document.createElement("div");
+            emptyNotice.className = "empty-notice";
+            emptyNotice.textContent = "...";
+            rightsGrid.appendChild(emptyNotice);
+        }
+
+
+        const mistakesTitle = document.createElement("p");
+        mistakesTitle.style.fontWeight = "600";
+        mistakesTitle.style.marginTop = "15px";
+        mistakesTitle.textContent = "Mistakes made:";
+
+        const mistakesGrid = document.createElement("div");
+        mistakesGrid.className = "kanji-grid mistakes-grid";
+
+        if (mistakes.length > 0) {
+            mistakes.forEach(ch => {
+                const sp = document.createElement("span");
+                sp.textContent = ch;
+                mistakesGrid.appendChild(sp);
+            });
+        } else {
+            const emptyNotice = document.createElement("div");
+            emptyNotice.className = "empty-notice";
+            emptyNotice.textContent = "...";
+            mistakesGrid.appendChild(emptyNotice);
+        }
+
+
+        const learnedTitle = document.createElement("p");
+        learnedTitle.style.fontWeight = "600";
+        learnedTitle.style.marginTop = "15px";
+        learnedTitle.textContent = "New Kanjis learned:";
+
+        const learnedGrid = document.createElement("div");
+        learnedGrid.className = "kanji-grid rights-grid";
+
+        const uniqueRights = [...new Set(rights)];
+        const newKanjis = uniqueRights.filter(k => !player_kanji_already.includes(k));
+
+        if (uniqueRights.length > 0) {
+            newKanjis.forEach(ch => {
+                const sp = document.createElement("span");
+                sp.textContent = ch;
+                learnedGrid.appendChild(sp);
+            });
+
+            try {
+                await fetch(update_player_url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ kanjis: uniqueRights })
+                });
+            } catch (err) {
+                console.error("Erreur d'envoi des kanjis :", err);
+            }
+        } else {
+            const emptyNotice = document.createElement("div");
+            emptyNotice.className = "empty-notice";
+            emptyNotice.textContent = "...";
+            learnedGrid.appendChild(emptyNotice);
+        }
+
 
         const playAgain = document.createElement("button");
-        playAgain.className = "button_retour";
-        playAgain.style.background = "var(--ink)";
-        playAgain.style.marginTop = "10px";
-        playAgain.textContent = "Play again";
+        playAgain.className = "action";
+        playAgain.style.marginTop = "15px";
+        playAgain.textContent = "やり直す";
 
         playAgain.addEventListener("click", () => {
-            location.reload();
+            newGame();
         });
 
         rac("end").replaceChildren(
-            title,
-            result,
+            rightsTitle,
+            rightsGrid,
+            mistakesTitle,
+            mistakesGrid,
+            learnedTitle,
+            learnedGrid,
             playAgain
         );
     }
-
 
     rac("approve").addEventListener("click", () => {
         answer(true);
@@ -521,11 +649,7 @@
         answer(false);
     });
 
-    playMusic({{mute}});
-    start_game();
-
-
-
+    loadGame();
 </script>
 
 </body>

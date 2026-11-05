@@ -35,9 +35,6 @@ def download_json_data(level_jlpt, json_file_path="memokanji.json"):
 @memokanji.route('/memokanji')
 def launcher():
 
-    if 'player_id' not in session:
-        return redirect(url_for('menu'))
-
     id_player = session['player_id']
     level = session['level']
     mute = session['mute']
@@ -53,6 +50,7 @@ def launcher():
 def data_launcher():
 
     data = download_json_data(level_jlpt=session['level'])
+
     return jsonify(data)
 
 
