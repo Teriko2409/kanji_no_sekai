@@ -64,8 +64,7 @@ def player_data_save(kanji_list, player_id=0):
         players = []
 
     player = next((p for p in players if p.get("id") == player_id), None)
-    if not player:
-        return jsonify({"status": "error", "message": "Player not found"}), 404
+
 
     if "kanjis:" in player:
         del player["kanjis:"]
@@ -92,7 +91,9 @@ def player_data_save(kanji_list, player_id=0):
 
     player["kanjis"] = [{"kanji": k, "learned_time": t} for k, t in kanji_dict.items()]
 
+
     with open("players_data.json", "w", encoding="utf-8") as f:
         json.dump(players, f, ensure_ascii=False, indent=2)
+
 
     return jsonify([])

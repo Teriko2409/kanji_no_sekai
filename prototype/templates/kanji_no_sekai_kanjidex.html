@@ -7,11 +7,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏆</text></svg>">
-
-    <meta charset="UTF-8">
     <title>KanjiDex</title>
     <style>
-    .button_retour {
+        body {
+            font-family: sans-serif;
+            background: #f4efe6;
+            color: #2b2b2b;
+            text-align: center;
+            padding: 20px;
+        }
+        .button_retour {
             padding: 10px 20px;
             font-size: 16px;
             background-color: mediumvioletred;
@@ -19,11 +24,90 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin-bottom: 20px;
+        }
+        /* Style de la grille pour afficher les kanjis */
+        .kanji-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .kanji-card {
+            border: 2px solid #2b2b2b;
+            border-radius: 8px;
+            width: 70px;
+            height: 90px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .kanji-char {
+            font-size: 2rem;
+            font-family: "Klee One", system-ui, sans-serif;
+            font-weight: 600;
+        }
+        .kanji-time {
+            font-size: 0.75rem;
+            color: #333;
+            margin-top: 4px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-<button class="button_retour" onclick="location.href='/category'">Back</button>
+
+<div class="top">
+    <button class="button_retour" onclick="location.href='/category'">BACK</button>
+</div>
+
+<h1>KanjiDex (Player : {{ player_id }})</h1>
+
+<div class="kanji-grid" id="kanjiGrid">
+    <p>Loading... </p>
+</div>
+
+<script>
+
+    kanjidex_url = '/kanjidex_data';
+    async function loadKanjiDex() {
+        try {
+
+            const response = await fetch(kanjidex_url);
+            const kanjis = response.ok ? await response.json() : [];
+
+            const grid = document.getElementById('kanjiGrid');
+            grid.innerHTML = "";
+
+            if (kanjis.length === 0) {
+                grid.innerHTML = "<p>No kanji learned yet! Play to discover some</p>";
+                return;
+            }
+
+            kanjis.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'kanji-card';
+
+                card.style.backgroundColor = item.color;
+
+                card.innerHTML = `
+                    <div class="kanji-char">${item.kanji}</div>
+                    <div class="kanji-time">${item.learned_time}位</div>
+                `;
+                grid.appendChild(card);
+            });
+
+        } catch (e) {
+            document.getElementById('kanjiGrid').innerHTML = "<p>Error loading </p>";
+        }
+    }
+
+    loadKanjiDex();
+</script>
 
 </body>
 </html>
