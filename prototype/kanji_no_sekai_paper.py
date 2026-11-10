@@ -10,9 +10,6 @@ paper = Blueprint('paper', __name__)
 @paper.route('/paper')
 def paper_launcher():
 
-    if 'player_id' not in session:
-        return redirect(url_for('menu'))
-
     id_player = session['player_id']
     level = session['level']
     mute = session['mute']

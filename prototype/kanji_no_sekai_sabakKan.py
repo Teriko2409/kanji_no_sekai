@@ -77,7 +77,7 @@ def resultat_comparatif_player_bot(hand_play, hand_bot):
         elif winner == 'Bot':
             message = f'丸さん Win by {add_message}'
         else:
-            message = 'Drew'
+            message = 'Draw'
         return message
 
 
@@ -137,16 +137,6 @@ def resultat_comparatif_player_bot(hand_play, hand_bot):
     return resultat
 
 
-def joker(joker_number, score):
-    turn = 0
-    while turn < joker_number:
-        if score <= 0:
-            score += 1
-        else:
-            score -= 1
-        turn += 1
-
-    return score
 def resultat_hand(hand):
 
     hand_type = 'Placehorlder'
@@ -154,6 +144,18 @@ def resultat_hand(hand):
     score = 0
     hand_length = len(hand)
     big_number = 0
+
+    def joker(joker_number, score):
+        turn = 0
+        while turn < joker_number:
+            if score <= 0:
+                score += 1
+            else:
+                score -= 1
+            turn += 1
+
+        return score
+
 
     for i in hand:
 

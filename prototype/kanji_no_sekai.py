@@ -1,5 +1,4 @@
-import json
-from flask import Blueprint,Flask, render_template, request, redirect, url_for, session,jsonify
+from flask import Blueprint, Flask, render_template, request, redirect, url_for, session, jsonify
 from kanji_no_sekai_fun import fun
 from kanji_no_sekai_bombu import bombu
 from kanji_no_sekai_sabakKan import sabakkan
@@ -10,13 +9,13 @@ from kanji_no_sekai_memokanji import memokanji
 from kanji_no_sekai_kankey import kankey
 from kanji_no_sekai_kanter import kanter
 from kanji_no_sekai_kanjidex import kanjidex
-from kanji_no_sekai_function import print_player_info, read_session_key, player_data_get, player_data_save
-
+from kanji_no_sekai_function import print_player_info, read_session_key, player_data_get, player_data_save, \
+    players_data_reset_all, id_checking, id_generating
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = read_session_key("sessionKey")
 
-#Routes for minigames
+# Routes for minigames
 
 app.register_blueprint(fun)
 
@@ -38,28 +37,62 @@ app.register_blueprint(kanter)
 
 app.register_blueprint(kanjidex)
 
-@app.route('/', methods=['GET', 'POST'])
+
+@app.route('/')
 def menu():
+    #players_data_reset_all()
+    return redirect(url_for('login'))
+
+@app.route('/sign_in', methods=['GET', 'POST'])
+def sign_in():
+
+
     if request.method == 'POST':
-        id_player = request.form.get('id_player')
-        level = request.form.get('level')
+        name = request.form.get('name')
+        password = request.form.get('password')
 
-        if request.form.get('mute') == '1':
-            session['mute'] = 1
-        else:
-            session['mute'] = 0
+        id_generating(name=name, password=password)
 
-        mute = session['mute']
+        return render_template("kanji_no_sekai_menu_login.html")
 
-        if id_player:
-            session['player_id'] = id_player
-            session['level'] = level
 
-            print_player_info(game_name='KNS Menu',player_id=id_player, level=level, mute=mute)
+    return render_template("kanji_no_sekai_sign_in.html")
 
-            return redirect(url_for('category_menu'))
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error_message = None
 
-    return render_template("kanji_no_sekai_menu_login.html")
+    if request.method == 'POST':
+
+        name = request.form.get('name')
+        password = request.form.get('password')
+
+        if name and password:
+
+            player_found, player_id = id_checking(name, password)
+
+            if player_found == True:
+
+                level = request.form.get('level')
+
+                session['mute'] = 1 if request.form.get('mute') == '1' else 0
+                mute = session['mute']
+
+                session['tuto'] = 1 if request.form.get('tuto') == '1' else 0
+                tuto = session['tuto']
+
+                session['player_id'] = player_id
+                session['level'] = level
+
+                print_player_info(game_name='KNS Menu', player_id=player_id, level=level, mute=mute, tuto=tuto)
+
+                return redirect(url_for('category_menu'))
+            elif player_found == False:
+
+                error_message = "Player not found"
+
+    return render_template("kanji_no_sekai_menu_login.html", error_message=error_message)
+
 
 # template category
 @app.route('/category')
@@ -68,6 +101,7 @@ def category_menu():
                            player_id=session.get('player_id'),
                            level=session.get('level'),
                            mute=session.get('mute'))
+
 
 # templates mini-games
 
@@ -78,12 +112,14 @@ def choice_game_reading():
                            level=session.get('level'),
                            mute=session.get('mute'))
 
+
 @app.route('/choice_game_writing')
 def choice_game_writing():
     return render_template("kanji_no_sekai_game_choice_writing.html",
                            player_id=session.get('player_id'),
                            level=session.get('level'),
                            mute=session.get('mute'))
+
 
 @app.route('/choice_game_meaning')
 def choice_game_meaning():
@@ -92,12 +128,14 @@ def choice_game_meaning():
                            level=session.get('level'),
                            mute=session.get('mute'))
 
+
 @app.route('/choice_game_distinction')
 def choice_game_distinction():
     return render_template("kanji_no_sekai_game_choice_distinction.html",
                            player_id=session.get('player_id'),
                            level=session.get('level'),
                            mute=session.get('mute'))
+
 
 @app.route('/choice_game_usage')
 def choice_game_usage():
@@ -106,13 +144,14 @@ def choice_game_usage():
                            level=session.get('level'),
                            mute=session.get('mute'))
 
+
 # Player data
 @app.route('/player_data', methods=['GET'])
 def player_data_launcher():
-
     current_player_id = session['player_id']
 
     return player_data_get(int(current_player_id))
+
 
 @app.route("/player_save", methods=["POST"])
 def player_save_launcher():
@@ -123,6 +162,8 @@ def player_save_launcher():
 
     return player_data_save(kanji_list=kanji_list, player_id=int(player_id))
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
+
+

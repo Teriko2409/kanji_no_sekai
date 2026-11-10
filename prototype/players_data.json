@@ -1,44 +1,39 @@
 [
   {
-    "id": 1,
-    "kanjis": []
-  },
-  {
-    "id": 2,
-    "kanjis": []
-  },
-  {
-    "id": 3,
-    "kanjis": []
-  },
-  {
-    "id": 4,
-    "kanjis": []
-  },
-  {
-    "id": 5,
-    "kanjis": []
-  },
-  {
-    "id": 6,
-    "kanjis": []
-  },
-  {
-    "id": 7,
-    "kanjis": []
-  },
-  {
-    "id": 8,
-    "kanjis": []
-  },
-  {
     "id": 9,
-    "kanjis": []
-  },
-  {
-    "id": 10,
-    "kanjis": []
+    "kanjis": [
+      {
+        "kanji": "話",
+        "learned_time": 1
+      },
+      {
+        "kanji": "語",
+        "learned_time": 1
+      },
+      {
+        "kanji": "午",
+        "learned_time": 1
+      },
+      {
+        "kanji": "千",
+        "learned_time": 1
+      },
+      {
+        "kanji": "刀",
+        "learned_time": 1
+      },
+      {
+        "kanji": "力",
+        "learned_time": 1
+      },
+      {
+        "kanji": "士",
+        "learned_time": 1
+      },
+      {
+        "kanji": "土",
+        "learned_time": 1
+      }
+    ]
   }
-
-
 ]
