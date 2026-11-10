@@ -8,7 +8,7 @@ def id_generating(name="", password=""):
     players_id_list = []
 
 
-    with open("anymous", "r", encoding="utf-8") as file:
+    with open("kanji_no_sekai_anymous", "r", encoding="utf-8") as file:
         players = file.readlines()
 
     name_hashed = hashlib.sha256(name.encode('utf-8')).hexdigest()
@@ -27,10 +27,10 @@ def id_generating(name="", password=""):
 
     new_player = f"{name_hashed}|{password_hashed}/{new_id} "
 
-    with open("anymous", "a", encoding="utf-8") as file:
+    with open("kanji_no_sekai_anymous", "a", encoding="utf-8") as file:
         file.write(new_player + "\n")
 
-    with open("players_data.json", "r", encoding="utf-8") as file:
+    with open("kanji_no_sekai_players_data.json", "r", encoding="utf-8") as file:
         players = json.load(file)
 
     new_player_json = {
@@ -40,7 +40,7 @@ def id_generating(name="", password=""):
 
     players.append(new_player_json)
 
-    with open("players_data.json", "w", encoding="utf-8") as f:
+    with open("kanji_no_sekai_players_data.json", "w", encoding="utf-8") as f:
         json.dump(players, f, ensure_ascii=False, indent=2)
 
     return 0
@@ -50,7 +50,7 @@ def id_checking(name="", password=""):
     player_id = 0
     player_is_existed = False
 
-    with open("anymous", "r", encoding="utf-8") as file:
+    with open("kanji_no_sekai_anymous", "r", encoding="utf-8") as file:
         players = file.readlines()
 
 
@@ -88,10 +88,10 @@ def id_checking(name="", password=""):
 def players_data_reset_all():
 
 
-    with open("players_data.json", "w", encoding="utf-8") as f:
+    with open("kanji_no_sekai_players_data.json", "w", encoding="utf-8") as f:
         json.dump([], f, ensure_ascii=False, indent=2)
 
-    with open("anymous", "w", encoding="utf-8") as file:
+    with open("kanji_no_sekai_anymous", "w", encoding="utf-8") as file:
         file.write("")
 
     return 0
@@ -132,7 +132,7 @@ def print_player_info(game_name='Placeholder', player_id=0, level=0, mute=0, tut
 
 def player_data_get(player_id=0):
     try:
-        with open('players_data.json', 'r', encoding='utf-8') as file:
+        with open('kanji_no_sekai_players_data.json', 'r', encoding='utf-8') as file:
             players = json.load(file)
 
         for player in players:
@@ -158,7 +158,7 @@ def player_data_get(player_id=0):
 def player_data_save(kanji_list, player_id=0):
 
     try:
-        with open("players_data.json", "r", encoding="utf-8") as file:
+        with open("kanji_no_sekai_players_data.json", "r", encoding="utf-8") as file:
             players = json.load(file)
     except (FileNotFoundError, json.JSONDecodeError):
         players = []
@@ -192,7 +192,7 @@ def player_data_save(kanji_list, player_id=0):
     player["kanjis"] = [{"kanji": k, "learned_time": t} for k, t in kanji_dict.items()]
 
 
-    with open("players_data.json", "w", encoding="utf-8") as f:
+    with open("kanji_no_sekai_players_data.json", "w", encoding="utf-8") as f:
         json.dump(players, f, ensure_ascii=False, indent=2)
 
 

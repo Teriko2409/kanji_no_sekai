@@ -5,7 +5,7 @@ from kanji_no_sekai_function import print_player_info
 
 memokanji = Blueprint('memokanji', __name__)
 
-def download_json_data(level_jlpt, json_file_path="memokanji.json"):
+def download_json_data(level_jlpt, json_file_path="kanji_no_sekai_memokanji.json"):
 
     nombre = 4
 

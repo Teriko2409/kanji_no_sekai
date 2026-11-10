@@ -26,7 +26,7 @@ def kanjidex_data():
     player_id = int(session.get('player_id', 0))
 
     try:
-        with open("players_data.json", "r", encoding="utf-8") as file:
+        with open("kanji_no_sekai_players_data.json", "r", encoding="utf-8") as file:
             players = json.load(file)
     except (FileNotFoundError, json.JSONDecodeError):
         players = []

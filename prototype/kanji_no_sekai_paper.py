@@ -35,7 +35,7 @@ def data_launcher():
         return jsonify(data)
     except (FileNotFoundError, ValueError):
         return jsonify([])
-def download_json_data_paper(level_jlpt, json_file_path="paperkanji.json"):
+def download_json_data_paper(level_jlpt, json_file_path="kanji_no_sekai_paperkanji.json"):
 
     number_kanji = 6
     level_jlpt_int = int(level_jlpt)

@@ -46,7 +46,6 @@ def menu():
 @app.route('/sign_in', methods=['GET', 'POST'])
 def sign_in():
 
-
     if request.method == 'POST':
         name = request.form.get('name')
         password = request.form.get('password')
