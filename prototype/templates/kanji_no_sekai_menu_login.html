@@ -46,7 +46,7 @@
             cursor: pointer;
         }
 
-        button {
+        button, .btn-sign-in {
             background-color: #8a2076;
             color: white;
             border: none;
@@ -55,9 +55,14 @@
             width: 100%;
             border-radius: 4px;
             font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            box-sizing: border-box;
+            margin-top: 10px;
         }
 
-        button:hover {
+        button:hover, .btn-sign-in:hover {
             background-color: #5a3b52;
         }
 
@@ -66,19 +71,39 @@
             font-size: 0.9em;
             margin-bottom: 10px;
         }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="password"], input[type="number"], select {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
 <div class="login-box">
     <h2>Login</h2>
 
-    {% if erreur %}
-    <p class="error">{{ erreur }}</p>
+    {% if error_message %}
+    <p class="error">{{ error_message }}</p>
     {% endif %}
 
-    <form method="POST" action="{{ url_for('menu') }}">
-        <label for="id_player">Player info:</label>
-        <input type="number" id="id_player" name="id_player" min="1" max="10" placeholder="ID" required>
+    <form method="POST" action="{{ url_for('login') }}">
+        <label for="name">Player Name :</label>
+        <input type="text" id="name" name="name" placeholder="Name" required>
+
+        <label for="password">Password :</label>
+        <input type="password" id="password" name="password" placeholder="Password" required>
 
         <label for="level">JLPT level :</label>
         <select id="level" name="level" required>
@@ -89,10 +114,15 @@
             <option value="1">JLPT N1</option>
         </select>
 
-        <label for="mute" class="checkbox-group">Mute Music :<input type="checkbox" id="mute" name="mute" value="1"></label>
+        <label for="tuto" class="checkbox-group">Tuto :<input type="checkbox" id="tuto" name="tuto" value="1"></label>
+        <label for="mute" class="checkbox-group">Mute Music :<input type="checkbox" id="mute" name="mute"
+                                                                    value="1"></label>
+
 
         <button type="submit">Login</button>
     </form>
+
+    <a href="{{ url_for('sign_in') }}" class="btn-sign-in">Sign In</a>
 </div>
 </body>
 </html>

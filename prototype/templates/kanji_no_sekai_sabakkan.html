@@ -357,10 +357,10 @@
     }
 
     async function resetGame() {
-        // Masquer la fenêtre de résultat
+
         rac("result").style.display = "none";
 
-        // Réinitialiser les états
+
         turn = 1;
         phase = "chooseShu";
         hasDrawn = false;
@@ -369,7 +369,6 @@
         playerShu = null;
         botShu = null;
 
-        // Relancer une nouvelle partie (reprend les cartes ou recharge le deck)
         await start();
     }
 
@@ -409,7 +408,7 @@
                     botBoomUsed = true;
                     const stolenCard = playerHand.splice(Math.floor(Math.random() * playerHand.length), 1)[0];
                     botHand = [stolenCard];
-                    alert("⚡ Le Bot a activé KanBoomu ! Il a sacrifié ses cartes et vous a pris une carte.");
+                    alert("Maru actived the Kanboomu !.");
                 }
                 else if (decision.action === "draw" && deck.length > 0 && botHand.length < 3) {
                     botHand.push(deck.pop());
@@ -447,7 +446,7 @@
         if (phase !== "play" && phase !== "solo_turns") return;
 
         if (playerHand.length <= 1) {
-            alert("Vous devez garder au moins 1 carte dans votre main !");
+            alert("You must have at least 1 carte");
             return;
         }
         playerHand.splice(index, 1);
@@ -472,7 +471,7 @@
         boomUsed = true;
         hasDrawn = true;
 
-        alert("KanBoomu activé ! Vos cartes ont été sacrifiées et vous avez pris une carte au Bot.");
+        alert("KanBoomu actived !!!");
         render();
     }
 
@@ -508,14 +507,9 @@
         render();
     }
 
-    // --- FIN DE PARTIE / REVELATION ---
+
     async function revealCards() {
         if (phase === "over") return;
-
-        if (playerHand.length < 1) {
-            alert("Vous devez avoir au moins 1 carte en main pour révéler !");
-            return;
-        }
 
         phase = "over";
         rac("status").textContent = "Fin anticipée ! Le Bot termine ses tours restants...";

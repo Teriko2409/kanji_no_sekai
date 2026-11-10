@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>kanji no sekai sign in</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-top: 50px;
+            background-color: #f4f4f9;
+        }
+
+        .login-box {
+            border: 1px solid #714B67;
+            width: 300px;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+
+        input[type="number"], select {
+            display: block;
+            margin: 12px 0;
+            padding: 8px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-left: 8px;
+            width: auto;
+            cursor: pointer;
+        }
+
+        button {
+            background-color: #8a2076;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #5a3b52;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="password"], input[type="number"], select {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+<div class="login-box">
+    <h2>Sign in</h2>
+
+    {% if error_message %}
+    <p class="error">{{ error_message }}</p>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('sign_in') }}">
+        <label for="name">Player Name :</label>
+        <input type="text" id="name" name="name" placeholder="Name" required>
+
+        <label for="password">Password :</label>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+
+        <button type="submit">Sign In</button>
+    </form>
+</div>
+</body>
+</html>
