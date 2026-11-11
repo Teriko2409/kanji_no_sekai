@@ -1,7 +1,7 @@
 import json
 import random
 from flask import Blueprint, render_template, redirect, url_for, session, jsonify
-from kanji_no_sekai_function import print_player_info
+from kanji_no_sekai_function import print_player_info, easter_egg_memokanji
 
 memokanji = Blueprint('memokanji', __name__)
 
@@ -19,6 +19,8 @@ def download_json_data(level_jlpt, json_file_path="kanji_no_sekai_memokanji.json
     ]
 
     kanji_four = random.sample(kanji_level, nombre)
+
+
     kanji_8 = []
 
     for item in kanji_four:
@@ -26,6 +28,8 @@ def download_json_data(level_jlpt, json_file_path="kanji_no_sekai_memokanji.json
         random.shuffle(kanjis)
         kanji_8.append(kanjis[0])
         kanji_8.append(kanjis[1])
+
+    easter_egg_memokanji(kanji_8)
 
     kanji_list = kanji_8 + kanji_8
 

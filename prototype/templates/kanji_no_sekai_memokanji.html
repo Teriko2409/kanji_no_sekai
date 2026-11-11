@@ -4,6 +4,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600&display=swap" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MemoKanji</title>
@@ -93,7 +94,7 @@
             transform: rotateY(180deg);
             background: #fff;
             font-size: 2.4rem;
-            font-family: "Klee One", sans-serif;
+            font-family: "Klee One", system-ui, sans-serif;
             font-weight: 600;
         }
 
@@ -120,14 +121,27 @@
             margin: 12px 0;
         }
 
+
+        .kanji-char.taito {
+            font-size: 2.4rem ;
+            font-family: "Noto Sans JP", sans-serif,system-ui;
+            font-weight: 500;
+        }
+
         #end .win span {
             font-size: 1.8rem;
             border: 2px solid var(--ok);
             border-radius: 8px;
             padding: 2px 10px;
             background: #e6f4ea;
-            font-family: "Klee One", sans-serif;
+            font-family: "Klee One", system-ui, sans-serif;
             font-weight: 600;
+        }
+
+        #end .win span.taito {
+            font-size: 2rem !important;
+            font-family: "Noto Sans JP", sans-serif;
+            font-weight: 500;
         }
 
         button.action {
@@ -192,7 +206,6 @@
         const responsePlayer = await fetch(player_data_url);
         kanji_already_player = await responsePlayer.json();
 
-
         pairsCount = 0;
         firstCard = null;
         lockBoard = false;
@@ -201,6 +214,7 @@
         rac("table").style.display = "grid";
 
         const shuffledCards = [...kanji_on_carte];
+
         for (let i = shuffledCards.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [shuffledCards[i], shuffledCards[j]] = [shuffledCards[j], shuffledCards[i]];
@@ -215,8 +229,15 @@
             const card = document.createElement("button");
             card.className = "carte";
             card.dataset.id = ch;
-            card.innerHTML = `<div class="face dos">後</div><div class="face avant"></div>`;
-            card.querySelector(".avant").textContent = ch;
+
+
+            const isTaitoClass = (ch === '𱁬') ? 'face avant kanji-char taito' : 'face avant';
+
+            card.innerHTML = `
+                <div class="face dos">後</div>
+                <div class="${isTaitoClass}">${ch}</div>
+            `;
+
             card.addEventListener("click", () => clickCard(card));
             fragment.appendChild(card);
         });
@@ -262,6 +283,11 @@
         newKanjis.forEach(ch => {
             const sp = document.createElement("span");
             sp.textContent = ch;
+
+            if (ch === '𱁬') {
+                sp.className = "kanji-char taito";
+            }
+
             box.appendChild(sp);
         });
 
@@ -275,7 +301,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ kanjis: uniqueKanjis })
+                    body: JSON.stringify({kanjis: uniqueKanjis})
                 });
             } catch (err) {
                 console.error("Erreur d'envoi des kanjis :", err);

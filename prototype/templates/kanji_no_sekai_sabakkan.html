@@ -269,7 +269,7 @@
             onclick="location.href='/choice_game_writing'">
         BACK
     </button>
-    <div>ID : {{ player_id }} | Niveau : {{ level }}</div>
+    <div>Niveau : {{ level }}</div>
 </div>
 
 <div class="section">
@@ -282,7 +282,6 @@
         <span>DECK</span>
         <button class="deck-box" id="deckBtn" onclick="drawCard()">
             <span>🎴</span>
-            <span id="deckCount">0</span>
         </button>
     </div>
 
@@ -297,19 +296,18 @@
     </div>
 
     <div class="center-col">
-        <span>SPECIAL</span>
         <button class="action-side-btn" id="boomBtn" onclick="useKanBoomu()">KanBoomu</button>
     </div>
 </div>
 
-<div id="status">Chargement...</div>
+<div id="status">Loading...</div>
 
 <div class="section">
     <div class="section-label">あなた</div>
     <div class="cards-container" id="playerRow"></div>
     <div class="action-btns" style="margin-top: 10px;">
         <button id="endTurnBtn" onclick="endTurn()">Fin du tour</button>
-        <button id="revealBtn" onclick="revealCards()">Révéler / Fin (Tour <span id="turnNum">1</span>/<span id="maxTurnNum">7</span>)</button>
+        <button id="revealBtn" onclick="revealCards()">Révéler / Fin (Tour <span id="turnNum">1</span>/<span id="maxTurnNum">0</span>)</button>
     </div>
 </div>
 
@@ -570,7 +568,7 @@
         if (isShu) div.classList.add("shu-slot");
 
         const val = card.color === "orange" ? "±1" : (card.color === "red" ? "" : "+") + card.strokes;
-        div.innerHTML = `<div class="kanji">${card.kanji}</div><div class="value">${val}</div>`;
+        div.innerHTML = `<div class="kanji">${card.kanji}</div><div class="value"></div>`;
         if (onClick) div.onclick = onClick;
         return div;
     }
@@ -608,7 +606,6 @@
             rac("playerRow").appendChild(elem);
         });
 
-        rac("deckCount").textContent = deck.length;
         rac("deckBtn").disabled = (phase !== "play" && phase !== "solo_turns") || hasDrawn || deck.length === 0;
         rac("boomBtn").disabled = (phase !== "play" && phase !== "solo_turns") || boomUsed;
         rac("endTurnBtn").disabled = phase !== "play" && phase !== "solo_turns";

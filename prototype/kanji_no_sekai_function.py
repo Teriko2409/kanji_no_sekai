@@ -1,7 +1,7 @@
 import json,secrets,hashlib,random
-
 from flask import jsonify
 from datetime import datetime
+
 
 def id_generating(name="", password=""):
 
@@ -197,3 +197,72 @@ def player_data_save(kanji_list, player_id=0):
 
 
     return jsonify([])
+
+# easter egg
+
+easter_egg_propability = 100
+easter_egg_kanji = "𱁬"
+
+def easter_egg_memokanji(kanji_list):
+
+    easter_egg = random.random()
+
+    if easter_egg <= (easter_egg_propability/100):
+        print(kanji_list)
+        del kanji_list[0]
+        kanji_list.append(easter_egg_kanji)
+
+    return kanji_list
+
+def easter_egg_sabakkan(kanji_list):
+
+    easter_egg = random.random()
+
+    if easter_egg <= (easter_egg_propability/100):
+        color_list = ["red", "green"]
+        color = random.choice(color_list)
+
+        kanji_list.append({
+            "kanji": easter_egg_kanji,
+            "color": color,
+            "strokes": 84
+        })
+    return kanji_list
+
+
+
+def easter_egg_paper(kanji_list):
+
+    easter_egg = random.random()
+
+    if easter_egg <= (easter_egg_propability/100):
+        del kanji_list[0]
+
+        true_dict = {
+            'kanji': easter_egg_kanji,
+            'profile': easter_egg_kanji,
+            'onyomi': '-',
+            'kunyomi': 'たいと, だいと, おとど',
+            'radical': '雨 (Rain), 龍 (Dragon)',
+            'vocabulary': [{'reading': '-'}],
+            'correct': True
+        }
+
+        false_dict = {
+            'kanji': easter_egg_kanji,
+            'profile': easter_egg_kanji,
+            'onyomi': 'たいと, だいと, おとど',
+            'kunyomi': '-',
+            'radical': '龍 (Japan)',
+            'vocabulary': [{'reading': 'なんだこの狂気 !'}],
+            'correct': False
+        }
+
+        choice = random.choice([True, False])
+
+        if choice:
+            kanji_list.append(true_dict)
+        else:
+            kanji_list.append(false_dict)
+
+    return kanji_list

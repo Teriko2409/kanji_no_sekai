@@ -1,7 +1,7 @@
 import json
 import random
 from flask import Blueprint, Flask, jsonify, render_template, request, redirect, url_for, session
-from kanji_no_sekai_function import print_player_info
+from kanji_no_sekai_function import print_player_info, easter_egg_paper
 
 
 paper = Blueprint('paper', __name__)
@@ -40,7 +40,7 @@ def download_json_data_paper(level_jlpt, json_file_path="kanji_no_sekai_paperkan
     number_kanji = 6
     level_jlpt_int = int(level_jlpt)
 
-    false_kanji_number = random.randint(0, (number_kanji - 1))
+    false_kanji_number = random.randint(1, (number_kanji - 1))
     true_kanji_number = number_kanji - false_kanji_number
 
     with open(json_file_path, encoding="utf-8") as paperkanji_file:
@@ -51,6 +51,8 @@ def download_json_data_paper(level_jlpt, json_file_path="kanji_no_sekai_paperkan
 
 
         true_kanji_list = random.sample(kanji_level, true_kanji_number)
+
+
         true_kanji_list_clean = [
             {k: v for k, v in item.items() if not k.endswith(("_f"))}
             for item in true_kanji_list
@@ -100,7 +102,8 @@ def download_json_data_paper(level_jlpt, json_file_path="kanji_no_sekai_paperkan
         final_game_cards = true_kanji_list_clean + false_kanji_list_clean
 
 
-        random.shuffle(final_game_cards)
+        random.shuffle(easter_egg_paper(final_game_cards))
+
 
 
         return final_game_cards

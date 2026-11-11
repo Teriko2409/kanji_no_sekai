@@ -1,31 +1,31 @@
 import json, random
 from flask import Blueprint, jsonify, render_template, request, redirect, url_for, session
-from kanji_no_sekai_function import print_player_info
+from kanji_no_sekai_function import print_player_info, easter_egg_sabakkan
 
 sabakkan = Blueprint('sabakkan', __name__)
 
+
 @sabakkan.route('/sabakkan')
 def sabakkan_launcher():
-
     id_player = session['player_id']
     level = session['level']
     mute = session['mute']
 
     print_player_info(game_name='KNS SabakKan', player_id=id_player, level=level, mute=mute)
 
+    return render_template("kanji_no_sekai_sabakkan.html", player_id=id_player, level=level, mute=mute)
 
-    return render_template("kanji_no_sekai_sabakkan.html",player_id=id_player,level=level, mute=mute)
 
 @sabakkan.route('/sabakkan_data')
 def data_launcher():
-
     try:
         data = download_json_data_sabakkan()
         return jsonify(data)
     except (FileNotFoundError, ValueError):
         return jsonify([])
-def download_json_data_sabakkan(json_file_path="sabakkan.json"):
 
+
+def download_json_data_sabakkan(json_file_path="kanji_no_sekain_sabakkan.json"):
     with open(json_file_path, encoding="utf-8") as paperkanji_file:
         kanji_json = json.load(paperkanji_file)
 
@@ -50,7 +50,10 @@ def download_json_data_sabakkan(json_file_path="sabakkan.json"):
             "strokes": 0
         })
 
-        return kanjis
+
+
+        return easter_egg_sabakkan(kanjis)
+
 
 @sabakkan.route('/sabakkan_result', methods=['POST'])
 def sabakkan_result():
@@ -62,8 +65,8 @@ def sabakkan_result():
 
     return jsonify(resultat)
 
-def resultat_comparatif_player_bot(hand_play, hand_bot):
 
+def resultat_comparatif_player_bot(hand_play, hand_bot):
     verdict_final = 'PlaceHolder'
 
     player_resultat = resultat_hand(hand_play)
@@ -80,9 +83,8 @@ def resultat_comparatif_player_bot(hand_play, hand_bot):
             message = 'Draw'
         return message
 
-
     if player_resultat['hand_type'] == '完零':
-        verdict_final = message_verdict(add_message= "完零",winner='Player')
+        verdict_final = message_verdict(add_message="完零", winner='Player')
 
     elif bot_resultat['hand_type'] == '完零':
         verdict_final = message_verdict(add_message="完零", winner='Bot')
@@ -118,14 +120,17 @@ def resultat_comparatif_player_bot(hand_play, hand_bot):
         elif bot_gap_to_zero == player_gap_to_zero:
 
             if bot_resultat["big_number"] > player_resultat["big_number"]:
-                verdict_final = message_verdict(add_message=f'The Big Number : Bot {bot_resultat["big_number"]} / Player {player_resultat["big_number"]}', winner='Bot')
+                verdict_final = message_verdict(
+                    add_message=f'The Big Number : Bot {bot_resultat["big_number"]} / Player {player_resultat["big_number"]}',
+                    winner='Bot')
 
             if bot_resultat["big_number"] < player_resultat["big_number"]:
-                verdict_final = message_verdict(add_message=f'The Big Number : Player {player_resultat["big_number"]} / Bot {bot_resultat["big_number"]}', winner='Player')
+                verdict_final = message_verdict(
+                    add_message=f'The Big Number : Player {player_resultat["big_number"]} / Bot {bot_resultat["big_number"]}',
+                    winner='Player')
 
             if bot_resultat["big_number"] == player_resultat["big_number"]:
-                    verdict_final = message_verdict(add_message= "", winner = '')
-
+                verdict_final = message_verdict(add_message="", winner='')
 
     resultat = {
 
@@ -138,7 +143,6 @@ def resultat_comparatif_player_bot(hand_play, hand_bot):
 
 
 def resultat_hand(hand):
-
     hand_type = 'Placehorlder'
     seifu = 0
     score = 0
@@ -156,7 +160,6 @@ def resultat_hand(hand):
 
         return score
 
-
     for i in hand:
 
         score += int(i['strokes'])
@@ -164,7 +167,6 @@ def resultat_hand(hand):
 
         if i['kanji'] == "一" or i['kanji'] == "乙":
             seifu += 1
-
 
     score_with_joker = joker(joker_number=seifu, score=score)
 
@@ -183,7 +185,6 @@ def resultat_hand(hand):
         if (-4 > score_with_joker or score_with_joker > 4):
             hand_type = "超"
 
-
     resultat = {
         "hand_type": hand_type,
         "score": score_with_joker,
@@ -191,8 +192,9 @@ def resultat_hand(hand):
     }
 
     return resultat
-def kanji_strokes_recup(kanji_file, number_strokes):
 
+
+def kanji_strokes_recup(kanji_file, number_strokes):
     number_category = 3
     if number_strokes > 10:
         return []
@@ -230,7 +232,6 @@ def sabakkan_bot_action():
     card_index_to_discard = None
 
     bot_action_probability = random.random()
-
 
     if turn > 2 and bot_action_probability < 0.10:
         action = "stop"

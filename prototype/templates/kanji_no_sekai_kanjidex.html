@@ -26,7 +26,7 @@
             cursor: pointer;
             margin-bottom: 20px;
         }
-        /* Style de la grille pour afficher les kanjis */
+
         .kanji-grid {
             display: flex;
             flex-wrap: wrap;
@@ -51,6 +51,15 @@
             font-family: "Klee One", system-ui, sans-serif;
             font-weight: 600;
         }
+
+
+        .kanji-char.taito {
+            font-size: 2rem !important;
+            font-family: "Noto Sans JP", sans-serif;
+            color: #8a7520;
+            font-weight: 600;
+        }
+
         .kanji-time {
             font-size: 0.75rem;
             color: #333;
@@ -94,8 +103,11 @@
 
                 card.style.backgroundColor = item.color;
 
+
+                const isTaitoClass = (item.kanji === '𱁬') ? ' kanji-char taito' : 'kanji-char';
+
                 card.innerHTML = `
-                    <div class="kanji-char">${item.kanji}</div>
+                    <div class="${isTaitoClass}">${item.kanji}</div>
                     <div class="kanji-time">${item.learned_time}位</div>
                 `;
                 grid.appendChild(card);

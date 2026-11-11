@@ -41,6 +41,7 @@ app.register_blueprint(kanjidex)
 @app.route('/')
 def menu():
     #players_data_reset_all()
+
     return redirect(url_for('login'))
 
 @app.route('/sign_in', methods=['GET', 'POST'])
@@ -92,57 +93,37 @@ def login():
 
     return render_template("kanji_no_sekai_menu_login.html", error_message=error_message)
 
-
 # template category
 @app.route('/category')
 def category_menu():
-    return render_template("kanji_no_sekai_menu_category.html",
-                           player_id=session.get('player_id'),
-                           level=session.get('level'),
-                           mute=session.get('mute'))
+    return render_template("kanji_no_sekai_menu_category.html")
 
 
 # templates mini-games
 
 @app.route('/choice_game_reading')
 def choice_game_reading():
-    return render_template("kanji_no_sekai_game_choice_reading.html",
-                           player_id=session.get('player_id'),
-                           level=session.get('level'),
-                           mute=session.get('mute'))
+    return render_template("kanji_no_sekai_game_choice_reading.html")
 
 
 @app.route('/choice_game_writing')
 def choice_game_writing():
-    return render_template("kanji_no_sekai_game_choice_writing.html",
-                           player_id=session.get('player_id'),
-                           level=session.get('level'),
-                           mute=session.get('mute'))
+    return render_template("kanji_no_sekai_game_choice_writing.html")
 
 
 @app.route('/choice_game_meaning')
 def choice_game_meaning():
-    return render_template("kanji_no_sekai_game_choice_meaning.html",
-                           player_id=session.get('player_id'),
-                           level=session.get('level'),
-                           mute=session.get('mute'))
+    return render_template("kanji_no_sekai_game_choice_meaning.html")
 
 
 @app.route('/choice_game_distinction')
 def choice_game_distinction():
-    return render_template("kanji_no_sekai_game_choice_distinction.html",
-                           player_id=session.get('player_id'),
-                           level=session.get('level'),
-                           mute=session.get('mute'))
+    return render_template("kanji_no_sekai_game_choice_distinction.html")
 
 
 @app.route('/choice_game_usage')
 def choice_game_usage():
-    return render_template("kanji_no_sekai_game_choice_usage.html",
-                           player_id=session.get('player_id'),
-                           level=session.get('level'),
-                           mute=session.get('mute'))
-
+    return render_template("kanji_no_sekai_game_choice_usage.html")
 
 # Player data
 @app.route('/player_data', methods=['GET'])
@@ -150,7 +131,6 @@ def player_data_launcher():
     current_player_id = session['player_id']
 
     return player_data_get(int(current_player_id))
-
 
 @app.route("/player_save", methods=["POST"])
 def player_save_launcher():
@@ -160,7 +140,6 @@ def player_save_launcher():
     player_id = session.get("player_id")
 
     return player_data_save(kanji_list=kanji_list, player_id=int(player_id))
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
