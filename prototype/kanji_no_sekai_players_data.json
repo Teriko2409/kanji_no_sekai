@@ -107,5 +107,292 @@
   },
   {
     "id": 195
+  },
+  {
+    "id": 275,
+    "kanjis": [
+      {
+        "kanji": "気",
+        "learned_time": 2
+      },
+      {
+        "kanji": "推",
+        "learned_time": 1
+      },
+      {
+        "kanji": "雨",
+        "learned_time": 1
+      },
+      {
+        "kanji": "木",
+        "learned_time": 1
+      },
+      {
+        "kanji": "土",
+        "learned_time": 2
+      },
+      {
+        "kanji": "度",
+        "learned_time": 1
+      },
+      {
+        "kanji": "線",
+        "learned_time": 2
+      },
+      {
+        "kanji": "川",
+        "learned_time": 2
+      },
+      {
+        "kanji": "車",
+        "learned_time": 1
+      },
+      {
+        "kanji": "社",
+        "learned_time": 1
+      },
+      {
+        "kanji": "拍",
+        "learned_time": 1
+      },
+      {
+        "kanji": "白",
+        "learned_time": 1
+      },
+      {
+        "kanji": "火",
+        "learned_time": 1
+      },
+      {
+        "kanji": "日",
+        "learned_time": 2
+      },
+      {
+        "kanji": "水",
+        "learned_time": 1
+      },
+      {
+        "kanji": "山",
+        "learned_time": 1
+      },
+      {
+        "kanji": "金",
+        "learned_time": 1
+      },
+      {
+        "kanji": "病",
+        "learned_time": 1
+      }
+    ]
+  },
+  {
+    "id": 278,
+    "kanjis": [
+      {
+        "kanji": "木",
+        "learned_time": 6
+      },
+      {
+        "kanji": "国",
+        "learned_time": 4
+      },
+      {
+        "kanji": "白",
+        "learned_time": 3
+      },
+      {
+        "kanji": "社",
+        "learned_time": 2
+      },
+      {
+        "kanji": "車",
+        "learned_time": 6
+      },
+      {
+        "kanji": "金",
+        "learned_time": 4
+      },
+      {
+        "kanji": "火",
+        "learned_time": 6
+      },
+      {
+        "kanji": "日",
+        "learned_time": 8
+      },
+      {
+        "kanji": "拍",
+        "learned_time": 1
+      },
+      {
+        "kanji": "川",
+        "learned_time": 5
+      },
+      {
+        "kanji": "土",
+        "learned_time": 6
+      },
+      {
+        "kanji": "度",
+        "learned_time": 1
+      },
+      {
+        "kanji": "黒",
+        "learned_time": 2
+      },
+      {
+        "kanji": "月",
+        "learned_time": 4
+      },
+      {
+        "kanji": "雨",
+        "learned_time": 1
+      },
+      {
+        "kanji": "山",
+        "learned_time": 2
+      },
+      {
+        "kanji": "手",
+        "learned_time": 1
+      },
+      {
+        "kanji": "左",
+        "learned_time": 1
+      },
+      {
+        "kanji": "何",
+        "learned_time": 1
+      },
+      {
+        "kanji": "時",
+        "learned_time": 1
+      },
+      {
+        "kanji": "少",
+        "learned_time": 2
+      },
+      {
+        "kanji": "物",
+        "learned_time": 1
+      },
+      {
+        "kanji": "話",
+        "learned_time": 1
+      },
+      {
+        "kanji": "新",
+        "learned_time": 1
+      },
+      {
+        "kanji": "子",
+        "learned_time": 1
+      },
+      {
+        "kanji": "中",
+        "learned_time": 1
+      },
+      {
+        "kanji": "九",
+        "learned_time": 1
+      },
+      {
+        "kanji": "入",
+        "learned_time": 1
+      },
+      {
+        "kanji": "買",
+        "learned_time": 1
+      },
+      {
+        "kanji": "下",
+        "learned_time": 1
+      },
+      {
+        "kanji": "家",
+        "learned_time": 1
+      },
+      {
+        "kanji": "広",
+        "learned_time": 1
+      },
+      {
+        "kanji": "休",
+        "learned_time": 1
+      },
+      {
+        "kanji": "年",
+        "learned_time": 1
+      },
+      {
+        "kanji": "借",
+        "learned_time": 1
+      },
+      {
+        "kanji": "習",
+        "learned_time": 1
+      },
+      {
+        "kanji": "上",
+        "learned_time": 1
+      },
+      {
+        "kanji": "𱁬",
+        "learned_time": 1
+      },
+      {
+        "kanji": "決",
+        "learned_time": 1
+      },
+      {
+        "kanji": "水",
+        "learned_time": 1
+      }
+    ]
+  },
+  {
+    "id": 336,
+    "kanjis": [
+      {
+        "kanji": "雨",
+        "learned_time": 1
+      },
+      {
+        "kanji": "青",
+        "learned_time": 1
+      },
+      {
+        "kanji": "式",
+        "learned_time": 1
+      },
+      {
+        "kanji": "南",
+        "learned_time": 1
+      },
+      {
+        "kanji": "着",
+        "learned_time": 1
+      },
+      {
+        "kanji": "早",
+        "learned_time": 1
+      },
+      {
+        "kanji": "動",
+        "learned_time": 1
+      }
+    ]
+  },
+  {
+    "id": 391
+  },
+  {
+    "id": 418,
+    "kanjis": [
+      {
+        "kanji": "木",
+        "learned_time": 1
+      }
+    ]
   }
 ]

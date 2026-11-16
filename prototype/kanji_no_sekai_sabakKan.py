@@ -25,7 +25,7 @@ def data_launcher():
         return jsonify([])
 
 
-def download_json_data_sabakkan(json_file_path="kanji_no_sekain_sabakkan.json"):
+def download_json_data_sabakkan(json_file_path="kanji_no_sekai_sabakkan.json"):
     with open(json_file_path, encoding="utf-8") as paperkanji_file:
         kanji_json = json.load(paperkanji_file)
 

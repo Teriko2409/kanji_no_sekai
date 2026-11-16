@@ -35,7 +35,6 @@ def id_generating(name="", password=""):
 
     new_player_json = {
             "id": new_id,
-
         }
 
     players.append(new_player_json)
@@ -200,7 +199,7 @@ def player_data_save(kanji_list, player_id=0):
 
 # easter egg
 
-easter_egg_propability = 100
+easter_egg_propability = 10
 easter_egg_kanji = "𱁬"
 
 def easter_egg_memokanji(kanji_list):
@@ -208,7 +207,7 @@ def easter_egg_memokanji(kanji_list):
     easter_egg = random.random()
 
     if easter_egg <= (easter_egg_propability/100):
-        print(kanji_list)
+
         del kanji_list[0]
         kanji_list.append(easter_egg_kanji)
 
@@ -218,7 +217,8 @@ def easter_egg_sabakkan(kanji_list):
 
     easter_egg = random.random()
 
-    if easter_egg <= (easter_egg_propability/100):
+    if easter_egg <= (easter_egg_propability * 5):
+
         color_list = ["red", "green"]
         color = random.choice(color_list)
 
@@ -266,3 +266,23 @@ def easter_egg_paper(kanji_list):
             kanji_list.append(false_dict)
 
     return kanji_list
+
+def easter_egg_bombu(zones, bombu):
+
+    easter_egg = random.random()
+
+    if easter_egg <= (easter_egg_propability / 100):
+
+        taito_sound = ['たいと', 'だいと', 'おとど']
+        sound = random.choice(taito_sound)
+        del zones[0]
+        zones.append(sound)
+        random.shuffle(zones)
+
+        taito_bombu = {'kanji': easter_egg_kanji, 'zones': taito_sound}
+
+        del bombu[0]
+        bombu.append(taito_bombu)
+        random.shuffle(bombu)
+
+    return zones, bombu

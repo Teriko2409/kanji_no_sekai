@@ -4,42 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bombu</title>
-
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💣</text></svg>">
-
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
-
     <style>
-        body {
-            font-family: 'Klee One', cursive, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 20px;
-        }
-        .button_retour {
-            padding: 8px 16px;
-            font-size: 15px;
-            background: mediumvioletred;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+        * { box-sizing: border-box; }
+        body { font-family: 'Klee One', cursive, sans-serif; background-color: #f4f4f9; margin: 0; padding: 20px; color: #2b2b2b; }
+        #game { max-width: 640px; margin: 0 auto; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .button_retour { padding: 8px 16px; font-size: 15px; background: mediumvioletred; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+        #hud { margin-bottom: 6px; font-size: .95rem; }
+
+        /* The play area where the kanjis fall */
+        #field { position: relative; height: min(58vh, 500px); min-height: 320px; background: #fff; border: 2px solid #2b2b2b;
+                 border-radius: 12px; overflow: hidden; touch-action: manipulation; }
+        .kanji { position: absolute; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;
+                 font-size: 2.4rem; background: #fff8e1; border: 2px solid #2b2b2b; border-radius: 10px; cursor: pointer; user-select: none; }
+        .kanji.selected { outline: 4px solid mediumvioletred; }
+        .kanji.warning { animation: blink .35s steps(2) infinite; }
+        @keyframes blink { 50% { background: #e5231b; color: #fff; border-color: #e5231b; } }
+        .exploding { animation: explode .45s ease-out forwards; pointer-events: none; }
+        @keyframes explode { 0% { transform: scale(1); background: #ffb300; } 100% { transform: scale(2.6); opacity: 0; background: #e5231b; } }
+
+        /* The three drop zones */
+        #zones { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 10px; }
+        .zone { background: #fff; border: 3px solid #2b2b2b; border-radius: 12px; padding: 6px; min-height: 130px; text-align: center; cursor: pointer; }
+        .zone.armed { border-color: mediumvioletred; background: #fdeaf4; }
+        .hira { font-size: 2.5rem; font-weight: 600; line-height: 1.1; }
+        .pile { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; min-height: 30px; }
+        .chip { font-size: 1.1rem; border: 1px solid #3a8a4f; border-radius: 6px; padding: 0 4px; background: #e6f4ea; }
+
+        #end { display: none; background: #fff; border: 2px solid #2b2b2b; border-radius: 12px; padding: 16px; margin-top: 12px; text-align: center; }
+        #end .win { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 12px 0; }
+        #end .win span { font-size: 1.8rem; border: 2px solid #3a8a4f; border-radius: 8px; padding: 2px 10px; background: #e6f4ea; }
+        button.action { font-size: 1rem; padding: 10px 16px; border: 2px solid #2b2b2b; background: #2b2b2b; color: #fff; border-radius: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
+<div id="game">
+    <div class="top-bar">
+        <button class="button_retour" onclick="location.href='/choice_game_reading'">BACK</button>
+        <div>Niveau : {{ level }}</div>
+    </div>
 
-<div class="top-bar">
-    <button
-            class="button_retour"
-            onclick="location.href='/choice_game_reading'">
-        BACK
-    </button>
-    <div>Niveau : {{ level }}</div>
+    <div id="hud"></div>
+    <div id="field"></div>
+
+    <div id="zones">
+        <div class="zone" id="zone-left"><div class="hira" id="hira-left"></div><div class="pile" id="pile-left"></div></div>
+        <div class="zone" id="zone-middle"><div class="hira" id="hira-middle"></div><div class="pile" id="pile-middle"></div></div>
+        <div class="zone" id="zone-right"><div class="hira" id="hira-right"></div><div class="pile" id="pile-right"></div></div>
+    </div>
+
+    <div id="end">
+        <h2 id="endTitle"></h2>
+        <p id="endText"></p>
+        <div class="win" id="endKanjis"></div>
+        <button class="action" onclick="newGame()">やり直す</button>
+    </div>
 </div>
+
 <audio id="theme" loop>
     <source src="{{ url_for('static', filename='audio/bombu_theme.mp3') }}" type="audio/mpeg">
 </audio>
@@ -47,13 +72,222 @@
 <script src="{{ url_for('static', filename='kanji_no_sekai_audio_setting.js') }}"></script>
 <script>
     const rac = (id_element_page) => document.getElementById(id_element_page);
-
     const kanji_data_bombe_url = '/bombu_data';
     const player_data_url = '/player_data';
     const save_player_url = '/player_save';
 
-    playMusic({{mute}});
+    // ===== SETTINGS =====
+    const KANJI_SIZE = 56;
+    const START_SPEED = 45;
+    const SPEED_GROWTH = 2.5;
+    const MAX_SPEED = 220;
+    const START_SPAWN_DELAY = 2.4;
+    const MIN_SPAWN_DELAY = 0.9;
+    const SPAWN_SHRINK = 0.02;
+    const FUSE_MS = 6000;
+    const WARNING_MS = 3000;
+    const SAVE_EXPLODED_ZONE = false;
+    const SIDES = ["left", "middle", "right"];
 
+    // ===== RULES =====
+    const speedAt = seconds => Math.min(START_SPEED + seconds * SPEED_GROWTH, MAX_SPEED);
+    const spawnDelayAt = seconds => Math.max(START_SPAWN_DELAY - seconds * SPAWN_SHRINK, MIN_SPAWN_DELAY);
+    const isCorrectZone = (kanji, zoneHiragana) => kanji.zones && kanji.zones.includes(zoneHiragana);
+
+    function fuseState(ageMs) {
+        if (ageMs >= FUSE_MS) return "explode";
+        if (ageMs >= FUSE_MS - WARNING_MS) return "warning";
+        return "safe";
+    }
+
+    // ===== GAME STATE =====
+    let kanjiQueue = [];
+    let items = [];
+    let zoneHiragana = {left: "", middle: "", right: ""};
+    let sortedKanjis = {left: [], middle: [], right: []};
+    let selectedItem = null;
+    let running = false, elapsed = 0, spawnTimer = 0, loopId = 0;
+    let kanji_already_player = [];
+
+    async function loadGame() {
+        if (typeof playMusic === "function") playMusic({{ mute }});
+        newGame();
+    }
+
+    async function newGame() {
+        running = false;
+        rac("end").style.display = "none";
+        rac("field").innerHTML = "";
+        items = []; selectedItem = null;
+        sortedKanjis = {left: [], middle: [], right: []};
+        SIDES.forEach(side => rac("pile-" + side).innerHTML = "");
+
+        const response = await fetch(kanji_data_bombe_url);
+        const data = response.ok ? await response.json() : {zones: [], kanjis: []};
+        if (!data.kanjis || data.kanjis.length === 0) { rac("hud").textContent = "Could not load the kanjis."; return; }
+
+        zoneHiragana = {left: data.zones[0], middle: data.zones[1], right: data.zones[2]};
+        SIDES.forEach(side => rac("hira-" + side).textContent = zoneHiragana[side]);
+        kanjiQueue = [...data.kanjis];
+
+        try {
+            const playerResponse = await fetch(player_data_url);
+            const known = playerResponse.ok ? await playerResponse.json() : [];
+            kanji_already_player = known.map(k => typeof k === "string" ? k : k.kanji);
+        } catch (error) { kanji_already_player = []; }
+
+        elapsed = 0; spawnTimer = 0.5; running = true;
+        updateHud();
+        startLoop();
+    }
+
+    // ===== THE GAME LOOP =====
+    function startLoop() {
+        const myLoop = ++loopId;
+        let lastTime = performance.now();
+
+        function tick(now) {
+            if (!running || myLoop !== loopId) return;
+            const seconds = (now - lastTime) / 1000;
+            lastTime = now;
+            elapsed += seconds;
+
+            spawnTimer -= seconds;
+            if (spawnTimer <= 0 && kanjiQueue.length > 0) {
+                spawnKanji();
+                spawnTimer = spawnDelayAt(elapsed);
+            }
+
+            moveKanjis(seconds, now);
+            if (running) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+    }
+
+    function spawnKanji() {
+        const data = kanjiQueue.pop();
+        const element = document.createElement("div");
+        element.className = "kanji";
+        element.textContent = data.kanji;
+
+        const maxX = rac("field").clientWidth - KANJI_SIZE;
+        const item = {data: data, el: element, x: Math.random() * maxX, y: -KANJI_SIZE, landedAt: null};
+        element.addEventListener("pointerdown", event => { event.preventDefault(); selectKanji(item); });
+
+        rac("field").appendChild(element);
+        items.push(item);
+        placeKanji(item);
+        updateHud();
+    }
+
+    function placeKanji(item) {
+        item.el.style.left = item.x + "px";
+        item.el.style.top = item.y + "px";
+    }
+
+    function moveKanjis(seconds, now) {
+        const floorY = rac("field").clientHeight - KANJI_SIZE - 4;
+
+        for (const item of [...items]) {
+            if (item.landedAt === null) {
+                item.y += speedAt(elapsed) * seconds;
+                if (item.y >= floorY) item.landedAt = now;
+            }
+            if (item.landedAt !== null) {
+                item.y = floorY;
+                const state = fuseState(now - item.landedAt);
+                if (state === "warning") item.el.classList.add("warning");
+                if (state === "explode") {
+                    explode(item.el);
+                    endGame("overheat");
+                    return;
+                }
+            }
+            placeKanji(item);
+        }
+    }
+
+    // ===== PLAYER INTERACTION =====
+    function selectKanji(item) {
+        if (!running) return;
+        if (selectedItem) selectedItem.el.classList.remove("selected");
+        selectedItem = item;
+        item.el.classList.add("selected");
+        SIDES.forEach(side => rac("zone-" + side).classList.add("armed"));
+    }
+
+    function sendToZone(side) {
+        if (!running || !selectedItem) return;
+        const item = selectedItem;
+        selectedItem = null;
+        SIDES.forEach(s => rac("zone-" + s).classList.remove("armed"));
+
+        if (isCorrectZone(item.data, zoneHiragana[side])) {
+            item.el.remove();
+            items = items.filter(other => other !== item);
+            sortedKanjis[side].push(item.data.kanji);
+            const chip = document.createElement("span");
+            chip.className = "chip";
+            chip.textContent = item.data.kanji;
+            rac("pile-" + side).appendChild(chip);
+            updateHud();
+            if (kanjiQueue.length === 0 && items.length === 0) endGame("win");
+        } else {
+            explode(item.el);
+            [...rac("pile-" + side).children].forEach(explode);
+            endGame("wrong", side);
+        }
+    }
+
+    function explode(element) {
+        element.classList.add("exploding");
+        setTimeout(() => element.remove(), 450);
+    }
+
+    function updateHud() {
+        const sorted = SIDES.reduce((acc, side) => acc + sortedKanjis[side].length, 0);
+        rac("hud").textContent = "Sorted : " + sorted + " · Remaining : " + (kanjiQueue.length + items.length);
+    }
+
+    // ===== END OF GAME =====
+    async function endGame(reason, wrongSide) {
+        running = false;
+
+        let saved = SIDES.flatMap(side => sortedKanjis[side]);
+        if (reason === "wrong" && !SAVE_EXPLODED_ZONE) {
+            saved = SIDES.filter(s => s !== wrongSide).flatMap(s => sortedKanjis[s]);
+        }
+        saved = [...new Set(saved)];
+
+        const titles = {win: "All sorted! 🎉", overheat: "Boom! A kanji overheated 💥", wrong: "Wrong zone! The pile exploded 💥"};
+        rac("endTitle").textContent = titles[reason];
+        rac("endText").textContent = "Saved kanjis : " + saved.length + (saved.length ? " — new:" : "");
+
+        const box = rac("endKanjis");
+        box.innerHTML = "";
+        saved.filter(kanji => !kanji_already_player.includes(kanji)).forEach(kanji => {
+            const span = document.createElement("span");
+            span.textContent = kanji;
+            box.appendChild(span);
+        });
+        setTimeout(() => rac("end").style.display = "block", 600);
+
+        if (saved.length > 0) {
+            try {
+                await fetch(save_player_url, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({kanjis: saved})
+                });
+            } catch (error) { console.error("Could not save the kanjis:", error); }
+        }
+    }
+
+    SIDES.forEach(side => {
+        rac("zone-" + side).addEventListener("click", () => sendToZone(side));
+    });
+
+    loadGame();
 </script>
 </body>
 </html>

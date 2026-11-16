@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
         button.action {
@@ -251,7 +252,6 @@
             cursor: pointer;
         }
 
-        /* Grilles pour les listes de kanjis */
         .kanji-grid {
             display: flex;
             flex-wrap: wrap;
@@ -260,7 +260,14 @@
             margin: 8px 0 12px 0;
         }
 
-        /* Style pour les réussites (Rights) et Nouveaux Kanjis */
+
+        #sprite.taito, #profile.taito, .kanji-char.taito {
+            font-size: 2rem !important;
+            font-family: "Noto Sans JP", sans-serif !important;
+            color: #8a7520;
+            font-weight: 400;
+        }
+
         .rights-grid span {
             font-size: 1.8rem;
             border: 2px solid var(--ok);
@@ -272,7 +279,6 @@
             color: var(--ok);
         }
 
-        /* Style pour les erreurs (Mistakes) */
         .mistakes-grid span {
             font-size: 1.8rem;
             border: 2px solid var(--ko);
@@ -393,8 +399,9 @@
     let kanji_speed = 1.3;
     let lastPlayerChoice = true;
 
+    // Correction de la syntaxe cassée sur la durée d'animation
     document.documentElement.style.setProperty('--walk-in-duration', kanji_speed + 's');
-    document.documentElement.style.setProperty('--walk-out-duration', (kanji_speed * 0.5) + 's');
+    document.documentElement.style.setProperty('--walk-out-duration', (kanji_speed - 0.5) + 's');
 
     async function loadGame() {
         playMusic({{mute}});
@@ -426,8 +433,17 @@
             return;
         }
 
-        rac("sprite").textContent = kanji[kanji_number_order].kanji ?? "";
-        rac("sprite").classList.add("walking");
+        const card = kanji[kanji_number_order];
+        const currentKanji = card.kanji ?? "";
+
+        // Gestion du sprite qui marche (si c'est le taito ou un kanji normal)
+        const spriteEl = rac("sprite");
+        spriteEl.textContent = currentKanji;
+        if (currentKanji === '𱁬') {
+            spriteEl.className = "taito walking";
+        } else {
+            spriteEl.className = "walking";
+        }
 
         rac("walker").className = "";
         void rac("walker").offsetWidth;
@@ -457,8 +473,18 @@
 
     function showCard() {
         const card = kanji[kanji_number_order];
+        const currentKanji = card.kanji ?? "";
 
-        rac("profile").textContent = card.profile;
+        const profileEl = rac("profile");
+        profileEl.textContent = card.profile;
+
+        // Gestion de la photo de profil dans la carte
+        if (currentKanji === '𱁬') {
+            profileEl.className = "taito";
+        } else {
+            profileEl.className = "";
+        }
+
         rac("kun").textContent = card.kunyomi;
         rac("on").textContent = card.onyomi;
         rac("radical").textContent = card.radical;
@@ -522,7 +548,11 @@
         rac("card").classList.remove("show");
         rac("card").style.display = "none";
 
-        rac("sprite").classList.add("walking");
+        const card = kanji[kanji_number_order];
+        const currentKanji = card.kanji ?? "";
+        const spriteEl = rac("sprite");
+
+        spriteEl.classList.add("walking");
 
         rac("walker").className = "";
         void rac("walker").offsetWidth;
@@ -552,6 +582,7 @@
             rights.forEach(ch => {
                 const sp = document.createElement("span");
                 sp.textContent = ch;
+                if (ch === '𱁬') sp.className = "kanji-char taito";
                 rightsGrid.appendChild(sp);
             });
         } else {
@@ -560,7 +591,6 @@
             emptyNotice.textContent = "...";
             rightsGrid.appendChild(emptyNotice);
         }
-
 
         const mistakesTitle = document.createElement("p");
         mistakesTitle.style.fontWeight = "600";
@@ -574,6 +604,7 @@
             mistakes.forEach(ch => {
                 const sp = document.createElement("span");
                 sp.textContent = ch;
+                if (ch === '𱁬') sp.className = "kanji-char taito";
                 mistakesGrid.appendChild(sp);
             });
         } else {
@@ -582,7 +613,6 @@
             emptyNotice.textContent = "...";
             mistakesGrid.appendChild(emptyNotice);
         }
-
 
         const learnedTitle = document.createElement("p");
         learnedTitle.style.fontWeight = "600";
@@ -599,6 +629,7 @@
             newKanjis.forEach(ch => {
                 const sp = document.createElement("span");
                 sp.textContent = ch;
+                if (ch === '𱁬') sp.className = "kanji-char taito";
                 learnedGrid.appendChild(sp);
             });
 
@@ -619,7 +650,6 @@
             emptyNotice.textContent = "...";
             learnedGrid.appendChild(emptyNotice);
         }
-
 
         const playAgain = document.createElement("button");
         playAgain.className = "action";

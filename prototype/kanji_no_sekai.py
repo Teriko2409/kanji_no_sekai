@@ -121,10 +121,6 @@ def choice_game_distinction():
     return render_template("kanji_no_sekai_game_choice_distinction.html")
 
 
-@app.route('/choice_game_usage')
-def choice_game_usage():
-    return render_template("kanji_no_sekai_game_choice_usage.html")
-
 # Player data
 @app.route('/player_data', methods=['GET'])
 def player_data_launcher():
