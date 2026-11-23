@@ -1,3 +1,4 @@
+import time
 from flask import Blueprint, Flask, render_template, request, redirect, url_for, session, jsonify
 from kanji_no_sekai_fun import fun
 from kanji_no_sekai_bombu import bombu
@@ -7,10 +8,8 @@ from kanji_no_sekai_infinite import infinite
 from kanji_no_sekai_paper import paper
 from kanji_no_sekai_memokanji import memokanji
 from kanji_no_sekai_kankey import kankey
-from kanji_no_sekai_kanter import kanter
 from kanji_no_sekai_kanjidex import kanjidex
-from kanji_no_sekai_function import print_player_info, read_session_key, player_data_get, player_data_save, \
-    players_data_reset_all, id_checking, id_generating
+from kanji_no_sekai_function import print_player_info, read_session_key, player_data_get, player_data_save, id_checking, id_generating
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = read_session_key("sessionKey")
@@ -33,14 +32,11 @@ app.register_blueprint(memokanji)
 
 app.register_blueprint(kankey)
 
-app.register_blueprint(kanter)
-
 app.register_blueprint(kanjidex)
-
 
 @app.route('/')
 def menu():
-    #players_data_reset_all()
+
 
     return redirect(url_for('login'))
 
@@ -51,12 +47,17 @@ def sign_in():
         name = request.form.get('name')
         password = request.form.get('password')
 
-        id_generating(name=name, password=password)
+        player_found, player_id = id_checking(name, password)
 
-        return render_template("kanji_no_sekai_menu_login.html")
+        if player_found:
+            error_message = "Player already sign in"
 
-
-    return render_template("kanji_no_sekai_sign_in.html")
+            return render_template("kanji_no_sekai_sign_in.html", error_message=error_message)
+        else:
+            id_generating(name=name, password=password)
+            return render_template("kanji_no_sekai_menu_login.html")
+    else:
+        return render_template("kanji_no_sekai_sign_in.html")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -138,6 +139,7 @@ def player_save_launcher():
     return player_data_save(kanji_list=kanji_list, player_id=int(player_id))
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+
+    app.run(host='0.0.0.0', port=5000)
 
 
